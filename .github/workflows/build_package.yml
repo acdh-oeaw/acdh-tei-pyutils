@@ -1,4 +1,4 @@
-name: Build acdh-tei-pyutils Package
+name: Build
 
 on: [push, pull_request]
 

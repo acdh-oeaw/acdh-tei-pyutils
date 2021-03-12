@@ -1,4 +1,4 @@
-name: Run acdh-tei-pyutils Tox Test Suite
+name: Test
 
 on: [push, pull_request]
 
