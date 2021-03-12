@@ -1,0 +1,20 @@
+cookietemple_version: '1.2.4 # <<COOKIETEMPLE_NO_BUMP>>'
+domain: cli
+language: python
+project_slug: acdh-tei-pyutils
+project_slug_no_hyphen: acdh_tei_pyutils
+template_version: '1.1.0 # <<COOKIETEMPLE_NO_BUMP>>'
+template_handle: cli-python
+github_username: csae8092
+creator_github_username: csae8092
+is_github_repo: false
+is_repo_private: false
+is_github_orga: false
+full_name: Peter Andorfer
+email: peter.andorfer@oeaw.ac.at
+project_name: acdh-tei-pyutils
+project_short_description: Utilty functions to work with TEI Documents
+version: 0.1.0
+license: MIT
+command_line_interface: No command-line interface
+testing_library: pytest
