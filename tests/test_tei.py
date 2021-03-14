@@ -3,7 +3,6 @@
 """Tests for `acdh_tei_pyutils.tei` module."""
 
 import glob
-import os
 import unittest
 
 from acdh_tei_pyutils.tei import NER_TAG_MAP, TeiReader
@@ -26,18 +25,32 @@ class TestTEIReader(unittest.TestCase):
 
     def test_001_ner_mapping(self):
         self.assertIsInstance(NER_TAG_MAP, dict)
-    
+
     def test_002_parsing_from_file(self):
         for x in FILES:
             doc = TeiReader(xml=x)
             parent_node = doc.any_xpath(any_xpath='//tei:body')[0]
             ne_list = doc.extract_ne_elements(parent_node)
             self.assertIsInstance(ne_list, list)
-    
-    def test_002_parsing_from_file(self):
-        for x in FILES:
-            doc = TeiReader(xml=x)
-            parent_node = doc.any_xpath(any_xpath='//tei:body')[0]
-            ne_list = doc.extract_ne_dicts(parent_node)
-            self.assertIsInstance(ne_list, list)
-            
+
+    def test_003_extract_ner_list(self):
+        doc = TeiReader(xml=FILES[0])
+        ne_list = doc.get_text_nes_list()
+        self.assertIsInstance(ne_list, list)
+        self.assertTrue(len(ne_list), 2)
+
+    def test_004_check_ner_list(self):
+        doc = TeiReader(xml=FILES[0])
+        ne_list = doc.get_text_nes_list()
+        for y in ne_list:
+            print(y)
+            if y['ner_dicts']:
+                self.assertTrue(
+                    y['ner_dicts'][0]['text'] in ["Prag", "Broschüre", "Böhmen"]
+                )
+
+    def test_005_ner_offsets(self):
+        doc = TeiReader(xml=FILES[0])
+        ne_offsets = doc.extract_ne_offsets()
+        print(ne_offsets[2])
+        self.assertIsInstance(ne_offsets, list)
