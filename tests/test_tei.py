@@ -13,6 +13,11 @@ FILES = glob.glob(
     recursive=False
 )
 
+XSL = glob.glob(
+    "./acdh_tei_pyutils/files/*.xsl",
+    recursive=False
+)[0]
+
 
 class TestTEIReader(unittest.TestCase):
     """Tests for `acdh_tei_pyutils.tei.TEIReader` class."""
@@ -54,3 +59,11 @@ class TestTEIReader(unittest.TestCase):
         ne_offsets = doc.extract_ne_offsets()
         print(ne_offsets[2])
         self.assertIsInstance(ne_offsets, list)
+
+    def test_006_markup_cleanup(self):
+        doc = TeiReader(xml=FILES[0])
+        ent_list = doc.get_elements()
+        self.assertTrue('{http://www.tei-c.org/ns/1.0}unclear' in ent_list)
+        doc = TeiReader(xml=FILES[0], xsl=XSL)
+        ent_list = doc.get_elements()
+        self.assertFalse('{http://www.tei-c.org/ns/1.0}unclear' in ent_list)
