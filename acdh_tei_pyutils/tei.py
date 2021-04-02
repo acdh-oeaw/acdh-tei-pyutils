@@ -152,3 +152,25 @@ class TeiReader(XMLReader):
             )
             result.append(train_data)
         return result
+
+
+class TeiEnricher(TeiReader):
+
+    """ a class to enrich tei-documents"""
+
+    def add_base_and_id(self, base_value, id_value, prev_value, next_value):
+        """ adds @xml:base and @xml:id and next and prev to root element
+
+        :param base_value: The value of the @xml:base
+        :type base_value: str
+
+        :return: the updated tree
+        """
+
+        base = self.any_xpath('//tei:TEI')[0]
+        base.set(f"{{{self.ns_xml['xml']}}}base", base_value)
+        base.set(f"{{{self.ns_xml['xml']}}}id", id_value)
+        if prev_value:
+            base.set('prev', f"{base_value}/{prev_value}")
+        if next_value:
+            base.set('next', f"{base_value}/{next_value}")
