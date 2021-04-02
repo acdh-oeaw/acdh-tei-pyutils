@@ -1,1 +1,3 @@
 acdh-xml-pyutils
+click>=7.1.2
+tqdm>=4.59.0

@@ -50,6 +50,11 @@ setup(
         'Programming Language :: Python :: 3.8',
     ],
     description="Utilty functions to work with TEI Documents",
+    entry_points={
+        'console_scripts': [
+            'add-attributes=acdh_tei_pyutils.cli:add_base_id_next_prev',
+        ],
+    },
     install_requires=requirements,
     license="MIT",
     long_description=readme + '\n\n' + history,
