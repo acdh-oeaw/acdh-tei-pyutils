@@ -53,6 +53,7 @@ setup(
     entry_points={
         'console_scripts': [
             'add-attributes=acdh_tei_pyutils.cli:add_base_id_next_prev',
+            'mentions-to-indices=acdh_tei_pyutils.cli:mentions_to_indices',
         ],
     },
     install_requires=requirements,

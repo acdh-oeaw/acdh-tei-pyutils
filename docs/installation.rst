@@ -32,13 +32,13 @@ You can either clone the public repository:
 
 .. code-block:: console
 
-    $ git clone git://github.com/csae8092/acdh-tei-pyutils
+    $ git clone git://github.com/acdh-oeaw/acdh-tei-pyutils
 
 Or download the `tarball`_:
 
 .. code-block:: console
 
-    $ curl -OJL https://github.com/csae8092/acdh-tei-pyutils/tarball/master
+    $ curl -OJL https://github.com/acdh-oeaw/acdh-tei-pyutils/tarball/master
 
 Once you have a copy of the source, you can install it with:
 
@@ -47,5 +47,5 @@ Once you have a copy of the source, you can install it with:
     $ make install
 
 
-.. _Github repo: https://github.com/csae8092/acdh-tei-pyutils
-.. _tarball: https://github.com/csae8092/acdh-tei-pyutils/tarball/master
+.. _Github repo: https://github.com/acdh-oeaw/acdh-tei-pyutils
+.. _tarball: https://github.com/acdh-oeaw/acdh-tei-pyutils/tarball/master
