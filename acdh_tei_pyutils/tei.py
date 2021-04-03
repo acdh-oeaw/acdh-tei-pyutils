@@ -1,3 +1,4 @@
+from lxml import etree as ET
 import re
 from acdh_xml_pyutils.xml import XMLReader
 
@@ -174,3 +175,32 @@ class TeiEnricher(TeiReader):
             base.set('prev', f"{base_value}/{prev_value}")
         if next_value:
             base.set('next', f"{base_value}/{next_value}")
+
+    def create_mention_list(self, mentions, event_title="erwähnt in"):
+        """ creates a tei elemen with list of mentions
+
+        :param mentions: a list of dicts with keys `doc_uri` and `doc_title`
+        :type mentions: list
+
+        :param event_title: short description of the event, defaults to "erwähnt in"
+        :type event_title: str
+
+        :return: a etree.element
+        """
+        tei_ns = f"{self.ns_tei['tei']}"
+        node_root = ET.Element(f"{{{tei_ns}}}listEvent")
+        for x in mentions:
+            event_node = ET.Element(f"{{{tei_ns}}}event")
+            event_node.set('type', 'mentioned')
+            event_node.text = event_title
+            title_node = ET.Element(f"{{{tei_ns}}}title")
+            title_node.text = x['doc_title']
+            event_node.append(title_node)
+            lnkgrp_node = ET.Element(f"{{{tei_ns}}}linkGrp")
+            lnk_node = ET.Element(f"{{{tei_ns}}}link")
+            lnk_node.set('type', 'ARCHE')
+            lnk_node.set('target', x['doc_uri'])
+            lnkgrp_node.append(lnk_node)
+            event_node.append(lnkgrp_node)
+            node_root.append(event_node)
+        return node_root
