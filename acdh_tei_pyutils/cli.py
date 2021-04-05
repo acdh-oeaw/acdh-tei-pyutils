@@ -83,7 +83,7 @@ def mentions_to_indices(files, indices, event_title):  # pragma: no cover
             except IndexError:
                 pass
         doc.tree_to_file(file=x)
-    
+
     all_ent_nodes = {}
     for x in index_files:
         doc = TeiEnricher(x)
@@ -92,7 +92,7 @@ def mentions_to_indices(files, indices, event_title):  # pragma: no cover
             all_ent_nodes[ent.xpath('@xml:id')[0]] = ent
     click.echo(
         click.style(
-            f"DONE",
+            "DONE",
             fg='green'
         )
     )
@@ -148,14 +148,14 @@ def denormalize_indices(files, indices, event_title):  # pragma: no cover
             except IndexError:
                 pass
         doc.tree_to_file(file=x)
-    
+
     all_ent_nodes = {}
     for x in index_files:
         doc = TeiEnricher(x)
         ent_nodes = doc.any_xpath('.//tei:body//*[@xml:id]')
         for ent in ent_nodes:
             all_ent_nodes[ent.xpath('@xml:id')[0]] = ent
-    
+
     click.echo(
         click.style(
             f"writing {len(all_ent_nodes)} index entries into {len(files)} files",
@@ -184,14 +184,14 @@ def denormalize_indices(files, indices, event_title):  # pragma: no cover
                     list_person.append(ent)
             if key.endswith('place'):
                 list_place = ET.Element("{http://www.tei-c.org/ns/1.0}listPlace")
-                back_node.append(list_person)
+                back_node.append(list_place)
                 for ent in ent_dict[key]:
-                    list_person.append(ent)
+                    list_place.append(ent)
         root_node.append(back_node)
         doc.tree_to_file(file=x)
     click.echo(
         click.style(
-            f"DONE",
+            "DONE",
             fg='green'
         )
     )

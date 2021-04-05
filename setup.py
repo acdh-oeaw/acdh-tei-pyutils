@@ -54,7 +54,7 @@ setup(
         'console_scripts': [
             'add-attributes=acdh_tei_pyutils.cli:add_base_id_next_prev',
             'mentions-to-indices=acdh_tei_pyutils.cli:mentions_to_indices',
-            'denormalize-indices=acdh_tei_pyutils.cli:denormalize-indices',
+            'denormalize-indices=acdh_tei_pyutils.cli:denormalize_indices',
         ],
     },
     install_requires=requirements,
