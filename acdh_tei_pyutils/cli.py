@@ -188,6 +188,16 @@ def denormalize_indices(files, indices, event_title, title_xpath):  # pragma: no
                 back_node.append(list_place)
                 for ent in ent_dict[key]:
                     list_place.append(ent)
+            if key.endswith('org'):
+                list_org = ET.Element("{http://www.tei-c.org/ns/1.0}listOrg")
+                back_node.append(list_org)
+                for ent in ent_dict[key]:
+                    list_org.append(ent)
+            if key.endswith('bibl'):
+                list_bibl = ET.Element("{http://www.tei-c.org/ns/1.0}listBibl")
+                back_node.append(list_bibl)
+                for ent in ent_dict[key]:
+                    list_bibl.append(ent)
         root_node.append(back_node)
         doc.tree_to_file(file=x)
     click.echo(
