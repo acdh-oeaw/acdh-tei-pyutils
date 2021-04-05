@@ -90,6 +90,71 @@ def mentions_to_indices(files, indices, event_title):  # pragma: no cover
         ent_nodes = doc.any_xpath('.//tei:body//*[@xml:id]')
         for ent in ent_nodes:
             all_ent_nodes[ent.xpath('@xml:id')[0]] = ent
+    click.echo(
+        click.style(
+            f"DONE",
+            fg='green'
+        )
+    )
+
+
+@click.command()  # pragma: no cover
+@click.option('-f', '--files', default='./editions/*.xml', show_default=True)  # pragma: no cover
+@click.option('-i', '--indices', default='./indices/list*.xml', show_default=True)  # pragma: no cover
+@click.option('-t', '--event-title', default='erwähnt in ', show_default=True)  # pragma: no cover
+def denormalize_indices(files, indices, event_title):  # pragma: no cover
+    """Write pointers to mentions in index-docs and copy index entries into docs"""
+    files = sorted(glob.glob(files))
+    index_files = sorted(glob.glob(indices))
+    ref_doc_dict = defaultdict(list)
+    doc_ref_dict = defaultdict(list)
+    click.echo(
+        click.style(
+            f"collecting list of mentions from {len(files)} docs",
+            fg='green'
+        )
+    )
+    for x in tqdm.tqdm(files):
+        filename = os.path.split(x)[1]
+        doc = TeiEnricher(x)
+        doc_base = doc.any_xpath('./@xml:base')[0]
+        doc_id = doc.any_xpath('./@xml:id')[0]
+        doc_uri = f"{doc_base}/{doc_id}"
+        doc_title = doc.any_xpath('.//tei:title[@type="main"]/text()')[0]
+        refs = doc.any_xpath('.//tei:rs[@ref]/@ref')
+        for ref in refs:
+            ref_doc_dict[ref[1:]].append({
+                "doc_uri": doc_uri,
+                "doc_path": x,
+                "doc_title": doc_title
+            })
+            doc_ref_dict[filename].append(ref[1:])
+    click.echo(
+        click.style(
+            f"collected {len(ref_doc_dict.keys())} of mentioned entities from {len(files)} docs",
+            fg='green'
+        )
+    )
+    for x in index_files:
+        doc = TeiEnricher(x)
+        ent_nodes = doc.any_xpath('.//tei:body//*[@xml:id]')
+        for ent in ent_nodes:
+            ent_id = ent.xpath('@xml:id')[0]
+            mention = ref_doc_dict[ent_id]
+            event_list = doc.create_mention_list(mention, event_title=event_title)
+            try:
+                list(event_list[0])
+                ent.append(event_list)
+            except IndexError:
+                pass
+        doc.tree_to_file(file=x)
+    
+    all_ent_nodes = {}
+    for x in index_files:
+        doc = TeiEnricher(x)
+        ent_nodes = doc.any_xpath('.//tei:body//*[@xml:id]')
+        for ent in ent_nodes:
+            all_ent_nodes[ent.xpath('@xml:id')[0]] = ent
     
     click.echo(
         click.style(
