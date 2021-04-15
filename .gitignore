@@ -137,3 +137,5 @@ dmypy.json
 .vscode/settings.json
 editions/
 *.ipynb
+TEI_SOURCE.xml
+myenv

@@ -126,7 +126,7 @@ class TeiReader(XMLReader):
             entities = []
             for x in ner_dicts:
                 if x['text'] != "":
-                    for m in re.finditer(x['text'], plain_text):
+                    for m in re.finditer(re.escape(x['text']), plain_text):
                         entities.append([m.start(), m.end(), x['ne_type']])
             entities = [item for item in set(tuple(row) for row in entities)]
             entities = sorted(entities, key=lambda x: x[0])
