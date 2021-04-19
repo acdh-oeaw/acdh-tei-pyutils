@@ -139,3 +139,4 @@ editions/
 *.ipynb
 TEI_SOURCE.xml
 myenv
+clitest.sh

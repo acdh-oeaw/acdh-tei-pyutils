@@ -192,10 +192,12 @@ class TeiEnricher(TeiReader):
         for x in mentions:
             event_node = ET.Element(f"{{{tei_ns}}}event")
             event_node.set('type', 'mentioned')
-            event_node.text = event_title
+            event_p_node = ET.Element(f"{{{tei_ns}}}p")
+            event_p_node.text = event_title
             title_node = ET.Element(f"{{{tei_ns}}}title")
             title_node.text = x['doc_title']
-            event_node.append(title_node)
+            event_p_node.append(title_node)
+            event_node.append(event_p_node)
             lnkgrp_node = ET.Element(f"{{{tei_ns}}}linkGrp")
             lnk_node = ET.Element(f"{{{tei_ns}}}link")
             lnk_node.set('type', 'ARCHE')

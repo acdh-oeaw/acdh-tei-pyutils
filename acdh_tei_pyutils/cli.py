@@ -166,7 +166,7 @@ def denormalize_indices(files, indices, event_title, title_xpath):  # pragma: no
     for x in tqdm.tqdm(files):
         filename = os.path.split(x)[1]
         doc = TeiEnricher(x)
-        root_node = doc.tree.getroot()
+        root_node = doc.any_xpath('.//tei:text')[0]
         refs = doc.any_xpath('.//tei:rs[@ref]/@ref')
         ent_dict = defaultdict(list)
         for ref in refs:
