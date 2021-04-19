@@ -18,9 +18,9 @@ acdh-tei-pyutils
         :target: https://acdh-tei-pyutils.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
  
- .. image:: https://codecov.io/gh/acdh-oeaw/acdh-handle-pyutils/branch/master/graph/badge.svg?token=96XqlDbpDw
-        :target: https://codecov.io/gh/acdh-oeaw/acdh-handle-pyutils
-    
+ 
+.. image:: https://codecov.io/gh/acdh-oeaw/acdh-tei-pyutils/branch/master/graph/badge.svg?token=y6HUg72XnH
+      :target: https://codecov.io/gh/acdh-oeaw/acdh-tei-pyutils
     
 
 
@@ -30,11 +30,6 @@ Utilty functions to work with TEI Documents
 * Free software: MIT
 * Documentation: https://acdh-tei-pyutils.readthedocs.io.
 
-
-Features
---------
-
-* TODO
 
 Credits
 -------
