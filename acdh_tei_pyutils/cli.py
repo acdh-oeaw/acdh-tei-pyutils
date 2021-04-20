@@ -6,10 +6,10 @@ import tqdm
 from collections import defaultdict
 from lxml import etree as ET
 
-
 from acdh_tei_pyutils.tei import TeiEnricher
 from acdh_tei_pyutils.utils import previous_and_next
 
+from acdh_handle_pyutils.client import HandleClient
 
 @click.command()  # pragma: no cover
 @click.option('-g', '--glob-pattern', default='./editions/*.xml', show_default=True)  # pragma: no cover
@@ -31,6 +31,39 @@ def add_base_id_next_prev(glob_pattern, base_value):  # pragma: no cover
             next_id = None
         doc.add_base_and_id(base_value, id_value, prev_id, next_id)
         doc.tree_to_file(file=current)
+
+
+@click.command()  # pragma: no cover
+@click.option('-g', '--glob-pattern', default='./editions/*.xml', show_default=True)  # pragma: no cover
+@click.option('-user', '--hdl-user')  # pragma: no cover
+@click.option('-pw', '--hdl-pw')  # pragma: no cover
+@click.option('-provider', '--hdl-provider', default="http://pid.gwdg.de/handles/", show_default=True)  # pragma: no cover
+@click.option('-prefix', '--hdl-prefix', default="21.11115", show_default=True)  # pragma: no cover
+@click.option('-resolver', '--hdl-resolver', default="https://hdl.handle.net/", show_default=True)  # pragma: no cover
+@click.option('-hxpath', '--hdl-xpath', default=".//tei:idno[@type='handle']", show_default=True)  # pragma: no cover
+@click.option('-hixpath', '--hdlinsert-xpath', default=".//tei:publicationStmt/tei:p", show_default=True)  # pragma: no cover
+def add_handles(glob_pattern, hdl_user, hdl_pw, hdl_provider, hdl_prefix, hdl_resolver, hdl_xpath, hdlinsert_xpath):  # pragma: no cover
+    """Console script to register handels base on the values of @xml:id and @xml:base"""
+    files = sorted(glob.glob(glob_pattern))
+    hdl_client = HandleClient(
+        hdl_user, hdl_pw, hdl_provider=hdl_provider, hdl_prefix=hdl_prefix, hdl_resolver=hdl_resolver
+    )
+    for x in tqdm.tqdm(files, total=len(files)):
+        doc = TeiEnricher(x)
+        if doc.handle_exist():
+            continue
+        parsed_data = doc.get_full_id()
+        if parsed_data is None:
+            continue
+        hdl = hdl_client.register_handle(parsed_data)
+        print(hdl)
+        doc.add_handle(
+            hdl,
+            handle_xpath=hdl_xpath,
+            insert_xpath=hdlinsert_xpath
+        )
+        doc.tree_to_file(x)
+        
 
 
 @click.command()  # pragma: no cover

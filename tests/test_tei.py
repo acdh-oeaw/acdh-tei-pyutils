@@ -5,7 +5,10 @@
 import glob
 import unittest
 
-from acdh_tei_pyutils.tei import NER_TAG_MAP, TeiReader, TeiEnricher, HandleAlreadyExist
+from acdh_tei_pyutils.tei import (
+    NER_TAG_MAP, TeiReader, TeiEnricher,
+    HandleAlreadyExist
+)
 
 
 FILES = glob.glob(
@@ -67,6 +70,7 @@ class TestTeiEnricher(unittest.TestCase):
         handle_node = hdl_no.add_handle('1234/5432')
         self.assertEqual(handle_node.text, '1234/5432')
         self.assertEqual(hdl_no.handle_exist(), '1234/5432')
+
 
 class TestTEIReader(unittest.TestCase):
     """Tests for `acdh_tei_pyutils.tei.TeiReader` class."""

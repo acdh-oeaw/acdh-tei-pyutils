@@ -164,44 +164,6 @@ class TeiEnricher(TeiReader):
 
     """ a class to enrich tei-documents"""
 
-    def handle_exist(self, handle_xpath='.//tei:idno[@type="handle"]'):
-        """ checks if a handle is already assigned
-
-        :return: the registered handle or empty string
-        :rtype: str, None
-        """
-        try:
-            return self.any_xpath(handle_xpath)[0].text
-        except IndexError:
-            return None
-
-    def add_handle(
-        self, handle, handle_xpath='.//tei:idno[@type="handle"]',
-        insert_xpath='.//tei:publicationStmt/tei:p'
-    ):
-        """ adds an idno @type=handle element into tei:publicationStmt
-
-        :param handle: the handle
-        :type handle: str
-
-        :param handle_xpath: an xpath expression where to look for an handle
-        :type handle_xpath: str
-
-        :raises: `HandleAlreadyExist` Error
-
-        :returns: the indo node
-        """
-        tei_ns = f"{self.ns_tei['tei']}"
-        if self.handle_exist(handle_xpath=handle_xpath):
-            raise HandleAlreadyExist(f"a handle: {self.handle_exist()} is already registered")
-        else:
-            idno_node = ET.Element(f"{{{tei_ns}}}idno")
-            idno_node.set('type', 'handle')
-            idno_node.text = handle
-            insert_node = self.any_xpath(insert_xpath)[0]
-            insert_node.append(idno_node)
-            return idno_node
-
     def add_base_and_id(self, base_value, id_value, prev_value, next_value):
         """ adds @xml:base and @xml:id and next and prev to root element
 
@@ -242,6 +204,44 @@ class TeiEnricher(TeiReader):
             return f"{base_base}{base_id}"
         else:
             return f"{base_base}/{base_id}"
+
+    def handle_exist(self, handle_xpath='.//tei:idno[@type="handle"]'):
+        """ checks if a handle is already assigned
+
+        :return: the registered handle or empty string
+        :rtype: str, None
+        """
+        try:
+            return self.any_xpath(handle_xpath)[0].text
+        except IndexError:
+            return None
+
+    def add_handle(
+        self, handle, handle_xpath='.//tei:idno[@type="handle"]',
+        insert_xpath='.//tei:publicationStmt/tei:p'
+    ):
+        """ adds an idno @type=handle element into tei:publicationStmt
+
+        :param handle: the handle
+        :type handle: str
+
+        :param handle_xpath: an xpath expression where to look for an handle
+        :type handle_xpath: str
+
+        :raises: `HandleAlreadyExist` Error
+
+        :returns: the indo node
+        """
+        tei_ns = f"{self.ns_tei['tei']}"
+        if self.handle_exist(handle_xpath=handle_xpath):
+            raise HandleAlreadyExist(f"a handle: {self.handle_exist()} is already registered")
+        else:
+            idno_node = ET.Element(f"{{{tei_ns}}}idno")
+            idno_node.set('type', 'handle')
+            idno_node.text = handle
+            insert_node = self.any_xpath(insert_xpath)[0]
+            insert_node.append(idno_node)
+            return idno_node
 
     def create_mention_list(self, mentions, event_title="erwähnt in"):
         """ creates a tei elemen with list of mentions
