@@ -169,12 +169,36 @@ class TeiEnricher(TeiReader):
         """
 
         base = self.any_xpath('//tei:TEI')[0]
-        base.set(f"{{{self.ns_xml['xml']}}}base", base_value)
-        base.set(f"{{{self.ns_xml['xml']}}}id", id_value)
+        if base_value:
+            base.set(f"{{{self.ns_xml['xml']}}}base", base_value)
+        if id_value:
+            base.set(f"{{{self.ns_xml['xml']}}}id", id_value)
         if prev_value:
             base.set('prev', f"{base_value}/{prev_value}")
         if next_value:
             base.set('next', f"{base_value}/{next_value}")
+        return self.tree
+    
+    def get_full_id(self):
+        """ returns the combination of @xml:base and @xml:id
+
+        :return: combination of @xml:base and @xml:id
+        :rtype: str
+        
+        """
+        base = self.any_xpath('//tei:TEI')[0]
+        try:
+            base_base = base.xpath('./@xml:base', namespaces=self.ns_xml)[0]
+        except IndexError:
+            return None
+        try:
+            base_id = base.xpath('./@xml:id', namespaces=self.ns_xml)[0]
+        except IndexError:
+            return None
+        if base_base.endswith('/'):
+            return f"{base_base}{base_id}"
+        else:
+            return f"{base_base}/{base_id}"
 
     def create_mention_list(self, mentions, event_title="erwähnt in"):
         """ creates a tei elemen with list of mentions

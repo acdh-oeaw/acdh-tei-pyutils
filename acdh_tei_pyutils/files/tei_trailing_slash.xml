@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xml:base="https://id.acdh.oeaw.ac.at/thun/editions/" xml:id="nostitz-an-thun-1860-01-04-a3-xxi-d545.xml" prev="https://id.acdh.oeaw.ac.at/thun/editions/nonnen-an-kaiserin-1854-06-16-a3-xxi-d320h.xml" next="https://id.acdh.oeaw.ac.at/thun/editions/note-goluchowski-an-nadasdy-1859-12-21-a3-xxi-d525c.xml">
+    <teiHeader>
+        <fileDesc>
+            <titleStmt>
+                <title>
+                    <rs type="person" ref="#nostitz-rieneck-albert" role="sender:beamter">Albert
+                        Nostitz</rs> an <rs type="person" ref="#thun-hohenstein-leo" role="recipient">Leo Thun</rs>
+                    <lb/>
+                    <rs type="place" subtype="place" ref="#place_e575530bd7a9cc03829dde0b8657f108">Prag</rs>, <date when-iso="1860-01-04">4. Jänner 1860</date>
+                </title>
+            <title type="label">Albert Nostitz an Leo Thun, Prag, 4. Jänner 1860</title>
+                <title type="s">Digitale Edition der Korrespondenz von Leo von Thun-Hohenstein</title>
+            </titleStmt>
+            <publicationStmt>
+                <p>
+                    <tei:idno xmlns:tei="http://www.tei-c.org/ns/1.0" type="handle">http://hdl.handle.net/21.11115/0000-000B-DB09-5</tei:idno>
+                </p>
+            </publicationStmt>
+            <sourceDesc>
+                <msDesc>
+                    <msIdentifier>
+                        <institution>Staatliches Gebietsarchiv Leitmeritz, Zweigstelle
+                            Tetschen-Bodenbach</institution>
+                        <repository>Familienarchiv Thun-Hohenstein, Linie Tetschen, Nachlass Leo
+                            Thun</repository>
+                        <idno>A3 XXI D545</idno>
+                    </msIdentifier>
+                    <msContents>
+                        <p>Der Industrielle Albert Nostitz übersendet Leo Thun einige Exemplare
+                            seiner Broschüre, in der er seine Ansicht über die Notwendigkeit der
+                            Bildung von Gutsgebieten in Böhmen darlegt. Er stellt es Thun frei,
+                            Exemplare an seine Kollegen weiterzuleiten.</p>
+                    </msContents>
+                    <physDesc/>
+                </msDesc>
+            </sourceDesc>
+        </fileDesc>
+        <profileDesc>
+            <correspDesc>
+                <correspAction type="sent">
+                    <rs type="person" ref="#nostitz-rieneck-albert">Albert Nostitz</rs>
+                    <settlement ref="#place_e575530bd7a9cc03829dde0b8657f108">Prag</settlement>
+                    <date when-iso="1860-01-04">4. Jänner 1860</date>
+                </correspAction>
+                <correspAction type="received">
+                    <rs type="person" ref="#thun-hohenstein-leo">Leo Thun</rs>
+                </correspAction>
+            </correspDesc>
+        </profileDesc>
+        <revisionDesc>
+            <list>
+                <item>approved by Mazohl</item>
+            </list>
+        </revisionDesc>
+    </teiHeader>
+    <text>
+        <body>
+            <div type="transcript">
+                <index>
+                    <term>Böhmen</term>
+                    <term>Verwaltung</term>
+                    <term>Neoabsolutismus</term>
+                </index>
+                <p><rs type="place">Prag</rs>, am 4. Jänner [1]860</p>
+                <p>Lieber Freund!</p>
+                <p>In der beiliegenden Broschüre<note xml:id="note_1">Albert Nostitz, Die Bildung
+                        von Gutsgebieten in Böhmen. Von einem Mitglied der böhmischen
+                        Gemeindekommission, Prag 1860. Die <rs>Broschüre</rs> ist im Nachlass nicht
+                        vorhanden.</note> habe ich meine Ansicht über die Nothwendigkeit der Bildung
+                    von Gutsgebieten in <rs type="place" subtype="region" ref="#place_867b530d8072e0e4d907aa82937d3e01">Böhmen</rs> ausgesprochen.<lb/>Ich
+                    übersende Dir hier eine Anzahl Exemplare und überlasse es Deiner Beurtheilung,
+                    ob Du es für zwekmäßig hältst, sie an Deine Herrn Collegen oder sonst zu
+                    vertheilen.<lb/>Mit aufrichtiger Hochachtung</p>
+                <p>Dein</p>
+                <p>Freund Albert G. Nostitz</p>
+                <p>Die Broschüre erscheint im <unclear>Buchhandel</unclear>.</p>
+            </div>
+        </body>
+    </text>
+</TEI>

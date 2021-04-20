@@ -5,7 +5,7 @@
 import glob
 import unittest
 
-from acdh_tei_pyutils.tei import NER_TAG_MAP, TeiReader
+from acdh_tei_pyutils.tei import NER_TAG_MAP, TeiReader, TeiEnricher
 
 
 FILES = glob.glob(
@@ -18,9 +18,45 @@ XSL = glob.glob(
     recursive=False
 )[0]
 
+IDS_AND_SO = [
+    ['base_value', 'id_value', 'prev_value', 'next_value'],
+    ['base_value', 'id_value', None, None],
+    ['base_value/', 'id_value', 'prev_value', 'next_value'],
+    [None, None, None, None]
+]
+FULL_IDS = [
+    'base_value/id_value',
+    'base_value/id_value',
+    'base_value/id_value',
+    None
+]
+
+
+class TestTeiEnricher(unittest.TestCase):
+    """Tests for `acdh_tei_pyutils.tei.TeiEnricher` class."""
+
+    def setUp(self):
+        """Set up test fixtures, if any."""
+
+    def tearDown(self):
+        """Tear down test fixtures, if any."""
+    
+    def test_001_init(self):
+        for x in FILES:
+            doc = TeiEnricher(xml=x)
+            self.assertIsInstance(doc.return_string(), str)
+    
+    def test_002_add_context(self):
+        dummy_data = zip(FILES, IDS_AND_SO, FULL_IDS)
+        for x in dummy_data:
+            doc = TeiEnricher((x[0]))
+            doc.add_base_and_id(*x[1])
+            full_id = doc.get_full_id()
+            self.assertEqual(full_id, x[2])
+
 
 class TestTEIReader(unittest.TestCase):
-    """Tests for `acdh_tei_pyutils.tei.TEIReader` class."""
+    """Tests for `acdh_tei_pyutils.tei.TeiReader` class."""
 
     def setUp(self):
         """Set up test fixtures, if any."""
