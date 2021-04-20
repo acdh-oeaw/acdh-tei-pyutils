@@ -5,7 +5,7 @@
 import glob
 import unittest
 
-from acdh_tei_pyutils.tei import NER_TAG_MAP, TeiReader, TeiEnricher
+from acdh_tei_pyutils.tei import NER_TAG_MAP, TeiReader, TeiEnricher, HandleAlreadyExist
 
 
 FILES = glob.glob(
@@ -53,7 +53,20 @@ class TestTeiEnricher(unittest.TestCase):
             doc.add_base_and_id(*x[1])
             full_id = doc.get_full_id()
             self.assertEqual(full_id, x[2])
-
+    
+    def test_003_handle_exist(self):
+        hdl_doc = TeiEnricher(xml='./acdh_tei_pyutils/files/tei.xml')
+        self.assertIn('http', hdl_doc.handle_exist())
+        hdl_no = TeiEnricher(xml='./acdh_tei_pyutils/files/tei_no_id.xml')
+        self.assertIsNone(hdl_no.handle_exist())
+    
+    def test_004_add_handle(self):
+        hdl_doc = TeiEnricher(xml='./acdh_tei_pyutils/files/tei.xml')
+        self.assertRaises(HandleAlreadyExist, lambda: hdl_doc.add_handle('1234/5432'))
+        hdl_no = TeiEnricher(xml='./acdh_tei_pyutils/files/tei_no_id.xml')
+        handle_node = hdl_no.add_handle('1234/5432')
+        self.assertEqual(handle_node.text, '1234/5432')
+        self.assertEqual(hdl_no.handle_exist(), '1234/5432')
 
 class TestTEIReader(unittest.TestCase):
     """Tests for `acdh_tei_pyutils.tei.TeiReader` class."""
