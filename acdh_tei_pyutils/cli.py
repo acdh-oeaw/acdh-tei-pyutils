@@ -239,3 +239,56 @@ def denormalize_indices(files, indices, event_title, title_xpath):  # pragma: no
             fg='green'
         )
     )
+
+
+@click.command()  # pragma: no cover
+@click.option('-f', '--files', default='./editions/*.xml', show_default=True)  # pragma: no cover
+@click.option('-i', '--indices', default='./indices/list*.xml', show_default=True)  # pragma: no cover
+@click.option('-t', '--doc-person', default='./indices/index_person_day.xml', show_default=True)  # pragma: no cover
+def schnitzler(files, indices, doc_person):  # pragma: no cover
+    """Console script write pointers to mentions in index-docs"""
+    files = sorted(glob.glob(files))
+    index_files = sorted(glob.glob(indices))
+    doc_person = TeiEnricher(doc_person)
+    all_ent_nodes = {}
+    for x in index_files:
+        doc = TeiEnricher(x)
+        ent_nodes = doc.any_xpath('.//tei:body//*[@xml:id]')
+        for ent in ent_nodes:
+            all_ent_nodes[ent.xpath('@xml:id')[0]] = ent
+
+    no_matches = []
+    for x in tqdm.tqdm(files, total=len(files)):
+        day = x.split('/')[-1].replace('entry__', '').replace('.xml', '')
+        xpath = f".//item[@target='{day}']/ref/text()"
+        person_ids = doc_person.any_xpath(xpath)
+        doc = TeiEnricher(x)
+        root_node = doc.any_xpath('.//tei:text')[0]
+        back_node = ET.Element("{http://www.tei-c.org/ns/1.0}back")
+        list_person_node = ET.Element("{http://www.tei-c.org/ns/1.0}listPerson")
+        if len(person_ids) > 0:
+            for pers_id in person_ids:
+                xpath = f'.//tei:person[@xml:id="{pers_id}"]'
+                try:
+                    pers_node = all_ent_nodes[pers_id]
+                except KeyError:
+                    no_matches.append(pers_id)
+                    continue
+                list_person_node.append(pers_node)
+            if len(list_person_node) > 0:
+                back_node.append(list_person_node)
+        place_ids = doc.any_xpath('.//tei:rs[@ref and @type="place"]/@ref')
+        if len(place_ids) > 0:
+            list_place_node = ET.Element("{http://www.tei-c.org/ns/1.0}listPlace")
+            for pl in place_ids:
+                try:
+                    pl_node = all_ent_nodes[pl[1:]]
+                except KeyError:
+                    no_matches.append(pl)
+                    continue
+                list_place_node.append(pl_node)
+            if len(list_place_node) > 0:
+                back_node.append(list_place_node)
+        if len(back_node) > 0:
+            root_node.append(back_node)
+            doc.tree_to_file(file=x)

@@ -56,6 +56,7 @@ setup(
             'mentions-to-indices=acdh_tei_pyutils.cli:mentions_to_indices',
             'denormalize-indices=acdh_tei_pyutils.cli:denormalize_indices',
             'add-handles=acdh_tei_pyutils.cli:add_handles',
+            'schnitzler=acdh_tei_pyutils.cli:schnitzler'
         ],
     },
     install_requires=requirements,
