@@ -245,11 +245,14 @@ def denormalize_indices(files, indices, event_title, title_xpath):  # pragma: no
 @click.option('-f', '--files', default='./editions/*.xml', show_default=True)  # pragma: no cover
 @click.option('-i', '--indices', default='./indices/list*.xml', show_default=True)  # pragma: no cover
 @click.option('-t', '--doc-person', default='./indices/index_person_day.xml', show_default=True)  # pragma: no cover
-def schnitzler(files, indices, doc_person):  # pragma: no cover
+@click.option('-t', '--work-list', default='./indices/listwork.xml', show_default=True)  # pragma: no cover
+
+def schnitzler(files, indices, doc_person, work_list):  # pragma: no cover
     """Console script write pointers to mentions in index-docs"""
     files = sorted(glob.glob(files))
     index_files = sorted(glob.glob(indices))
     doc_person = TeiEnricher(doc_person)
+    list_work = TeiEnricher(work_list)
     all_ent_nodes = {}
     for x in index_files:
         doc = TeiEnricher(x)
@@ -289,6 +292,22 @@ def schnitzler(files, indices, doc_person):  # pragma: no cover
                 list_place_node.append(pl_node)
             if len(list_place_node) > 0:
                 back_node.append(list_place_node)
+        work_matches = list_work.any_xpath(f".//tei:body//*[@when='{day}']/parent::*")
+        if len(work_matches) > 0:
+            list_bibl_node = ET.Element("{http://www.tei-c.org/ns/1.0}listBible")
+            for work in work_matches:
+                title_node = work.xpath('./*[@key]')[0]
+                title_text = title_node.text
+                title_id = title_node.xpath('@key')[0]
+                bibl_node = ET.Element("{http://www.tei-c.org/ns/1.0}bibl")
+                title_node = ET.Element("{http://www.tei-c.org/ns/1.0}bibl")
+                title_node.text = title_text
+                bibl_node.set('{http://www.w3.org/XML/1998/namespace}id', title_id)
+                bibl_node.append(title_node)
+                list_bibl_node.append(bibl_node)
+            back_node.append(list_bibl_node)
         if len(back_node) > 0:
             root_node.append(back_node)
             doc.tree_to_file(file=x)
+    distinct_no_match = set(no_matches)
+    print(distinct_no_match)
