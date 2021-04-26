@@ -11,6 +11,7 @@ from acdh_tei_pyutils.utils import previous_and_next
 
 from acdh_handle_pyutils.client import HandleClient
 
+
 @click.command()  # pragma: no cover
 @click.option('-g', '--glob-pattern', default='./editions/*.xml', show_default=True)  # pragma: no cover
 @click.option('-b', '--base-value')  # pragma: no cover
@@ -64,7 +65,6 @@ def add_handles(glob_pattern, hdl_user, hdl_pw, hdl_provider, hdl_prefix, hdl_re
         )
         doc.tree_to_file(x)
         
-
 
 @click.command()  # pragma: no cover
 @click.option('-f', '--files', default='./editions/*.xml', show_default=True)  # pragma: no cover
