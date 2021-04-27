@@ -2,4 +2,4 @@
 
 __author__ = """Peter Andorfer"""
 __email__ = 'peter.andorfer@oeaw.ac.at'
-__version__ = '0.14.0'
+__version__ = '0.15.0'
