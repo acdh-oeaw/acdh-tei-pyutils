@@ -294,7 +294,7 @@ def schnitzler(files, indices, doc_person, work_list):  # pragma: no cover
                 back_node.append(list_place_node)
         work_matches = list_work.any_xpath(f".//tei:body//*[@when='{day}']/parent::*")
         if len(work_matches) > 0:
-            list_bibl_node = ET.Element("{http://www.tei-c.org/ns/1.0}listBible")
+            list_bibl_node = ET.Element("{http://www.tei-c.org/ns/1.0}listBibl")
             for work in work_matches:
                 title_node = work.xpath('./*[@key]')[0]
                 title_text = title_node.text
