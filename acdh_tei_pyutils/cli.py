@@ -300,7 +300,7 @@ def schnitzler(files, indices, doc_person, work_list):  # pragma: no cover
                 title_text = title_node.text
                 title_id = title_node.xpath('@key')[0]
                 bibl_node = ET.Element("{http://www.tei-c.org/ns/1.0}bibl")
-                title_node = ET.Element("{http://www.tei-c.org/ns/1.0}bibl")
+                title_node = ET.Element("{http://www.tei-c.org/ns/1.0}title")
                 title_node.text = title_text
                 bibl_node.set('{http://www.w3.org/XML/1998/namespace}id', title_id)
                 bibl_node.append(title_node)
