@@ -92,7 +92,8 @@ def add_handles(
 @click.option('-f', '--files', default='./editions/*.xml', show_default=True)  # pragma: no cover
 @click.option('-i', '--indices', default='./indices/list*.xml', show_default=True)  # pragma: no cover
 @click.option('-t', '--event-title', default='erwähnt in ', show_default=True)  # pragma: no cover
-def mentions_to_indices(files, indices, event_title):  # pragma: no cover
+@click.option('-x', '--title-xpath', default='.//tei:title[@type="main"]/text()', show_default=True)  # pragma: no cover
+def mentions_to_indices(files, indices, event_title, title_xpath):  # pragma: no cover
     """Console script write pointers to mentions in index-docs"""
     files = sorted(glob.glob(files))
     index_files = sorted(glob.glob(indices))
@@ -110,7 +111,7 @@ def mentions_to_indices(files, indices, event_title):  # pragma: no cover
         doc_base = doc.any_xpath('./@xml:base')[0]
         doc_id = doc.any_xpath('./@xml:id')[0]
         doc_uri = f"{doc_base}/{doc_id}"
-        doc_title = doc.any_xpath('.//tei:title[@type="main"]/text()')[0]
+        doc_title = doc.any_xpath(title_xpath)[0]
         refs = doc.any_xpath('.//tei:rs[@ref]/@ref')
         for ref in refs:
             ref_doc_dict[ref[1:]].append({
