@@ -38,12 +38,34 @@ def add_base_id_next_prev(glob_pattern, base_value):  # pragma: no cover
 @click.option('-g', '--glob-pattern', default='./editions/*.xml', show_default=True)  # pragma: no cover
 @click.option('-user', '--hdl-user')  # pragma: no cover
 @click.option('-pw', '--hdl-pw')  # pragma: no cover
-@click.option('-provider', '--hdl-provider', default="http://pid.gwdg.de/handles/", show_default=True)  # pragma: no cover
+@click.option(
+    '-provider',
+    '--hdl-provider',
+    default="http://pid.gwdg.de/handles/",
+    show_default=True
+)  # pragma: no cover
 @click.option('-prefix', '--hdl-prefix', default="21.11115", show_default=True)  # pragma: no cover
 @click.option('-resolver', '--hdl-resolver', default="https://hdl.handle.net/", show_default=True)  # pragma: no cover
-@click.option('-hxpath', '--hdl-xpath', default=".//tei:idno[@type='handle']", show_default=True)  # pragma: no cover
-@click.option('-hixpath', '--hdlinsert-xpath', default=".//tei:publicationStmt/tei:p", show_default=True)  # pragma: no cover
-def add_handles(glob_pattern, hdl_user, hdl_pw, hdl_provider, hdl_prefix, hdl_resolver, hdl_xpath, hdlinsert_xpath):  # pragma: no cover
+@click.option(
+    '-hxpath',
+    '--hdl-xpath',
+    default=".//tei:idno[@type='handle']",
+    show_default=True
+)  # pragma: no cover
+@click.option(
+    '-hixpath',
+    '--hdlinsert-xpath',
+    default=".//tei:publicationStmt/tei:p",
+    show_default=True
+)  # pragma: no cover
+def add_handles(
+    glob_pattern,
+    hdl_user, hdl_pw,
+    hdl_provider, hdl_prefix,
+    hdl_resolver,
+    hdl_xpath,
+    hdlinsert_xpath
+):  # pragma: no cover
     """Console script to register handels base on the values of @xml:id and @xml:base"""
     files = sorted(glob.glob(glob_pattern))
     hdl_client = HandleClient(
@@ -64,7 +86,7 @@ def add_handles(glob_pattern, hdl_user, hdl_pw, hdl_provider, hdl_prefix, hdl_re
             insert_xpath=hdlinsert_xpath
         )
         doc.tree_to_file(x)
-        
+
 
 @click.command()  # pragma: no cover
 @click.option('-f', '--files', default='./editions/*.xml', show_default=True)  # pragma: no cover
@@ -246,7 +268,6 @@ def denormalize_indices(files, indices, event_title, title_xpath):  # pragma: no
 @click.option('-i', '--indices', default='./indices/list*.xml', show_default=True)  # pragma: no cover
 @click.option('-t', '--doc-person', default='./indices/index_person_day.xml', show_default=True)  # pragma: no cover
 @click.option('-t', '--work-list', default='./indices/listwork.xml', show_default=True)  # pragma: no cover
-
 def schnitzler(files, indices, doc_person, work_list):  # pragma: no cover
     """Console script write pointers to mentions in index-docs"""
     files = sorted(glob.glob(files))
