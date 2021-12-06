@@ -91,9 +91,10 @@ def add_handles(
 @click.command()  # pragma: no cover
 @click.option('-f', '--files', default='./editions/*.xml', show_default=True)  # pragma: no cover
 @click.option('-i', '--indices', default='./indices/list*.xml', show_default=True)  # pragma: no cover
+@click.option('-m', '--mention-xpath', default='.//tei:rs[@ref]/@ref', show_default=True)  # pragma: no cover
 @click.option('-t', '--event-title', default='erwähnt in ', show_default=True)  # pragma: no cover
 @click.option('-x', '--title-xpath', default='.//tei:title[@type="main"]/text()', show_default=True)  # pragma: no cover
-def mentions_to_indices(files, indices, event_title, title_xpath):  # pragma: no cover
+def mentions_to_indices(files, indices, mention_xpath, event_title, title_xpath):  # pragma: no cover
     """Console script write pointers to mentions in index-docs"""
     files = sorted(glob.glob(files))
     index_files = sorted(glob.glob(indices))
@@ -112,14 +113,16 @@ def mentions_to_indices(files, indices, event_title, title_xpath):  # pragma: no
         doc_id = doc.any_xpath('./@xml:id')[0]
         doc_uri = f"{doc_base}/{doc_id}"
         doc_title = doc.any_xpath(title_xpath)[0]
-        refs = doc.any_xpath('.//tei:rs[@ref]/@ref')
+        refs = doc.any_xpath(mention_xpath)
         for ref in refs:
-            ref_doc_dict[ref[1:]].append({
+            if ref.startswith('#'):
+                ref = ref[1:]
+            ref_doc_dict[ref].append({
                 "doc_uri": doc_uri,
                 "doc_path": x,
                 "doc_title": doc_title
             })
-            doc_ref_dict[filename].append(ref[1:])
+            doc_ref_dict[filename].append(ref)
     click.echo(
         click.style(
             f"collected {len(ref_doc_dict.keys())} of mentioned entities from {len(files)} docs",
@@ -157,9 +160,10 @@ def mentions_to_indices(files, indices, event_title, title_xpath):  # pragma: no
 @click.command()  # pragma: no cover
 @click.option('-f', '--files', default='./editions/*.xml', show_default=True)  # pragma: no cover
 @click.option('-i', '--indices', default='./indices/list*.xml', show_default=True)  # pragma: no cover
+@click.option('-m', '--mention-xpath', default='.//tei:rs[@ref]/@ref', show_default=True)  # pragma: no cover
 @click.option('-t', '--event-title', default='erwähnt in ', show_default=True)  # pragma: no cover
 @click.option('-x', '--title-xpath', default='.//tei:title/text()', show_default=True)  # pragma: no cover
-def denormalize_indices(files, indices, event_title, title_xpath):  # pragma: no cover
+def denormalize_indices(files, indices, mention_xpath, event_title, title_xpath):  # pragma: no cover
     """Write pointers to mentions in index-docs and copy index entries into docs"""
     files = sorted(glob.glob(files))
     index_files = sorted(glob.glob(indices))
@@ -178,14 +182,16 @@ def denormalize_indices(files, indices, event_title, title_xpath):  # pragma: no
         doc_id = doc.any_xpath('./@xml:id')[0]
         doc_uri = f"{doc_base}/{doc_id}"
         doc_title = doc.any_xpath(title_xpath)[0]
-        refs = doc.any_xpath('.//tei:rs[@ref]/@ref')
+        refs = doc.any_xpath(mention_xpath)
         for ref in refs:
-            ref_doc_dict[ref[1:]].append({
+            if ref.startswith('#'):
+                ref = ref[1:]
+            ref_doc_dict[ref].append({
                 "doc_uri": doc_uri,
                 "doc_path": x,
                 "doc_title": doc_title
             })
-            doc_ref_dict[filename].append(ref[1:])
+            doc_ref_dict[filename].append(ref)
     click.echo(
         click.style(
             f"collected {len(ref_doc_dict.keys())} of mentioned entities from {len(files)} docs",
@@ -223,10 +229,14 @@ def denormalize_indices(files, indices, event_title, title_xpath):  # pragma: no
         filename = os.path.split(x)[1]
         doc = TeiEnricher(x)
         root_node = doc.any_xpath('.//tei:text')[0]
-        refs = doc.any_xpath('.//tei:rs[@ref]/@ref')
+        refs = doc.any_xpath(mention_xpath)
         ent_dict = defaultdict(list)
         for ref in refs:
-            ent_id = ref[1:]
+            # print(ref, type(ref))
+            if ref.startswith('#'):
+                ent_id = ref[1:]
+            else:
+                ent_id = ref
             try:
                 index_ent = all_ent_nodes[ent_id]
                 ent_dict[index_ent.tag].append(index_ent)
