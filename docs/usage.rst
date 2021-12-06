@@ -17,6 +17,7 @@ Write mentions as listEvents ot index-files and copy enriched index entries into
 
     denormalize-indices -f "../../xml/schnitzler/schnitzler-tagebuch-data-public/editions/*.xml" -i "../../xml/schnitzler/schnitzler-tagebuch-data-public/indices/*.xml"
     denormalize-indices -f "./data/*/*.xml" -i "./data/indices/*.xml" -m ".//*[@key]/@key" -x ".//tei:title[@level='a']/text()"
+    denormalize-indices -f "./data/*/*.xml" -i "./data/indices/*.xml" -m ".//*[@key]/@key" -x ".//tei:title[@level='a']/text()" -b pmb2121 -b pmb10815 -b pmb50
 
 
 Register handle-ids and add them as tei:idno elements::

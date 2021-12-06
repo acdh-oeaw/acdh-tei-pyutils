@@ -162,8 +162,9 @@ def mentions_to_indices(files, indices, mention_xpath, event_title, title_xpath)
 @click.option('-i', '--indices', default='./indices/list*.xml', show_default=True)  # pragma: no cover
 @click.option('-m', '--mention-xpath', default='.//tei:rs[@ref]/@ref', show_default=True)  # pragma: no cover
 @click.option('-t', '--event-title', default='erwähnt in ', show_default=True)  # pragma: no cover
-@click.option('-x', '--title-xpath', default='  ', show_default=True)  # pragma: no cover
-def denormalize_indices(files, indices, mention_xpath, event_title, title_xpath):  # pragma: no cover
+@click.option('-x', '--title-xpath', default='.//tei:title/text()', show_default=True)  # pragma: no cover
+@click.option('-b', '--blacklist-ids', default=[], multiple=True, show_default=True)  # pragma: no cover
+def denormalize_indices(files, indices, mention_xpath, event_title, title_xpath, blacklist_ids=[]):  # pragma: no cover
     """Write pointers to mentions in index-docs and copy index entries into docs"""
     files = sorted(glob.glob(files))
     index_files = sorted(glob.glob(indices))
@@ -206,6 +207,8 @@ def denormalize_indices(files, indices, mention_xpath, event_title, title_xpath)
         for ent in ent_nodes:
             ent_id = ent.xpath('@xml:id')[0]
             mention = ref_doc_dict[ent_id]
+            if ent_id in blacklist_ids:
+                continue
             event_list = doc.create_mention_list(mention, event_title=event_title)
             try:
                 list(event_list[0])
