@@ -114,7 +114,7 @@ def mentions_to_indices(files, indices, mention_xpath, event_title, title_xpath)
         doc_uri = f"{doc_base}/{doc_id}"
         doc_title = doc.any_xpath(title_xpath)[0]
         refs = doc.any_xpath(mention_xpath)
-        for ref in refs:
+        for ref in set(refs):
             if ref.startswith('#'):
                 ref = ref[1:]
             ref_doc_dict[ref].append({
@@ -162,7 +162,7 @@ def mentions_to_indices(files, indices, mention_xpath, event_title, title_xpath)
 @click.option('-i', '--indices', default='./indices/list*.xml', show_default=True)  # pragma: no cover
 @click.option('-m', '--mention-xpath', default='.//tei:rs[@ref]/@ref', show_default=True)  # pragma: no cover
 @click.option('-t', '--event-title', default='erwähnt in ', show_default=True)  # pragma: no cover
-@click.option('-x', '--title-xpath', default='.//tei:title/text()', show_default=True)  # pragma: no cover
+@click.option('-x', '--title-xpath', default='  ', show_default=True)  # pragma: no cover
 def denormalize_indices(files, indices, mention_xpath, event_title, title_xpath):  # pragma: no cover
     """Write pointers to mentions in index-docs and copy index entries into docs"""
     files = sorted(glob.glob(files))
@@ -177,13 +177,15 @@ def denormalize_indices(files, indices, mention_xpath, event_title, title_xpath)
     )
     for x in tqdm.tqdm(files):
         filename = os.path.split(x)[1]
+        if 'list' in filename:
+            continue
         doc = TeiEnricher(x)
         doc_base = doc.any_xpath('./@xml:base')[0]
         doc_id = doc.any_xpath('./@xml:id')[0]
         doc_uri = f"{doc_base}/{doc_id}"
         doc_title = doc.any_xpath(title_xpath)[0]
         refs = doc.any_xpath(mention_xpath)
-        for ref in refs:
+        for ref in set(refs):
             if ref.startswith('#'):
                 ref = ref[1:]
             ref_doc_dict[ref].append({
@@ -231,7 +233,7 @@ def denormalize_indices(files, indices, mention_xpath, event_title, title_xpath)
         root_node = doc.any_xpath('.//tei:text')[0]
         refs = doc.any_xpath(mention_xpath)
         ent_dict = defaultdict(list)
-        for ref in refs:
+        for ref in set(refs):
             # print(ref, type(ref))
             if ref.startswith('#'):
                 ent_id = ref[1:]
@@ -259,7 +261,7 @@ def denormalize_indices(files, indices, mention_xpath, event_title, title_xpath)
                 back_node.append(list_org)
                 for ent in ent_dict[key]:
                     list_org.append(ent)
-            if key.endswith('bibl'):
+            if key.startswith('bibl'):
                 list_bibl = ET.Element("{http://www.tei-c.org/ns/1.0}listBibl")
                 back_node.append(list_bibl)
                 for ent in ent_dict[key]:
