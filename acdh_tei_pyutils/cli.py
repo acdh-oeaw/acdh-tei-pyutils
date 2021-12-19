@@ -5,11 +5,15 @@ import os
 import tqdm
 from collections import defaultdict
 from lxml import etree as ET
-
 from acdh_tei_pyutils.tei import TeiEnricher
 from acdh_tei_pyutils.utils import previous_and_next
 
 from acdh_handle_pyutils.client import HandleClient
+
+NS = {
+    'tei': 'http://www.tei-c.org/ns/1.0',
+    'xml': 'http://www.w3.org/XML/1998/namespace'
+}
 
 
 @click.command()  # pragma: no cover
@@ -280,16 +284,16 @@ def denormalize_indices(files, indices, mention_xpath, event_title, title_xpath,
 
 
 @click.command()  # pragma: no cover
-@click.option('-f', '--files', default='./editions/*.xml', show_default=True)  # pragma: no cover
-@click.option('-i', '--indices', default='./indices/list*.xml', show_default=True)  # pragma: no cover
-@click.option('-t', '--doc-person', default='./indices/index_person_day.xml', show_default=True)  # pragma: no cover
-@click.option('-t', '--work-list', default='./indices/listwork.xml', show_default=True)  # pragma: no cover
-def schnitzler(files, indices, doc_person, work_list):  # pragma: no cover
+@click.option('-f', '--files', default='./data/editions/*.xml', show_default=True)  # pragma: no cover
+@click.option('-i', '--indices', default='./data/indices/list*.xml', show_default=True)  # pragma: no cover
+@click.option('-t', '--doc-person', default='./data/indices/index_person_day.xml', show_default=True)  # pragma: no cover
+@click.option('-t', '--doc-work', default='./data/indices/index_work_day.xml', show_default=True)  # pragma: no cover
+def schnitzler(files, indices, doc_person, doc_work):  # pragma: no cover
     """Console script write pointers to mentions in index-docs"""
     files = sorted(glob.glob(files))
     index_files = sorted(glob.glob(indices))
     doc_person = TeiEnricher(doc_person)
-    list_work = TeiEnricher(work_list)
+    doc_work = TeiEnricher(doc_work)
     all_ent_nodes = {}
     for x in index_files:
         doc = TeiEnricher(x)
@@ -300,23 +304,38 @@ def schnitzler(files, indices, doc_person, work_list):  # pragma: no cover
     no_matches = []
     for x in tqdm.tqdm(files, total=len(files)):
         day = x.split('/')[-1].replace('entry__', '').replace('.xml', '')
-        xpath = f".//item[@target='{day}']/ref/text()"
-        person_ids = doc_person.any_xpath(xpath)
         doc = TeiEnricher(x)
         root_node = doc.any_xpath('.//tei:text')[0]
         back_node = ET.Element("{http://www.tei-c.org/ns/1.0}back")
+        for bad in doc.any_xpath('.//tei:back'):
+            bad.getparent().remove(bad)
+
+        xpath = f".//item[@target='{day}']/ref/text()"
+        ids = doc_person.any_xpath(xpath)
         list_person_node = ET.Element("{http://www.tei-c.org/ns/1.0}listPerson")
-        if len(person_ids) > 0:
-            for pers_id in person_ids:
-                xpath = f'.//tei:person[@xml:id="{pers_id}"]'
+        if len(ids) > 0:
+            for id in ids:
                 try:
-                    pers_node = all_ent_nodes[pers_id]
+                    nodes = all_ent_nodes[id]
                 except KeyError:
-                    no_matches.append(pers_id)
+                    no_matches.append(id)
                     continue
-                list_person_node.append(pers_node)
+                list_person_node.append(nodes)
             if len(list_person_node) > 0:
                 back_node.append(list_person_node)
+        
+        ids = doc_work.any_xpath(xpath)
+        list_work_node = ET.Element("{http://www.tei-c.org/ns/1.0}listBibl")
+        if len(ids) > 0:
+            for id in ids:
+                try:
+                    nodes = all_ent_nodes[id]
+                except KeyError:
+                    no_matches.append(id)
+                    continue
+                list_work_node.append(nodes)
+            if len(list_work_node) > 0:
+                back_node.append(list_work_node)
         place_ids = doc.any_xpath('.//tei:rs[@ref and @type="place"]/@ref')
         if len(place_ids) > 0:
             list_place_node = ET.Element("{http://www.tei-c.org/ns/1.0}listPlace")
@@ -329,20 +348,6 @@ def schnitzler(files, indices, doc_person, work_list):  # pragma: no cover
                 list_place_node.append(pl_node)
             if len(list_place_node) > 0:
                 back_node.append(list_place_node)
-        work_matches = list_work.any_xpath(f".//tei:body//*[@when='{day}']/parent::*")
-        if len(work_matches) > 0:
-            list_bibl_node = ET.Element("{http://www.tei-c.org/ns/1.0}listBibl")
-            for work in work_matches:
-                title_node = work.xpath('./*[@key]')[0]
-                title_text = title_node.text
-                title_id = title_node.xpath('@key')[0]
-                bibl_node = ET.Element("{http://www.tei-c.org/ns/1.0}bibl")
-                title_node = ET.Element("{http://www.tei-c.org/ns/1.0}title")
-                title_node.text = title_text
-                bibl_node.set('{http://www.w3.org/XML/1998/namespace}id', title_id)
-                bibl_node.append(title_node)
-                list_bibl_node.append(bibl_node)
-            back_node.append(list_bibl_node)
         if len(back_node) > 0:
             root_node.append(back_node)
             doc.tree_to_file(file=x)
