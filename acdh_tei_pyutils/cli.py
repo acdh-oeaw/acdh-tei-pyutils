@@ -235,46 +235,49 @@ def denormalize_indices(files, indices, mention_xpath, event_title, title_xpath,
         )
     )
     for x in tqdm.tqdm(files):
-        filename = os.path.split(x)[1]
-        doc = TeiEnricher(x)
-        root_node = doc.any_xpath('.//tei:text')[0]
-        refs = doc.any_xpath(mention_xpath)
-        ent_dict = defaultdict(list)
-        for ref in set(refs):
-            # print(ref, type(ref))
-            if ref.startswith('#'):
-                ent_id = ref[1:]
-            else:
-                ent_id = ref
-            try:
-                index_ent = all_ent_nodes[ent_id]
-                ent_dict[index_ent.tag].append(index_ent)
-            except KeyError:
-                continue
-        back_node = ET.Element("{http://www.tei-c.org/ns/1.0}back")
-        for key in ent_dict.keys():
-            if key.endswith('person'):
-                list_person = ET.Element("{http://www.tei-c.org/ns/1.0}listPerson")
-                back_node.append(list_person)
-                for ent in ent_dict[key]:
-                    list_person.append(ent)
-            if key.endswith('place'):
-                list_place = ET.Element("{http://www.tei-c.org/ns/1.0}listPlace")
-                back_node.append(list_place)
-                for ent in ent_dict[key]:
-                    list_place.append(ent)
-            if key.endswith('org'):
-                list_org = ET.Element("{http://www.tei-c.org/ns/1.0}listOrg")
-                back_node.append(list_org)
-                for ent in ent_dict[key]:
-                    list_org.append(ent)
-            if key.startswith('bibl'):
-                list_bibl = ET.Element("{http://www.tei-c.org/ns/1.0}listBibl")
-                back_node.append(list_bibl)
-                for ent in ent_dict[key]:
-                    list_bibl.append(ent)
-        root_node.append(back_node)
-        doc.tree_to_file(file=x)
+        try:
+            filename = os.path.split(x)[1]
+            doc = TeiEnricher(x)
+            root_node = doc.any_xpath('.//tei:text')[0]
+            refs = doc.any_xpath(mention_xpath)
+            ent_dict = defaultdict(list)
+            for ref in set(refs):
+                # print(ref, type(ref))
+                if ref.startswith('#'):
+                    ent_id = ref[1:]
+                else:
+                    ent_id = ref
+                try:
+                    index_ent = all_ent_nodes[ent_id]
+                    ent_dict[index_ent.tag].append(index_ent)
+                except KeyError:
+                    continue
+            back_node = ET.Element("{http://www.tei-c.org/ns/1.0}back")
+            for key in ent_dict.keys():
+                if key.endswith('person'):
+                    list_person = ET.Element("{http://www.tei-c.org/ns/1.0}listPerson")
+                    back_node.append(list_person)
+                    for ent in ent_dict[key]:
+                        list_person.append(ent)
+                if key.endswith('place'):
+                    list_place = ET.Element("{http://www.tei-c.org/ns/1.0}listPlace")
+                    back_node.append(list_place)
+                    for ent in ent_dict[key]:
+                        list_place.append(ent)
+                if key.endswith('org'):
+                    list_org = ET.Element("{http://www.tei-c.org/ns/1.0}listOrg")
+                    back_node.append(list_org)
+                    for ent in ent_dict[key]:
+                        list_org.append(ent)
+                if key.startswith('bibl'):
+                    list_bibl = ET.Element("{http://www.tei-c.org/ns/1.0}listBibl")
+                    back_node.append(list_bibl)
+                    for ent in ent_dict[key]:
+                        list_bibl.append(ent)
+            root_node.append(back_node)
+            doc.tree_to_file(file=x)
+        except Exception as e:
+            print(f"failed to process {x} due to {e}")
     click.echo(
         click.style(
             "DONE",
