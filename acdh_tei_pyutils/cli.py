@@ -269,7 +269,7 @@ def denormalize_indices(files, indices, mention_xpath, event_title, title_xpath,
                     back_node.append(list_org)
                     for ent in ent_dict[key]:
                         list_org.append(ent)
-                if key.startswith('bibl'):
+                if key.endswith('bibl'):
                     list_bibl = ET.Element("{http://www.tei-c.org/ns/1.0}listBibl")
                     back_node.append(list_bibl)
                     for ent in ent_dict[key]:
