@@ -76,6 +76,6 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     url='https://github.com/csae8092/acdh-tei-pyutils',
-    version='version='0.23.0'',
+    version='version='0.24.0'',
     zip_safe=False,
 )
