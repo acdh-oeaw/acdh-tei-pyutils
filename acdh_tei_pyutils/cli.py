@@ -239,6 +239,8 @@ def denormalize_indices(files, indices, mention_xpath, event_title, title_xpath,
             filename = os.path.split(x)[1]
             doc = TeiEnricher(x)
             root_node = doc.any_xpath('.//tei:text')[0]
+            for bad in doc.any_xpath('.//tei:back'):
+                bad.getparent().remove(bad)
             refs = doc.any_xpath(mention_xpath)
             ent_dict = defaultdict(list)
             for ref in set(refs):
@@ -269,7 +271,7 @@ def denormalize_indices(files, indices, mention_xpath, event_title, title_xpath,
                     back_node.append(list_org)
                     for ent in ent_dict[key]:
                         list_org.append(ent)
-                if key.endswith('bibl'):
+                if key.endswith('bibl') or key.endswith('biblStruct'):
                     list_bibl = ET.Element("{http://www.tei-c.org/ns/1.0}listBibl")
                     back_node.append(list_bibl)
                     for ent in ent_dict[key]:
