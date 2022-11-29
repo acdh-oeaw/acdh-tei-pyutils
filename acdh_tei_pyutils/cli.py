@@ -191,8 +191,18 @@ def denormalize_indices(files, indices, mention_xpath, event_title, title_xpath,
         doc_title = doc.any_xpath(title_xpath)[0]
         refs = doc.any_xpath(mention_xpath)
         for ref in set(refs):
-            if ref.startswith('#'):
+            if ref.startswith('#') and len(ref.split(' ')) == 1:
                 ref = ref[1:]
+            if ref.startswith('#') and len(ref.split(' ')) > 1:
+                refs = ref.split(' ')
+                ref = refs[0]
+                ref = ref[1:]
+                for r in refs[1:]:
+                    ref_doc_dict[r[1:]].append({
+                        "doc_uri": doc_uri,
+                        "doc_path": x,
+                        "doc_title": doc_title
+                    })
             ref_doc_dict[ref].append({
                 "doc_uri": doc_uri,
                 "doc_path": x,
@@ -245,8 +255,18 @@ def denormalize_indices(files, indices, mention_xpath, event_title, title_xpath,
             ent_dict = defaultdict(list)
             for ref in set(refs):
                 # print(ref, type(ref))
-                if ref.startswith('#'):
+                if ref.startswith('#') and len(ref.split(' ')) == 1:
                     ent_id = ref[1:]
+                elif ref.startswith('#') and len(ref.split(' ')) > 1:
+                    refs = ref.split(' ')
+                    ref = refs[0]
+                    ent_id = ref[1:]
+                    for r in refs[1:]:
+                        try:
+                            index_ent = all_ent_nodes[r[1:]]
+                            ent_dict[index_ent.tag].append(index_ent)
+                        except KeyError:
+                            continue
                 else:
                     ent_id = ref
                 try:
