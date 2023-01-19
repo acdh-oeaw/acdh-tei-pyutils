@@ -297,10 +297,15 @@ def denormalize_indices(files, indices, mention_xpath, event_title, title_xpath,
                     for ent in ent_dict[key]:
                         list_bibl.append(ent)
                 if key.endswith('item'):
-                    list_bibl = ET.Element("{http://www.tei-c.org/ns/1.0}list")
-                    back_node.append(list_bibl)
+                    list_item = ET.Element("{http://www.tei-c.org/ns/1.0}list")
+                    back_node.append(list_item)
                     for ent in ent_dict[key]:
-                        list_bibl.append(ent)
+                        list_item.append(ent)
+                if key.endswith('event'):
+                    list_eve = ET.Element("{http://www.tei-c.org/ns/1.0}listEvent")
+                    back_node.append(list_eve)
+                    for ent in ent_dict[key]:
+                        list_eve.append(ent)
             root_node.append(back_node)
             doc.tree_to_file(file=x)
         except Exception as e:
