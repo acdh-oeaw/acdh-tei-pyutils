@@ -41,8 +41,8 @@ test_requirements = [
 ]
 
 setup(
-    author="Peter Andorfer",
-    author_email="peter.andorfer@oeaw.ac.at",
+    author="Peter Andorfer, Daniel Stoxreiter",
+    author_email="peter.andorfer@oeaw.ac.at daniel@stoxreiter@oeaw.ac.at",
     python_requires=">=3.7",
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",
@@ -76,7 +76,7 @@ setup(
     setup_requires=setup_requirements,
     test_suite="tests",
     tests_require=test_requirements,
-    url="https://github.com/csae8092/acdh-tei-pyutils",
+    url="https://github.com/acdh-oeaw/acdh-tei-pyutils",
     version="v0.28",
     zip_safe=False,
 )
