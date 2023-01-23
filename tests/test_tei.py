@@ -6,7 +6,7 @@ import glob
 import unittest
 
 from acdh_tei_pyutils.tei import NER_TAG_MAP, TeiReader, TeiEnricher, HandleAlreadyExist
-from acdh_tei_pyutils.utils import normalize_string
+from acdh_tei_pyutils.utils import normalize_string, make_entity_label
 
 
 FILES = sorted(glob.glob("./acdh_tei_pyutils/files/*.xml", recursive=False))
@@ -108,10 +108,51 @@ class TestTEIReader(unittest.TestCase):
         ent_list = doc.get_elements()
         self.assertFalse("{http://www.tei-c.org/ns/1.0}unclear" in ent_list)
 
-    def test_005_normalize_string(self):
+    def test_007_normalize_string(self):
         string = """\n\nhallo
 mein schatz ich liebe    dich
     du bist         die einzige für mich
         """
         normalized = normalize_string(string)
         self.assertTrue("\n" not in normalized)
+
+    def test_008_make_pers_name_labels(self):
+        test_names = """
+<TEI xmlns="http://www.tei-c.org/ns/1.0" >
+    <back>
+        <persName>
+            <forename>Johann</forename>
+            <surname>Thayer</surname>
+        </persName>
+        <orgName>orgName</orgName>
+        <placeName>PlaceName</placeName>
+        <persName>
+            <forename>Josef</forename>
+            <forename type="taken" subtype="later">Karl</forename>
+            <surname>Crcil</surname>
+            <surname type="taken" subtype="later">Graf</surname>
+        </persName>
+        <persName></persName>
+        <persName>
+            <forename>NurVorname</forename>
+        </persName>
+        <persName>
+            <surname>NurNachname</surname>
+            <forename></forename>
+        </persName>
+    </back>
+</TEI>
+"""
+        labels = [
+            "Thayer, Johann",
+            "orgName",
+            "PlaceName",
+            "Crcil, Josef Karl",
+            "no label provided",
+            "NurVorname",
+            "NurNachname",
+        ]
+        doc = TeiReader(test_names)
+        for i, x in enumerate(doc.any_xpath(".//tei:back/*")):
+            label = make_entity_label(x)
+            self.assertEqual(label, labels[i])

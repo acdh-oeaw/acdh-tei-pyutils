@@ -1,3 +1,4 @@
+import lxml.etree as ET
 from itertools import tee, islice, chain
 
 
@@ -11,3 +12,22 @@ def previous_and_next(some_iterable):
 
 def normalize_string(string: str) -> str:
     return " ".join(" ".join(string.split()).split())
+
+
+def make_entity_label(pers_name: ET.Element, default_msg="no label provided") -> str:
+    """extracts labels from tei:persName|placeName|orgName"""
+    nsmap = {'tei': "http://www.tei-c.org/ns/1.0"}
+    fornames = [normalize_string(x) for x in pers_name.xpath('.//tei:forename//text()', namespaces=nsmap)]
+    surnames = [normalize_string(x) for x in pers_name.xpath('.//tei:surname//text()', namespaces=nsmap)]
+    if len(surnames) > 0 and len(fornames) > 0:
+        label = f"{surnames[0]}, {' '.join(fornames)}"
+    elif len(surnames) == 0 and len(fornames) > 0:
+        label = f"{' '.join(fornames)}"
+    elif len(surnames) > 0 and len(fornames) == 0:
+        label = f"{surnames[0]}"
+    else:
+        pers_name_text = " ".join(pers_name.xpath('.//text()', namespaces=nsmap))
+        label = normalize_string(pers_name_text)
+    if label is None or label == "":
+        label = default_msg
+    return label
