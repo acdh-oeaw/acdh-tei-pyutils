@@ -6,7 +6,7 @@ import glob
 import unittest
 
 from acdh_tei_pyutils.tei import NER_TAG_MAP, TeiReader, TeiEnricher, HandleAlreadyExist
-# from acdh_tei_pyutils.utils import previous_and_next
+from acdh_tei_pyutils.utils import normalize_string
 
 
 FILES = sorted(glob.glob("./acdh_tei_pyutils/files/*.xml", recursive=False))
@@ -107,3 +107,11 @@ class TestTEIReader(unittest.TestCase):
         doc = TeiReader(xml=FILES[0], xsl=XSL)
         ent_list = doc.get_elements()
         self.assertFalse("{http://www.tei-c.org/ns/1.0}unclear" in ent_list)
+
+    def test_005_normalize_string(self):
+        string = """\n\nhallo
+mein schatz ich liebe    dich
+    du bist         die einzige für mich
+        """
+        normalized = normalize_string(string)
+        self.assertTrue("\n" not in normalized)
