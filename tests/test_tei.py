@@ -6,7 +6,7 @@ import glob
 import unittest
 
 from acdh_tei_pyutils.tei import NER_TAG_MAP, TeiReader, TeiEnricher, HandleAlreadyExist
-from acdh_tei_pyutils.utils import normalize_string, make_pers_name_label
+from acdh_tei_pyutils.utils import normalize_string, make_entity_label
 
 
 FILES = sorted(glob.glob("./acdh_tei_pyutils/files/*.xml", recursive=False))
@@ -117,8 +117,42 @@ mein schatz ich liebe    dich
         self.assertTrue("\n" not in normalized)
 
     def test_008_make_pers_name_labels(self):
-        labels = ['Thayer, Johann', 'Crcil, Josef Karl', '', 'NurVorname', 'NurNachname']
-        doc = TeiReader('./acdh_tei_pyutils/files/tei.xml')
-        for i, x in enumerate(doc.any_xpath('.//tei:back//tei:persName')):
-            label = make_pers_name_label(x)
+        test_names = """
+<TEI xmlns="http://www.tei-c.org/ns/1.0" >
+    <back>
+        <persName>
+            <forename>Johann</forename>
+            <surname>Thayer</surname>
+        </persName>
+        <orgName>orgName</orgName>
+        <placeName>PlaceName</placeName>
+        <persName>
+            <forename>Josef</forename>
+            <forename type="taken" subtype="later">Karl</forename>
+            <surname>Crcil</surname>
+            <surname type="taken" subtype="later">Graf</surname>
+        </persName>
+        <persName></persName>
+        <persName>
+            <forename>NurVorname</forename>
+        </persName>
+        <persName>
+            <surname>NurNachname</surname>
+            <forename></forename>
+        </persName>
+    </back>
+</TEI>
+"""
+        labels = [
+            "Thayer, Johann",
+            "orgName",
+            "PlaceName",
+            "Crcil, Josef Karl",
+            "no label provided",
+            "NurVorname",
+            "NurNachname",
+        ]
+        doc = TeiReader(test_names)
+        for i, x in enumerate(doc.any_xpath(".//tei:back/*")):
+            label = make_entity_label(x)
             self.assertEqual(label, labels[i])

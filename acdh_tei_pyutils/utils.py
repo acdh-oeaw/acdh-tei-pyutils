@@ -14,8 +14,8 @@ def normalize_string(string: str) -> str:
     return " ".join(" ".join(string.split()).split())
 
 
-def make_pers_name_label(pers_name: ET.Element) -> str:
-    """extracts tei:forename and tei:surname elements from tei:persName and returns a label"""
+def make_entity_label(pers_name: ET.Element, default_msg="no label provided") -> str:
+    """extracts labels from tei:persName|placeName|orgName"""
     nsmap = {'tei': "http://www.tei-c.org/ns/1.0"}
     fornames = [normalize_string(x) for x in pers_name.xpath('.//tei:forename//text()', namespaces=nsmap)]
     surnames = [normalize_string(x) for x in pers_name.xpath('.//tei:surname//text()', namespaces=nsmap)]
@@ -28,6 +28,6 @@ def make_pers_name_label(pers_name: ET.Element) -> str:
     else:
         pers_name_text = " ".join(pers_name.xpath('.//text()', namespaces=nsmap))
         label = normalize_string(pers_name_text)
-    if label is None:
-        label = ""
+    if label is None or label == "":
+        label = default_msg
     return label
