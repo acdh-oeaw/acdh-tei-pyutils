@@ -10,7 +10,7 @@ Utilty functions to work with TEI Documents
 
 run `pip install acdh-tei-pyutils`
 
-## Usage
+## usage
 
 parse an XML/TEI Document from and URL, string or file:
 
