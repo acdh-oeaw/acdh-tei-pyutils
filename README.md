@@ -62,3 +62,9 @@ Register handle-ids and add them as tei:idno elements:
 ```bash
 add-handles -g "../../xml/grundbuecher/gb-data/data/editions/*.xml" -user "user12.3456-01" -pw "verysecret" -hixpath ".//tei:publicationStmt"
 ```
+
+## develop
+
+* install dev-dependencies: `pip install -r requirements_dev.txt`
+* install local package `pip install -e .`
+* before commiting run `flake8` to check linting and `coverage run -m pytest -v` to run the tests
