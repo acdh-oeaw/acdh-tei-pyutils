@@ -23,22 +23,14 @@ def walker(base, *paths):
     return list(file_list)
 
 
-with open("README.rst") as readme_file:
+with open("README.md") as readme_file:
     readme = readme_file.read()
-
-with open("CHANGELOG.rst") as history_file:
-    history = history_file.read()
 
 with open("requirements.txt") as f:
     requirements = f.read().splitlines()
 
-setup_requirements = [
-    "pytest-runner",
-]
-
-test_requirements = [
-    "pytest>=3",
-]
+with open("requirements_dev.txt") as f:
+    dev_requirements = f.read().splitlines()
 
 setup(
     author="Peter Andorfer, Daniel Stoxreiter",
@@ -65,7 +57,8 @@ setup(
     },
     install_requires=requirements,
     license="MIT",
-    long_description=readme + "\n\n" + history,
+    long_description=readme,
+    long_description_content_type="text/markdown",
     include_package_data=True,
     keywords="acdh-tei-pyutils",
     name="acdh-tei-pyutils",
@@ -73,9 +66,9 @@ setup(
     package_data={
         module.__name__: walker(os.path.dirname(module.__file__), "files"),
     },
-    setup_requires=setup_requirements,
+    setup_requires=dev_requirements,
     test_suite="tests",
-    tests_require=test_requirements,
+    tests_require=dev_requirements,
     url="https://github.com/acdh-oeaw/acdh-tei-pyutils",
     version="v0.28",
     zip_safe=False,

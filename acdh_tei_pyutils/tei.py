@@ -59,7 +59,7 @@ class TeiReader(XMLReader):
         for x in ne_elements:
             item = {}
             text = "".join(x.xpath('.//text()'))
-            item['text'] = re.sub('\s+', ' ', text).strip()
+            item['text'] = re.sub(r'\s+', ' ', text).strip()
             try:
                 ne_type = NER_TAG_MAP.get("{}".format(x.xpath('./@type')[0]), 'MISC')
             except IndexError:
@@ -76,7 +76,7 @@ class TeiReader(XMLReader):
         an element which text nodes should be extracted
         :return: A normalized, cleaned plain text
         """
-        result = re.sub('\s+', ' ', "".join(node.xpath(".//text()"))).strip()
+        result = re.sub(r'\s+', ' ', "".join(node.xpath(".//text()"))).strip()
 
         return result
 
