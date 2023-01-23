@@ -34,7 +34,7 @@ with open("requirements_dev.txt") as f:
 
 setup(
     author="Peter Andorfer, Daniel Stoxreiter",
-    author_email="peter.andorfer@oeaw.ac.at daniel@stoxreiter@oeaw.ac.at",
+    author_email="peter.andorfer@oeaw.ac.at",
     python_requires=">=3.7",
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",
