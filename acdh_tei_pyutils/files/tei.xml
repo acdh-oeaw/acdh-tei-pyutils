@@ -78,4 +78,27 @@
             </div>
         </body>
     </text>
+    <back>
+        <listPerson>
+            <person xml:id="per_123">
+                <persName>
+                    <forename>Johann</forename>
+                    <surname>Thayer</surname>
+                </persName>
+                <persName>
+                    <forename>Josef</forename>
+                    <forename type="taken" subtype="later">Karl</forename>
+                    <surname>Crcil</surname>
+                    <surname type="taken" subtype="later">Graf</surname>
+                </persName>
+                <persName></persName>
+                <persName>
+                    <forename>NurVorname</forename>
+                </persName>
+                <persName>
+                    <surname>NurNachname</surname>
+                </persName>
+            </person>
+        </listPerson>
+    </back>
 </TEI>
