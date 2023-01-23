@@ -1,6 +1,11 @@
 import lxml.etree as ET
 from itertools import tee, islice, chain
 
+nsmap = {
+    "tei": "http://www.tei-c.org/ns/1.0",
+    "xml": "http://www.w3.org/XML/1998/namespace",
+}
+
 
 def previous_and_next(some_iterable):
     """taken from https://stackoverflow.com/a/1012089"""
@@ -14,11 +19,20 @@ def normalize_string(string: str) -> str:
     return " ".join(" ".join(string.split()).split())
 
 
-def make_entity_label(pers_name: ET.Element, default_msg="no label provided") -> str:
+def make_entity_label(
+    name_node: ET.Element, default_msg="no label provided", default_lang="en"
+) -> tuple[str, str]:
     """extracts labels from tei:persName|placeName|orgName"""
-    nsmap = {'tei': "http://www.tei-c.org/ns/1.0"}
-    fornames = [normalize_string(x) for x in pers_name.xpath('.//tei:forename//text()', namespaces=nsmap)]
-    surnames = [normalize_string(x) for x in pers_name.xpath('.//tei:surname//text()', namespaces=nsmap)]
+
+    lang_tag = name_node.get("{http://www.w3.org/XML/1998/namespace}lang", default_lang)
+    fornames = [
+        normalize_string(x)
+        for x in name_node.xpath(".//tei:forename//text()", namespaces=nsmap)
+    ]
+    surnames = [
+        normalize_string(x)
+        for x in name_node.xpath(".//tei:surname//text()", namespaces=nsmap)
+    ]
     if len(surnames) > 0 and len(fornames) > 0:
         label = f"{surnames[0]}, {' '.join(fornames)}"
     elif len(surnames) == 0 and len(fornames) > 0:
@@ -26,8 +40,8 @@ def make_entity_label(pers_name: ET.Element, default_msg="no label provided") ->
     elif len(surnames) > 0 and len(fornames) == 0:
         label = f"{surnames[0]}"
     else:
-        pers_name_text = " ".join(pers_name.xpath('.//text()', namespaces=nsmap))
-        label = normalize_string(pers_name_text)
+        name_node_text = " ".join(name_node.xpath(".//text()", namespaces=nsmap))
+        label = normalize_string(name_node_text)
     if label is None or label == "":
         label = default_msg
-    return label
+    return label, lang_tag

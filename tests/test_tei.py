@@ -136,7 +136,7 @@ mein schatz ich liebe    dich
         <persName>
             <forename>NurVorname</forename>
         </persName>
-        <persName>
+        <persName xml:lang="de">
             <surname>NurNachname</surname>
             <forename></forename>
         </persName>
@@ -154,5 +154,6 @@ mein schatz ich liebe    dich
         ]
         doc = TeiReader(test_names)
         for i, x in enumerate(doc.any_xpath(".//tei:back/*")):
-            label = make_entity_label(x)
+            label, lang = make_entity_label(x, default_lang="en")
             self.assertEqual(label, labels[i])
+        self.assertEqual(lang, "de")
