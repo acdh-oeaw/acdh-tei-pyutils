@@ -9,17 +9,17 @@ from acdh_tei_pyutils.tei import NER_TAG_MAP, TeiReader, TeiEnricher, HandleAlre
 # from acdh_tei_pyutils.utils import previous_and_next
 
 
-FILES = glob.glob("./acdh_tei_pyutils/files/*.xml", recursive=False)
+FILES = sorted(glob.glob("./acdh_tei_pyutils/files/*.xml", recursive=False))
 
 XSL = glob.glob("./acdh_tei_pyutils/files/*.xsl", recursive=False)[0]
 
 IDS_AND_SO = [
     ["base_value", "id_value", "prev_value", "next_value"],
+    [None, None, None, None],
     ["base_value", "id_value", None, None],
     ["base_value/", "id_value", "prev_value", "next_value"],
-    [None, None, None, None],
 ]
-FULL_IDS = ["base_value/id_value", "base_value/id_value", "base_value/id_value", None]
+FULL_IDS = ["base_value/id_value", None, "base_value/id_value", "base_value/id_value"]
 
 
 class TestTeiEnricher(unittest.TestCase):
