@@ -186,16 +186,19 @@ def mentions_to_indices(
     "-m", "--mention-xpath", default=".//tei:rs[@ref]/@ref", show_default=True
 )  # pragma: no cover
 @click.option(
-    "-t", "--event-title", default="erwähnt in ", show_default=True
+    "-x", "--title-xpath", default=".//tei:title/text()", show_default=True
 )  # pragma: no cover
 @click.option(
-    "-x", "--title-xpath", default=".//tei:title/text()", show_default=True
+    "-xs", "--title-sec-xpath", default=".//tei:title/text()", show_default=True
+)  # pragma: no cover
+@click.option(
+    "-d", "--date-xpath", default=".//tei:sourceDesc//tei:date/@when", show_default=True
 )  # pragma: no cover
 @click.option(
     "-b", "--blacklist-ids", default=[], multiple=True, show_default=True
 )  # pragma: no cover
 def denormalize_indices(
-    files, indices, mention_xpath, event_title, title_xpath, blacklist_ids=[]
+    files, indices, mention_xpath, title_xpath, title_sec_xpath, date_xpath, blacklist_ids=[]
 ):  # pragma: no cover
     """Write pointers to mentions in index-docs and copy index entries into docs"""
     files = sorted(glob.glob(files))
@@ -214,6 +217,8 @@ def denormalize_indices(
         doc_id = doc.any_xpath("./@xml:id")[0]
         doc_uri = f"{doc_base}/{doc_id}"
         doc_title = doc.any_xpath(title_xpath)[0]
+        doc_title_sec = doc.any_xpath(title_sec_xpath)[0]
+        doc_date = doc.any_xpath(date_xpath)[0]
         refs = doc.any_xpath(mention_xpath)
         for ref in set(refs):
             if ref.startswith("#") and len(ref.split(" ")) == 1:
@@ -224,10 +229,24 @@ def denormalize_indices(
                 ref = ref[1:]
                 for r in refs[1:]:
                     ref_doc_dict[r[1:]].append(
-                        {"doc_uri": doc_uri, "doc_path": x, "doc_title": doc_title}
+                        {
+                            "doc_uri": doc_uri,
+                            "doc_id": doc_id,
+                            "doc_path": x,
+                            "doc_title": doc_title,
+                            "doc_title_sec": doc_title_sec,
+                            "doc_date": doc_date
+                        }
                     )
             ref_doc_dict[ref].append(
-                {"doc_uri": doc_uri, "doc_path": x, "doc_title": doc_title}
+                {
+                    "doc_uri": doc_uri,
+                    "doc_id": doc_id,
+                    "doc_path": x,
+                    "doc_title": doc_title,
+                    "doc_title_sec": doc_title_sec,
+                    "doc_date": doc_date
+                }
             )
             doc_ref_dict[filename].append(ref)
     click.echo(
@@ -244,7 +263,7 @@ def denormalize_indices(
             mention = ref_doc_dict[ent_id]
             if ent_id in blacklist_ids:
                 continue
-            event_list = doc.create_mention_list(mention, event_title=event_title)
+            event_list = doc.create_mention_list(mention)
             try:
                 list(event_list[0])
                 ent.append(event_list)
