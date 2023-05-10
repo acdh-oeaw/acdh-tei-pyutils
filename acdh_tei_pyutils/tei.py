@@ -243,33 +243,22 @@ class TeiEnricher(TeiReader):
             insert_node.append(idno_node)
             return idno_node
 
-    def create_mention_list(self, mentions, event_title="erwähnt in"):
-        """ creates a tei elemen with list of mentions
+    def create_mention_list(self, mentions):
+        """ creates a tei element with notes of mentions
 
-        :param mentions: a list of dicts with keys `doc_uri` and `doc_title`
-        :type mentions: list
-
-        :param event_title: short description of the event, defaults to "erwähnt in"
-        :type event_title: str
+        :param mentions: a list of dicts with keys `doc_id` and `doc_title`
+        :type mentions: noteGrp
 
         :return: a etree.element
         """
         tei_ns = f"{self.ns_tei['tei']}"
-        node_root = ET.Element(f"{{{tei_ns}}}listEvent")
+        node_root = ET.Element(f"{{{tei_ns}}}noteGrp")
         for x in mentions:
-            event_node = ET.Element(f"{{{tei_ns}}}event")
-            event_node.set('type', 'mentioned')
-            event_p_node = ET.Element(f"{{{tei_ns}}}p")
-            event_p_node.text = event_title
-            title_node = ET.Element(f"{{{tei_ns}}}title")
-            title_node.text = x['doc_title']
-            event_p_node.append(title_node)
-            event_node.append(event_p_node)
-            lnkgrp_node = ET.Element(f"{{{tei_ns}}}linkGrp")
-            lnk_node = ET.Element(f"{{{tei_ns}}}link")
-            lnk_node.set('type', 'ARCHE')
-            lnk_node.set('target', x['doc_uri'])
-            lnkgrp_node.append(lnk_node)
-            event_node.append(lnkgrp_node)
-            node_root.append(event_node)
+            note = ET.Element(f"{{{tei_ns}}}note")
+            note.attrib['target'] = x['doc_id']
+            if len(x['doc_date']) > 0:
+                note.attrib['corresp'] = x['doc_date']
+            note.attrib['type'] = "mentions"
+            note.text = f"{x['doc_title']} {x['doc_title_sec']}"
+            node_root.append(note)
         return node_root
