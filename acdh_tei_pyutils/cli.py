@@ -189,10 +189,10 @@ def mentions_to_indices(
     "-x", "--title-xpath", default=".//tei:title/text()", show_default=True
 )  # pragma: no cover
 @click.option(
-    "-xs", "--title-sec-xpath", default=".//tei:title/text()", show_default=True
+    "-xs", "--title-sec-xpath", required=False
 )  # pragma: no cover
 @click.option(
-    "-d", "--date-xpath", default=".//tei:sourceDesc//tei:date/@when", show_default=True
+    "-d", "--date-xpath", required=False
 )  # pragma: no cover
 @click.option(
     "-b", "--blacklist-ids", default=[], multiple=True, show_default=True
@@ -216,9 +216,27 @@ def denormalize_indices(
         doc_base = doc.any_xpath("./@xml:base")[0]
         doc_id = doc.any_xpath("./@xml:id")[0]
         doc_uri = f"{doc_base}/{doc_id}"
-        doc_title = doc.any_xpath(title_xpath)[0]
-        doc_title_sec = doc.any_xpath(title_sec_xpath)[0]
-        doc_date = doc.any_xpath(date_xpath)[0]
+        try:
+            doc_title = doc.any_xpath(title_xpath)[0]
+        except IndexError:
+            doc_title = f"ERROR in title xpath of file: {doc_id}"
+            print(f"ERROR in title xpath of file: {doc_id}")
+        if title_sec_xpath:
+            try:
+                doc_title_sec = doc.any_xpath(title_sec_xpath)[0]
+            except IndexError:
+                doc_title_sec = f"ERROR in secondary title xpath of file: {doc_id}"
+                print(f"ERROR in secondary title xpath of file: {doc_id}")
+        else:
+            doc_title_sec = None
+        if date_xpath:
+            try:
+                doc_date = doc.any_xpath(date_xpath)[0]
+            except IndexError:
+                doc_date = f"ERROR in date xpath of file: {doc_id}"
+                print(f"ERROR in date xpath of file: {doc_id}")
+        else:
+            doc_date = None
         refs = doc.any_xpath(mention_xpath)
         for ref in set(refs):
             if ref.startswith("#") and len(ref.split(" ")) == 1:

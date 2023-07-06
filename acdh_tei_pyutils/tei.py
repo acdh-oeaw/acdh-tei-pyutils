@@ -256,9 +256,12 @@ class TeiEnricher(TeiReader):
         for x in mentions:
             note = ET.Element(f"{{{tei_ns}}}note")
             note.attrib['target'] = x['doc_id']
-            if len(x['doc_date']) > 0:
-                note.attrib['corresp'] = x['doc_date']
             note.attrib['type'] = "mentions"
-            note.text = f"{x['doc_title']} {x['doc_title_sec']}"
+            if x['doc_date'] is not None:
+                note.attrib['corresp'] = x['doc_date']
+            if x['doc_title_sec'] is not None:
+                note.text = f"{x['doc_title']} {x['doc_title_sec']}"
+            else:
+                note.text = x['doc_title']
             node_root.append(note)
         return node_root
