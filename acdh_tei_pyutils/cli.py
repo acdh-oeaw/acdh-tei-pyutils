@@ -219,19 +219,22 @@ def denormalize_indices(
         try:
             doc_title = doc.any_xpath(title_xpath)[0]
         except IndexError:
-            doc_title = None
+            doc_title = f"ERROR in title xpath of file: {doc_id}"
+            print(f"ERROR in title xpath of file: {doc_id}")
         if title_sec_xpath:
             try:
                 doc_title_sec = doc.any_xpath(title_sec_xpath)[0]
             except IndexError:
-                doc_title_sec = None
+                doc_title_sec = f"ERROR in secondary title xpath of file: {doc_id}"
+                print(f"ERROR in secondary title xpath of file: {doc_id}")
         else:
             doc_title_sec = None
         if date_xpath:
             try:
                 doc_date = doc.any_xpath(date_xpath)[0]
             except IndexError:
-                doc_date = None
+                doc_date = f"ERROR in date xpath of file: {doc_id}"
+                print(f"ERROR in date xpath of file: {doc_id}")
         else:
             doc_date = None
         refs = doc.any_xpath(mention_xpath)
