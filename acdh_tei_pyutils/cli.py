@@ -188,17 +188,19 @@ def mentions_to_indices(
 @click.option(
     "-x", "--title-xpath", default=".//tei:title/text()", show_default=True
 )  # pragma: no cover
-@click.option(
-    "-xs", "--title-sec-xpath", required=False
-)  # pragma: no cover
-@click.option(
-    "-d", "--date-xpath", required=False
-)  # pragma: no cover
+@click.option("-xs", "--title-sec-xpath", required=False)  # pragma: no cover
+@click.option("-d", "--date-xpath", required=False)  # pragma: no cover
 @click.option(
     "-b", "--blacklist-ids", default=[], multiple=True, show_default=True
 )  # pragma: no cover
 def denormalize_indices(
-    files, indices, mention_xpath, title_xpath, title_sec_xpath, date_xpath, blacklist_ids=[]
+    files,
+    indices,
+    mention_xpath,
+    title_xpath,
+    title_sec_xpath,
+    date_xpath,
+    blacklist_ids=[],
 ):  # pragma: no cover
     """Write pointers to mentions in index-docs and copy index entries into docs"""
     files = sorted(glob.glob(files))
@@ -253,7 +255,7 @@ def denormalize_indices(
                             "doc_path": x,
                             "doc_title": doc_title,
                             "doc_title_sec": doc_title_sec,
-                            "doc_date": doc_date
+                            "doc_date": doc_date,
                         }
                     )
             ref_doc_dict[ref].append(
@@ -263,7 +265,7 @@ def denormalize_indices(
                     "doc_path": x,
                     "doc_title": doc_title,
                     "doc_title_sec": doc_title_sec,
-                    "doc_date": doc_date
+                    "doc_date": doc_date,
                 }
             )
             doc_ref_dict[filename].append(ref)
