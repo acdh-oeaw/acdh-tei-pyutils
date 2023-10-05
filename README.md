@@ -49,7 +49,7 @@ Write mentions as listEvents into index-files:
 mentions-to-indices -t "erwähnt in " -i "/path/to/your/xmls/indices/*.xml" -f "/path/to/your/xmls/editions/*.xml"
 ```
 
-Write mentions as listEvents ot index-files and copy enriched index entries into fil
+Write mentions as listEvents of index-files and copy enriched index entries into files
 
 ```bash
 denormalize-indices -f "../../xml/schnitzler/schnitzler-tagebuch-data-public/editions/*.xml" -i "../../xml/schnitzler/schnitzler-tagebuch-data-public/indices/*.xml"

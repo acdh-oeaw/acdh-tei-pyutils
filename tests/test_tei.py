@@ -6,7 +6,11 @@ import glob
 import unittest
 
 from acdh_tei_pyutils.tei import NER_TAG_MAP, TeiReader, TeiEnricher, HandleAlreadyExist
-from acdh_tei_pyutils.utils import normalize_string, make_entity_label
+from acdh_tei_pyutils.utils import (
+    normalize_string,
+    make_entity_label,
+    get_birth_death_year,
+)
 
 
 FILES = sorted(glob.glob("./acdh_tei_pyutils/files/*.xml", recursive=False))
@@ -157,3 +161,29 @@ mein schatz ich liebe    dich
             label, lang = make_entity_label(x, default_lang="en")
             self.assertEqual(label, labels[i])
         self.assertEqual(lang, "de")
+
+    def test_009_birth_death_year(self):
+        test_str = """
+<listPerson xmlns="http://www.tei-c.org/ns/1.0">
+    <person>
+        <birth when-iso="1983-08-04"></birth>
+    </person>
+    <person>
+        <death when="1982-08-04"></death>
+    </person>
+    <person>
+        <death when="foo"></death>
+        <birth when-iso="bar"></birth>
+    </person>
+    </listPerson>
+"""
+        doc = TeiEnricher(test_str)
+        results = set()
+        for x in doc.any_xpath(".//tei:person"):
+            birth_year = get_birth_death_year(x, xpath_part="@when-iso")
+            death_year = get_birth_death_year(x, birth=False)
+            results.add(birth_year)
+            results.add(death_year)
+        self.assertTrue(1982 in results)
+        self.assertTrue(1983 in results)
+        self.assertTrue(None in results)

@@ -1,10 +1,32 @@
 import lxml.etree as ET
 from itertools import tee, islice, chain
+from typing import Union
 
 nsmap = {
     "tei": "http://www.tei-c.org/ns/1.0",
     "xml": "http://www.w3.org/XML/1998/namespace",
 }
+
+
+def get_birth_death_year(
+    person_node: ET.Element, xpath_part: str = "@when", birth: bool = True
+) -> Union[int, bool]:
+    """tries to extract birth and death years from person nodes and returns either None or the year as Integer"""
+    if birth:
+        year_xpath = f"./tei:birth/{xpath_part}"
+    else:
+        year_xpath = f"./tei:death/{xpath_part}"
+    try:
+        date_str = person_node.xpath(
+            year_xpath, namespaces={"tei": "http://www.tei-c.org/ns/1.0"}
+        )[0]
+    except IndexError:
+        return None
+    year_str = date_str[:4]
+    try:
+        return int(year_str)
+    except ValueError:
+        return None
 
 
 def previous_and_next(some_iterable):
