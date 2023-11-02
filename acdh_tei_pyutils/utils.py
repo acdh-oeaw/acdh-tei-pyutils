@@ -2,10 +2,33 @@ import lxml.etree as ET
 from itertools import tee, islice, chain
 from typing import Union
 
+from acdh_tei_pyutils.tei import TeiReader
+
 nsmap = {
     "tei": "http://www.tei-c.org/ns/1.0",
     "xml": "http://www.w3.org/XML/1998/namespace",
 }
+
+
+def check_for_hash(value: str) -> str:
+    """checks if value starts with '#' and if so removes the '#' from the returned value"""
+    if value.startswith("#"):
+        return value[1:]
+    else:
+        return value
+
+
+def add_graphic_url_to_pb(doc: TeiReader) -> TeiReader:
+    """writes url attributes into tei:pb elements fetched from matching tei:surface//tei:graphic[1] elements"""
+    for x in doc.any_xpath(".//tei:pb[@facs]"):
+        facs_id = check_for_hash(x.attrib["facs"])
+        xpath_expr = f'.//tei:surface[@xml:id="{facs_id}"]//tei:graphic[1]/@url'
+        try:
+            facs_url = doc.any_xpath(xpath_expr)[0]
+        except IndexError:
+            continue
+        x.attrib["url"] = facs_url
+    return doc
 
 
 def get_birth_death_year(

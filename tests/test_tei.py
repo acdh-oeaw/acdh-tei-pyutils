@@ -10,6 +10,8 @@ from acdh_tei_pyutils.utils import (
     normalize_string,
     make_entity_label,
     get_birth_death_year,
+    check_for_hash,
+    add_graphic_url_to_pb,
 )
 
 
@@ -187,3 +189,36 @@ mein schatz ich liebe    dich
         self.assertTrue(1982 in results)
         self.assertTrue(1983 in results)
         self.assertTrue(None in results)
+
+    def test_010_check_for_hash(self):
+        test_values = ["#hansi", "hansi"]
+        for x in test_values:
+            checked = check_for_hash(x)
+            self.assertEqual(checked, "hansi")
+
+    def test_011_pb_facs_uris(self):
+        test_str = """
+<TEI xmlns="http://www.tei-c.org/ns/1.0">
+    <facsimile>
+        <surfaceGrp>
+            <surface type="recto" xml:id="D_000002-003-000-facs001-l001-p001">
+                <graphic ana="status:checked" source="wienbibliothek"
+                url="https://www.digital.wienbibliothek.at/wbrobv02/i3f/v21/2540032/full/full/0/default.jpg"/>
+            </surface>
+            <surface type="verso" xml:id="D_000002-003-000-facs001-l001-p002">
+                <graphic ana="status:checked" source="wienbibliothek"
+                url="https://www.digital.wienbibliothek.at/wbrobv02/i3f/v21/2540034/full/full/0/default.jpg"/>
+            </surface>
+        </surfaceGrp>
+    </facsimile>
+    <pb facs="#D_000002-003-000-facs001-l001-p001" n="1"/>
+    <pb facs="#D_000002-003-000-facs001-l001-p002" n="2"/>
+    <pb facs="#D_000002-003-000-facs001-l001-p003" n="2"/>
+</TEI>
+"""
+        doc = TeiReader(test_str)
+        new_doc = add_graphic_url_to_pb(doc)
+        graphic_urls = new_doc.any_xpath(".//tei:graphic/@url")
+        pb_urls = new_doc.any_xpath(".//tei:pb/@url")
+        for x in pb_urls:
+            self.assertTrue(x in graphic_urls)
