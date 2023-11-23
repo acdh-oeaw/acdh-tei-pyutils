@@ -228,10 +228,13 @@ mein schatz ich liebe    dich
         test_str = """
 <TEI xmlns="http://www.tei-c.org/ns/1.0">
     <body>
-    <lb n="N001"/>Durchleücht<supplied>i</supplied>ger Curfü<supplied>r</supplied>st, mein herzallerlibster <choice><expan>herr</expan><abbr>h</abbr></choice> bruder
+    <lb n="N001"/>Durchleücht<supplied>i</supplied>ger Curfü<supplied>r</supplied>st,
+    mein herzallerlibster <choice><expan>herr</expan><abbr>h</abbr></choice> bruder
       <lb n="N002"/>Ich kom nuhr in eil, dero Liebden zu participiren die victori,
-      <lb n="N003"/>so <choice><expan>Prinz</expan><abbr>P</abbr></choice> Eugen in Italien gehabt. Ist sehr scharf
-      <lb n="N004"/>her gangen, der <choice><expan>Prinz</expan><abbr>Pz</abbr></choice> ist durch den hals geschoßen, <choice><expan>Prinz</expan><abbr>Pr</abbr></choice> Joseph
+      <lb n="N003"/>so <choice><expan>Prinz</expan><abbr>P</abbr></choice> Eugen
+      in Italien gehabt. Ist sehr scharf
+      <lb n="N004"/>her gangen, der <choice><expan>Prinz</expan><abbr>Pz</abbr></choice>
+      ist durch den hals geschoßen, <choice><expan>Prinz</expan><abbr>Pr</abbr></choice> Joseph
       <lb n="N005"/>auch durch die wang, aber bede gottlob ohn gefahr,
     </body>
 </TEI>
