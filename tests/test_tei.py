@@ -12,6 +12,7 @@ from acdh_tei_pyutils.utils import (
     get_birth_death_year,
     check_for_hash,
     add_graphic_url_to_pb,
+    extract_fulltext,
 )
 
 
@@ -222,3 +223,25 @@ mein schatz ich liebe    dich
         pb_urls = new_doc.any_xpath(".//tei:pb/@url")
         for x in pb_urls:
             self.assertTrue(x in graphic_urls)
+
+    def test_012_extract_fulltext(self):
+        test_str = """
+<TEI xmlns="http://www.tei-c.org/ns/1.0">
+    <body>
+    <lb n="N001"/>Durchleücht<supplied>i</supplied>ger Curfü<supplied>r</supplied>st,
+    mein herzallerlibster <choice><expan>herr</expan><abbr>h</abbr></choice> bruder
+      <lb n="N002"/>Ich kom nuhr in eil, dero Liebden zu participiren die victori,
+      <lb n="N003"/>so <choice><expan>Prinz</expan><abbr>P</abbr></choice> Eugen
+      in Italien gehabt. Ist sehr scharf
+      <lb n="N004"/>her gangen, der <choice><expan>Prinz</expan><abbr>Pz</abbr></choice>
+      ist durch den hals geschoßen, <choice><expan>Prinz</expan><abbr>Pr</abbr></choice> Joseph
+      <lb n="N005"/>auch durch die wang, aber bede gottlob ohn gefahr,
+    </body>
+</TEI>
+"""
+        doc = TeiReader(test_str)
+        body = doc.any_xpath(".//tei:body")[0]
+        ft = extract_fulltext(body)
+        self.assertTrue("PrinzPz" in ft)
+        ft = extract_fulltext(body, tag_blacklist=["{http://www.tei-c.org/ns/1.0}abbr"])
+        self.assertFalse("PrinzPz" in ft)

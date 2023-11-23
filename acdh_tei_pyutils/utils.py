@@ -10,6 +10,21 @@ nsmap = {
 }
 
 
+def crate_tag_whitelist(element: ET.Element, tag_blacklist: list) -> list:
+    """lists all unique elements from a given node and returns only those not in the given blacklist"""
+    tags = list(
+        set([x.tag for x in element.iter(tag=ET.Element) if x.tag not in tag_blacklist])
+    )
+    return tags
+
+
+def extract_fulltext(root_node: ET.Element, tag_blacklist: list = []) -> str:
+    """extracts all fulltext from given element and its children, except from blacklisted elements"""
+    tags = crate_tag_whitelist(root_node, tag_blacklist)
+    full_text = " ".join("".join(root_node.itertext(*tags)).split())
+    return full_text
+
+
 def check_for_hash(value: str) -> str:
     """checks if value starts with '#' and if so removes the '#' from the returned value"""
     if value.startswith("#"):
