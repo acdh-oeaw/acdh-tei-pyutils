@@ -1,4 +1,4 @@
-acdh-xml-pyutils
+acdh-xml-pyutils>=1.0.0,<2
 acdh-handle-pyutils>=0.3.0,<4
 click>=7.1.2
 tqdm>=4.59.0
