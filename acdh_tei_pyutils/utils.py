@@ -10,6 +10,11 @@ nsmap = {
 }
 
 
+def get_xmlid(element: ET.Element) -> str:
+    """returns an @xml:id of the given node"""
+    return element.attrib["{http://www.w3.org/XML/1998/namespace}id"]
+
+
 def crate_tag_whitelist(element: ET.Element, tag_blacklist: list) -> list:
     """lists all unique elements from a given node and returns only those not in the given blacklist"""
     tags = list(
@@ -67,7 +72,7 @@ def get_birth_death_year(
         return None
 
 
-def previous_and_next(some_iterable):
+def previous_and_next(some_iterable):  # pragma: no cover
     """taken from https://stackoverflow.com/a/1012089"""
     prevs, items, nexts = tee(some_iterable, 3)
     prevs = chain([None], prevs)

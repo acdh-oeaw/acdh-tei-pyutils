@@ -4,7 +4,7 @@
 
 import glob
 import unittest
-
+import lxml.etree as ET
 from acdh_tei_pyutils.tei import NER_TAG_MAP, TeiReader, TeiEnricher, HandleAlreadyExist
 from acdh_tei_pyutils.utils import (
     normalize_string,
@@ -13,6 +13,7 @@ from acdh_tei_pyutils.utils import (
     check_for_hash,
     add_graphic_url_to_pb,
     extract_fulltext,
+    get_xmlid,
 )
 
 
@@ -245,3 +246,9 @@ mein schatz ich liebe    dich
         self.assertTrue("PrinzPz" in ft)
         ft = extract_fulltext(body, tag_blacklist=["{http://www.tei-c.org/ns/1.0}abbr"])
         self.assertFalse("PrinzPz" in ft)
+
+    def test_013_get_xmlid(self):
+        node = ET.Element("{http://www.tei-c.org/ns/1.0}person")
+        node.attrib["{http://www.w3.org/XML/1998/namespace}id"] = "foo"
+        xml_id = get_xmlid(node)
+        self.assertEqual("foo", xml_id)
