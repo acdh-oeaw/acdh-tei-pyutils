@@ -81,6 +81,7 @@ def previous_and_next(some_iterable):  # pragma: no cover
 
 
 def normalize_string(string: str) -> str:
+    """ removese any superfluos whitespace from a given string"""
     return " ".join(" ".join(string.split()).split())
 
 
