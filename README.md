@@ -2,7 +2,7 @@
 
 [![Github Workflow Tests Status](https://github.com/acdh-oeaw/acdh-tei-pyutils/workflows/Test/badge.svg)](https://github.com/acdh-oeaw/acdh-tei-pyutils/workflows/Test/badge.svg)
 [![PyPI version](https://badge.fury.io/py/acdh-tei-pyutils.svg)](https://badge.fury.io/py/acdh-tei-pyutils)
-[![codecov](https://codecov.io/gh/acdh-oeaw/acdh-tei-pyutils/branch/master/graph/badge.svg?token=y6HUg72XnH)](https://codecov.io/gh/acdh-oeaw/acdh-tei-pyutils)
+[![codecov](https://codecov.io/gh/acdh-oeaw/acdh-tei-pyutils/branch/main/graph/badge.svg?token=y6HUg72XnH)](https://codecov.io/gh/acdh-oeaw/acdh-tei-pyutils)
 
 Utilty functions to work with TEI Documents
 
@@ -12,12 +12,14 @@ run `pip install acdh-tei-pyutils`
 
 ## usage
 
-parse an XML/TEI Document from and URL, string or file:
+some examples on how to use this package
+
+### parse an XML/TEI Document from and URL, string or file:
 
 ```python
 from acdh_tei_pyutils.tei import TeiReader
 
-doc = TeiReader("https://raw.githubusercontent.com/acdh-oeaw/acdh-tei-pyutils/master/acdh_tei_pyutils/files/tei.xml")
+doc = TeiReader("https://raw.githubusercontent.com/acdh-oeaw/acdh-tei-pyutils/main/acdh_tei_pyutils/files/tei.xml")
 print(doc.tree)
 >>> <Element {http://www.tei-c.org/ns/1.0}TEI at 0x7ffb926f9c40>
 
@@ -26,13 +28,13 @@ doc.tree
 >>> <Element {http://www.tei-c.org/ns/1.0}TEI at 0x7ffb926f9c40>
 ```
 
-write the current XML/TEI tree object to file
+### write the current XML/TEI tree object to file
 ```python
 doc.tree_to_file("out.xml")
 >>> 'out.xml'
 ```
 
-see [acdh_tei_pyutils/cli.py](https://github.com/acdh-oeaw/acdh-tei-pyutils/blob/master/acdh_tei_pyutils/cli.py) for further examples
+see [acdh_tei_pyutils/cli.py](https://github.com/acdh-oeaw/acdh-tei-pyutils/blob/main/acdh_tei_pyutils/cli.py) for further examples
 
 ### command line scripts
 
