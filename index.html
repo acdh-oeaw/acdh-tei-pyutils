@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="description" content="None" />
+      <link rel="shortcut icon" href="img/favicon.ico" />
+    <title>acdh-tei-pyutils</title>
+    <link rel="stylesheet" href="css/theme.css" />
+    <link rel="stylesheet" href="css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="assets/_mkdocstrings.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Home";
+        var mkdocs_page_input_path = "README.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="." class="icon icon-home"> acdh-tei-pyutils
+        </a>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href=".">Home</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#install">install</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#usage">usage</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#parse-an-xmltei-document-from-and-url-string-or-file">parse an XML/TEI Document from and URL, string or file:</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#write-the-current-xmltei-tree-object-to-file">write the current XML/TEI tree object to file</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#command-line-scripts">command line scripts</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#develop">develop</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="reference/">API-Documentation</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href=".">acdh-tei-pyutils</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Home</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="acdh-tei-pyutils">acdh-tei-pyutils</h1>
+<p><a href="https://github.com/acdh-oeaw/acdh-tei-pyutils/workflows/Test/badge.svg"><img alt="Github Workflow Tests Status" src="https://github.com/acdh-oeaw/acdh-tei-pyutils/workflows/Test/badge.svg" /></a>
+<a href="https://badge.fury.io/py/acdh-tei-pyutils"><img alt="PyPI version" src="https://badge.fury.io/py/acdh-tei-pyutils.svg" /></a>
+<a href="https://codecov.io/gh/acdh-oeaw/acdh-tei-pyutils"><img alt="codecov" src="https://codecov.io/gh/acdh-oeaw/acdh-tei-pyutils/branch/main/graph/badge.svg?token=y6HUg72XnH" /></a></p>
+<p>Utilty functions to work with TEI Documents</p>
+<h2 id="install">install</h2>
+<p>run <code>pip install acdh-tei-pyutils</code></p>
+<h2 id="usage">usage</h2>
+<p>some examples on how to use this package</p>
+<h3 id="parse-an-xmltei-document-from-and-url-string-or-file">parse an XML/TEI Document from and URL, string or file:</h3>
+<pre><code class="language-python">from acdh_tei_pyutils.tei import TeiReader
+
+doc = TeiReader(&quot;https://raw.githubusercontent.com/acdh-oeaw/acdh-tei-pyutils/main/acdh_tei_pyutils/files/tei.xml&quot;)
+print(doc.tree)
+&gt;&gt;&gt; &lt;Element {http://www.tei-c.org/ns/1.0}TEI at 0x7ffb926f9c40&gt;
+
+doc = TeiReader(&quot;./acdh_tei_pyutils/files/tei.xml&quot;)
+doc.tree
+&gt;&gt;&gt; &lt;Element {http://www.tei-c.org/ns/1.0}TEI at 0x7ffb926f9c40&gt;
+</code></pre>
+<h3 id="write-the-current-xmltei-tree-object-to-file">write the current XML/TEI tree object to file</h3>
+<pre><code class="language-python">doc.tree_to_file(&quot;out.xml&quot;)
+&gt;&gt;&gt; 'out.xml'
+</code></pre>
+<p>see <a href="https://github.com/acdh-oeaw/acdh-tei-pyutils/blob/main/acdh_tei_pyutils/cli.py">acdh_tei_pyutils/cli.py</a> for further examples</p>
+<h3 id="command-line-scripts">command line scripts</h3>
+<p>Batch process a collection of XML/Documents by adding xml:id, xml:base next and prev attributes to the documents root element run:</p>
+<pre><code class="language-bash">add-attributes -g &quot;/path/to/your/xmls/*.xml&quot; -b &quot;https://value/of-your/base.com&quot;
+add-attributes -g &quot;../../xml/grundbuecher/gb-data/data/editions/*.xml&quot; -b &quot;https://id.acdh.oeaw.ac.at/grundbuecher&quot;
+</code></pre>
+<p>Write mentions as listEvents into index-files:</p>
+<pre><code class="language-bash">mentions-to-indices -t &quot;erwähnt in &quot; -i &quot;/path/to/your/xmls/indices/*.xml&quot; -f &quot;/path/to/your/xmls/editions/*.xml&quot;
+</code></pre>
+<p>Write mentions as listEvents of index-files and copy enriched index entries into files</p>
+<pre><code class="language-bash">denormalize-indices -f &quot;../../xml/schnitzler/schnitzler-tagebuch-data-public/editions/*.xml&quot; -i &quot;../../xml/schnitzler/schnitzler-tagebuch-data-public/indices/*.xml&quot;
+denormalize-indices -f &quot;./data/*/*.xml&quot; -i &quot;./data/indices/*.xml&quot; -m &quot;.//*[@key]/@key&quot; -x &quot;.//tei:title[@level='a']/text()&quot;
+denormalize-indices -f &quot;./data/*/*.xml&quot; -i &quot;./data/indices/*.xml&quot; -m &quot;.//*[@key]/@key&quot; -x &quot;.//tei:title[@level='a']/text()&quot; -b pmb2121 -b pmb10815 -b pmb50
+</code></pre>
+<p>Register handle-ids and add them as tei:idno elements:</p>
+<pre><code class="language-bash">add-handles -g &quot;../../xml/grundbuecher/gb-data/data/editions/*.xml&quot; -user &quot;user12.3456-01&quot; -pw &quot;verysecret&quot; -hixpath &quot;.//tei:publicationStmt&quot;
+</code></pre>
+<h2 id="develop">develop</h2>
+<ul>
+<li>install dev-dependencies: <code>pip install -r requirements_dev.txt</code></li>
+<li>install local package <code>pip install -e .</code></li>
+<li>before commiting run <code>flake8</code> to check linting and <code>coverage run -m pytest -v</code> to run the tests</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="reference/" class="btn btn-neutral float-right" title="API-Documentation">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+      <span><a href="reference/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = ".";</script>
+    <script src="js/theme_extra.js"></script>
+    <script src="js/theme.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
+
+<!--
+MkDocs version : 1.5.3
+Build Date UTC : 2024-02-01 09:19:54.981441+00:00
+-->
