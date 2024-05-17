@@ -1,6 +1,7 @@
 from lxml import etree as ET
 import re
 from acdh_xml_pyutils.xml import XMLReader
+from slugify import slugify
 
 
 class HandleAlreadyExist(Exception):
@@ -254,15 +255,20 @@ class TeiEnricher(TeiReader):
         """
         tei_ns = f"{self.ns_tei['tei']}"
         node_root = ET.Element(f"{{{tei_ns}}}noteGrp")
+        mentions_added = {}
         for x in mentions:
-            note = ET.Element(f"{{{tei_ns}}}note")
-            note.attrib["target"] = x["doc_id"]
-            note.attrib["type"] = "mentions"
-            if x["doc_date"] is not None:
-                note.attrib["corresp"] = x["doc_date"]
-            if x["doc_title_sec"] is not None:
-                note.text = f"{x['doc_title']} {x['doc_title_sec']}"
-            else:
-                note.text = x["doc_title"]
-            node_root.append(note)
+            try:
+                mentions_added[slugify(x['doc_id'])]
+            except KeyError:
+                note = ET.Element(f"{{{tei_ns}}}note")
+                note.attrib['target'] = x['doc_id']
+                note.attrib['type'] = "mentions"
+                if x['doc_date'] is not None:
+                    note.attrib['corresp'] = x['doc_date']
+                if x['doc_title_sec'] is not None:
+                    note.text = f"{x['doc_title']} {x['doc_title_sec']}"
+                else:
+                    note.text = x['doc_title']
+                node_root.append(note)
+                mentions_added[slugify(x['doc_id'])] = True
         return node_root
