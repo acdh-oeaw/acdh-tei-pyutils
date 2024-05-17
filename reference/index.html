@@ -41,7 +41,7 @@
                 </li>
               </ul>
               <ul class="current">
-                <li class="toctree-l1 current"><a class="reference internal current" href="./">API-Documentation</a>
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">API-Documentation</a>
     <ul class="current">
     </ul>
                 </li>
@@ -87,9 +87,9 @@ reference for the technical implementation of the
 
 
 <a id="acdh_tei_pyutils.utils"></a>
-  <div class="doc doc-contents first">
+    <div class="doc doc-contents first">
 
-  
+
 
   <div class="doc doc-children">
 
@@ -101,24 +101,22 @@ reference for the technical implementation of the
 
 
 
-
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="acdh_tei_pyutils.utils.add_graphic_url_to_pb" class="doc doc-heading">
-          <code class="highlight language-python">add_graphic_url_to_pb(doc)</code>
+            <code class="highlight language-python">add_graphic_url_to_pb(doc)</code>
 
 </h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>writes url attributes into tei:pb elements fetched from matching tei:surface//tei:graphic[1] elements</p>
 
-          <details class="quote">
-            <summary>Source code in <code>acdh_tei_pyutils/utils.py</code></summary>
-            <pre class="highlight"><code class="language-python">def add_graphic_url_to_pb(doc: TeiReader) -&gt; TeiReader:
+            <details class="quote">
+              <summary>Source code in <code>acdh_tei_pyutils/utils.py</code></summary>
+              <pre class="highlight"><code class="language-python">def add_graphic_url_to_pb(doc: TeiReader) -&gt; TeiReader:
     """writes url attributes into tei:pb elements fetched from matching tei:surface//tei:graphic[1] elements"""
     for x in doc.any_xpath(".//tei:pb[@facs]"):
         facs_id = check_for_hash(x.attrib["facs"])
@@ -129,112 +127,104 @@ reference for the technical implementation of the
             continue
         x.attrib["url"] = facs_url
     return doc</code></pre>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="acdh_tei_pyutils.utils.check_for_hash" class="doc doc-heading">
-          <code class="highlight language-python">check_for_hash(value)</code>
+            <code class="highlight language-python">check_for_hash(value)</code>
 
 </h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>checks if value starts with '#' and if so removes the '#' from the returned value</p>
 
-          <details class="quote">
-            <summary>Source code in <code>acdh_tei_pyutils/utils.py</code></summary>
-            <pre class="highlight"><code class="language-python">def check_for_hash(value: str) -&gt; str:
+            <details class="quote">
+              <summary>Source code in <code>acdh_tei_pyutils/utils.py</code></summary>
+              <pre class="highlight"><code class="language-python">def check_for_hash(value: str) -&gt; str:
     """checks if value starts with '#' and if so removes the '#' from the returned value"""
     if value.startswith("#"):
         return value[1:]
     else:
         return value</code></pre>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="acdh_tei_pyutils.utils.crate_tag_whitelist" class="doc doc-heading">
-          <code class="highlight language-python">crate_tag_whitelist(element, tag_blacklist)</code>
+            <code class="highlight language-python">crate_tag_whitelist(element, tag_blacklist)</code>
 
 </h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>lists all unique elements from a given node and returns only those not in the given blacklist</p>
 
-          <details class="quote">
-            <summary>Source code in <code>acdh_tei_pyutils/utils.py</code></summary>
-            <pre class="highlight"><code class="language-python">def crate_tag_whitelist(element: ET.Element, tag_blacklist: list) -&gt; list:
+            <details class="quote">
+              <summary>Source code in <code>acdh_tei_pyutils/utils.py</code></summary>
+              <pre class="highlight"><code class="language-python">def crate_tag_whitelist(element: ET.Element, tag_blacklist: list) -&gt; list:
     """lists all unique elements from a given node and returns only those not in the given blacklist"""
     tags = list(
         set([x.tag for x in element.iter(tag=ET.Element) if x.tag not in tag_blacklist])
     )
     return tags</code></pre>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="acdh_tei_pyutils.utils.extract_fulltext" class="doc doc-heading">
-          <code class="highlight language-python">extract_fulltext(root_node, tag_blacklist=[])</code>
+            <code class="highlight language-python">extract_fulltext(root_node, tag_blacklist=[])</code>
 
 </h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>extracts all fulltext from given element and its children, except from blacklisted elements</p>
 
-          <details class="quote">
-            <summary>Source code in <code>acdh_tei_pyutils/utils.py</code></summary>
-            <pre class="highlight"><code class="language-python">def extract_fulltext(root_node: ET.Element, tag_blacklist: list = []) -&gt; str:
+            <details class="quote">
+              <summary>Source code in <code>acdh_tei_pyutils/utils.py</code></summary>
+              <pre class="highlight"><code class="language-python">def extract_fulltext(root_node: ET.Element, tag_blacklist: list = []) -&gt; str:
     """extracts all fulltext from given element and its children, except from blacklisted elements"""
     tags = crate_tag_whitelist(root_node, tag_blacklist)
     full_text = " ".join("".join(root_node.itertext(*tags)).split())
     return full_text</code></pre>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="acdh_tei_pyutils.utils.get_birth_death_year" class="doc doc-heading">
-          <code class="highlight language-python">get_birth_death_year(person_node, xpath_part='@when', birth=True)</code>
+            <code class="highlight language-python">get_birth_death_year(person_node, xpath_part='@when', birth=True)</code>
 
 </h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>tries to extract birth and death years from person nodes and returns either None or the year as Integer</p>
 
-          <details class="quote">
-            <summary>Source code in <code>acdh_tei_pyutils/utils.py</code></summary>
-            <pre class="highlight"><code class="language-python">def get_birth_death_year(
+            <details class="quote">
+              <summary>Source code in <code>acdh_tei_pyutils/utils.py</code></summary>
+              <pre class="highlight"><code class="language-python">def get_birth_death_year(
     person_node: ET.Element, xpath_part: str = "@when", birth: bool = True
 ) -&gt; Union[int, bool]:
     """tries to extract birth and death years from person nodes and returns either None or the year as Integer"""
@@ -253,54 +243,50 @@ reference for the technical implementation of the
         return int(year_str)
     except ValueError:
         return None</code></pre>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
 
-
 <div class="doc doc-object doc-function">
-
 
 
 <h2 id="acdh_tei_pyutils.utils.get_xmlid" class="doc doc-heading">
-          <code class="highlight language-python">get_xmlid(element)</code>
+            <code class="highlight language-python">get_xmlid(element)</code>
 
 </h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>returns an @xml:id of the given node</p>
 
-          <details class="quote">
-            <summary>Source code in <code>acdh_tei_pyutils/utils.py</code></summary>
-            <pre class="highlight"><code class="language-python">def get_xmlid(element: ET.Element) -&gt; str:
+            <details class="quote">
+              <summary>Source code in <code>acdh_tei_pyutils/utils.py</code></summary>
+              <pre class="highlight"><code class="language-python">def get_xmlid(element: ET.Element) -&gt; str:
     """returns an @xml:id of the given node"""
     return element.attrib["{http://www.w3.org/XML/1998/namespace}id"]</code></pre>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="acdh_tei_pyutils.utils.make_entity_label" class="doc doc-heading">
-          <code class="highlight language-python">make_entity_label(name_node, default_msg='no label provided', default_lang='en')</code>
+            <code class="highlight language-python">make_entity_label(name_node, default_msg='no label provided', default_lang='en')</code>
 
 </h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>extracts labels from tei:persName|placeName|orgName</p>
 
-          <details class="quote">
-            <summary>Source code in <code>acdh_tei_pyutils/utils.py</code></summary>
-            <pre class="highlight"><code class="language-python">def make_entity_label(
+            <details class="quote">
+              <summary>Source code in <code>acdh_tei_pyutils/utils.py</code></summary>
+              <pre class="highlight"><code class="language-python">def make_entity_label(
     name_node: ET.Element, default_msg="no label provided", default_lang="en"
 ) -&gt; tuple[str, str]:
     """extracts labels from tei:persName|placeName|orgName"""
@@ -326,61 +312,57 @@ reference for the technical implementation of the
     if label is None or label == "":
         label = default_msg
     return label, lang_tag</code></pre>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
 
-
 <div class="doc doc-object doc-function">
-
 
 
 <h2 id="acdh_tei_pyutils.utils.normalize_string" class="doc doc-heading">
-          <code class="highlight language-python">normalize_string(string)</code>
+            <code class="highlight language-python">normalize_string(string)</code>
 
 </h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>removese any superfluos whitespace from a given string</p>
 
-          <details class="quote">
-            <summary>Source code in <code>acdh_tei_pyutils/utils.py</code></summary>
-            <pre class="highlight"><code class="language-python">def normalize_string(string: str) -&gt; str:
+            <details class="quote">
+              <summary>Source code in <code>acdh_tei_pyutils/utils.py</code></summary>
+              <pre class="highlight"><code class="language-python">def normalize_string(string: str) -&gt; str:
     """ removese any superfluos whitespace from a given string"""
     return " ".join(" ".join(string.split()).split())</code></pre>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="acdh_tei_pyutils.utils.previous_and_next" class="doc doc-heading">
-          <code class="highlight language-python">previous_and_next(some_iterable)</code>
+            <code class="highlight language-python">previous_and_next(some_iterable)</code>
 
 </h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>taken from https://stackoverflow.com/a/1012089</p>
 
-          <details class="quote">
-            <summary>Source code in <code>acdh_tei_pyutils/utils.py</code></summary>
-            <pre class="highlight"><code class="language-python">def previous_and_next(some_iterable):  # pragma: no cover
+            <details class="quote">
+              <summary>Source code in <code>acdh_tei_pyutils/utils.py</code></summary>
+              <pre class="highlight"><code class="language-python">def previous_and_next(some_iterable):  # pragma: no cover
     """taken from https://stackoverflow.com/a/1012089"""
     prevs, items, nexts = tee(some_iterable, 3)
     prevs = chain([None], prevs)
     nexts = chain(islice(nexts, 1, None), [None])
     return zip(prevs, items, nexts)</code></pre>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
 
@@ -388,7 +370,7 @@ reference for the technical implementation of the
 
   </div>
 
-  </div>
+    </div>
 
 </div><h1 id="acdh_tei_pyutilstei">acdh_tei_pyutils.tei</h1>
 
@@ -398,9 +380,9 @@ reference for the technical implementation of the
 
 
 <a id="acdh_tei_pyutils.tei"></a>
-  <div class="doc doc-contents first">
+    <div class="doc doc-contents first">
 
-  
+
 
   <div class="doc doc-children">
 
@@ -416,22 +398,22 @@ reference for the technical implementation of the
 
 
 <h2 id="acdh_tei_pyutils.tei.TeiEnricher" class="doc doc-heading">
-          <code>TeiEnricher</code>
+            <code>TeiEnricher</code>
 
 
 </h2>
 
 
-  <div class="doc doc-contents ">
-          <p class="doc doc-class-bases">
-            Bases: <code><a class="autorefs autorefs-internal" title="acdh_tei_pyutils.tei.TeiReader" href="#acdh_tei_pyutils.tei.TeiReader">TeiReader</a></code></p>
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="acdh_tei_pyutils.tei.TeiReader" href="#acdh_tei_pyutils.tei.TeiReader">TeiReader</a></code></p>
 
-  
+
       <p>a class to enrich tei-documents</p>
 
-            <details class="quote">
-              <summary>Source code in <code>acdh_tei_pyutils/tei.py</code></summary>
-              <pre class="highlight"><code class="language-python">class TeiEnricher(TeiReader):
+              <details class="quote">
+                <summary>Source code in <code>acdh_tei_pyutils/tei.py</code></summary>
+                <pre class="highlight"><code class="language-python">class TeiEnricher(TeiReader):
 
     """a class to enrich tei-documents"""
 
@@ -528,24 +510,28 @@ reference for the technical implementation of the
         """
         tei_ns = f"{self.ns_tei['tei']}"
         node_root = ET.Element(f"{{{tei_ns}}}noteGrp")
+        mentions_added = {}
         for x in mentions:
-            note = ET.Element(f"{{{tei_ns}}}note")
-            note.attrib["target"] = x["doc_id"]
-            note.attrib["type"] = "mentions"
-            if x["doc_date"] is not None:
-                note.attrib["corresp"] = x["doc_date"]
-            if x["doc_title_sec"] is not None:
-                note.text = f"{x['doc_title']} {x['doc_title_sec']}"
-            else:
-                note.text = x["doc_title"]
-            node_root.append(note)
+            try:
+                mentions_added[slugify(x['doc_id'])]
+            except KeyError:
+                note = ET.Element(f"{{{tei_ns}}}note")
+                note.attrib['target'] = x['doc_id']
+                note.attrib['type'] = "mentions"
+                if x['doc_date'] is not None:
+                    note.attrib['corresp'] = x['doc_date']
+                if x['doc_title_sec'] is not None:
+                    note.text = f"{x['doc_title']} {x['doc_title_sec']}"
+                else:
+                    note.text = x['doc_title']
+                node_root.append(note)
+                mentions_added[slugify(x['doc_id'])] = True
         return node_root</code></pre>
-            </details>
+              </details>
 
-  
+
 
   <div class="doc doc-children">
-
 
 
 
@@ -558,23 +544,22 @@ reference for the technical implementation of the
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="acdh_tei_pyutils.tei.TeiEnricher.add_base_and_id" class="doc doc-heading">
-          <code class="highlight language-python">add_base_and_id(base_value, id_value, prev_value, next_value)</code>
+            <code class="highlight language-python">add_base_and_id(base_value, id_value, prev_value, next_value)</code>
 
 </h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>adds @xml:base and @xml:id and next and prev to root element</p>
 <p>:param base_value: The value of the @xml:base
 :type base_value: str</p>
 <p>:return: the updated tree</p>
 
-          <details class="quote">
-            <summary>Source code in <code>acdh_tei_pyutils/tei.py</code></summary>
-            <pre class="highlight"><code class="language-python">def add_base_and_id(self, base_value, id_value, prev_value, next_value):
+            <details class="quote">
+              <summary>Source code in <code>acdh_tei_pyutils/tei.py</code></summary>
+              <pre class="highlight"><code class="language-python">def add_base_and_id(self, base_value, id_value, prev_value, next_value):
     """adds @xml:base and @xml:id and next and prev to root element
 
     :param base_value: The value of the @xml:base
@@ -593,24 +578,22 @@ reference for the technical implementation of the
     if next_value:
         base.set("next", f"{base_value}/{next_value}")
     return self.tree</code></pre>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="acdh_tei_pyutils.tei.TeiEnricher.add_handle" class="doc doc-heading">
-          <code class="highlight language-python">add_handle(handle, handle_xpath='.//tei:idno[@type="handle"]', insert_xpath='.//tei:publicationStmt/tei:p')</code>
+            <code class="highlight language-python">add_handle(handle, handle_xpath='.//tei:idno[@type="handle"]', insert_xpath='.//tei:publicationStmt/tei:p')</code>
 
 </h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>adds an idno @type=handle element into tei:publicationStmt</p>
 <p>:param handle: the handle
 :type handle: str</p>
@@ -619,9 +602,9 @@ reference for the technical implementation of the
 <p>:raises: <code>HandleAlreadyExist</code> Error</p>
 <p>:returns: the indo node</p>
 
-          <details class="quote">
-            <summary>Source code in <code>acdh_tei_pyutils/tei.py</code></summary>
-            <pre class="highlight"><code class="language-python">def add_handle(
+            <details class="quote">
+              <summary>Source code in <code>acdh_tei_pyutils/tei.py</code></summary>
+              <pre class="highlight"><code class="language-python">def add_handle(
     self,
     handle,
     handle_xpath='.//tei:idno[@type="handle"]',
@@ -651,32 +634,30 @@ reference for the technical implementation of the
         insert_node = self.any_xpath(insert_xpath)[0]
         insert_node.append(idno_node)
         return idno_node</code></pre>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="acdh_tei_pyutils.tei.TeiEnricher.create_mention_list" class="doc doc-heading">
-          <code class="highlight language-python">create_mention_list(mentions)</code>
+            <code class="highlight language-python">create_mention_list(mentions)</code>
 
 </h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>creates a tei element with notes of mentions</p>
 <p>:param mentions: a list of dicts with keys <code>doc_id</code> and <code>doc_title</code>
 :type mentions: noteGrp</p>
 <p>:return: a etree.element</p>
 
-          <details class="quote">
-            <summary>Source code in <code>acdh_tei_pyutils/tei.py</code></summary>
-            <pre class="highlight"><code class="language-python">def create_mention_list(self, mentions):
+            <details class="quote">
+              <summary>Source code in <code>acdh_tei_pyutils/tei.py</code></summary>
+              <pre class="highlight"><code class="language-python">def create_mention_list(self, mentions):
     """creates a tei element with notes of mentions
 
     :param mentions: a list of dicts with keys `doc_id` and `doc_title`
@@ -686,43 +667,46 @@ reference for the technical implementation of the
     """
     tei_ns = f"{self.ns_tei['tei']}"
     node_root = ET.Element(f"{{{tei_ns}}}noteGrp")
+    mentions_added = {}
     for x in mentions:
-        note = ET.Element(f"{{{tei_ns}}}note")
-        note.attrib["target"] = x["doc_id"]
-        note.attrib["type"] = "mentions"
-        if x["doc_date"] is not None:
-            note.attrib["corresp"] = x["doc_date"]
-        if x["doc_title_sec"] is not None:
-            note.text = f"{x['doc_title']} {x['doc_title_sec']}"
-        else:
-            note.text = x["doc_title"]
-        node_root.append(note)
+        try:
+            mentions_added[slugify(x['doc_id'])]
+        except KeyError:
+            note = ET.Element(f"{{{tei_ns}}}note")
+            note.attrib['target'] = x['doc_id']
+            note.attrib['type'] = "mentions"
+            if x['doc_date'] is not None:
+                note.attrib['corresp'] = x['doc_date']
+            if x['doc_title_sec'] is not None:
+                note.text = f"{x['doc_title']} {x['doc_title_sec']}"
+            else:
+                note.text = x['doc_title']
+            node_root.append(note)
+            mentions_added[slugify(x['doc_id'])] = True
     return node_root</code></pre>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="acdh_tei_pyutils.tei.TeiEnricher.get_full_id" class="doc doc-heading">
-          <code class="highlight language-python">get_full_id()</code>
+            <code class="highlight language-python">get_full_id()</code>
 
 </h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>returns the combination of @xml:base and @xml:id</p>
 <p>:return: combination of @xml:base and @xml:id
 :rtype: str</p>
 
-          <details class="quote">
-            <summary>Source code in <code>acdh_tei_pyutils/tei.py</code></summary>
-            <pre class="highlight"><code class="language-python">def get_full_id(self):
+            <details class="quote">
+              <summary>Source code in <code>acdh_tei_pyutils/tei.py</code></summary>
+              <pre class="highlight"><code class="language-python">def get_full_id(self):
     """returns the combination of @xml:base and @xml:id
 
     :return: combination of @xml:base and @xml:id
@@ -742,31 +726,29 @@ reference for the technical implementation of the
         return f"{base_base}{base_id}"
     else:
         return f"{base_base}/{base_id}"</code></pre>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="acdh_tei_pyutils.tei.TeiEnricher.handle_exist" class="doc doc-heading">
-          <code class="highlight language-python">handle_exist(handle_xpath='.//tei:idno[@type="handle"]')</code>
+            <code class="highlight language-python">handle_exist(handle_xpath='.//tei:idno[@type="handle"]')</code>
 
 </h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>checks if a handle is already assigned</p>
 <p>:return: the registered handle or empty string
 :rtype: str, None</p>
 
-          <details class="quote">
-            <summary>Source code in <code>acdh_tei_pyutils/tei.py</code></summary>
-            <pre class="highlight"><code class="language-python">def handle_exist(self, handle_xpath='.//tei:idno[@type="handle"]'):
+            <details class="quote">
+              <summary>Source code in <code>acdh_tei_pyutils/tei.py</code></summary>
+              <pre class="highlight"><code class="language-python">def handle_exist(self, handle_xpath='.//tei:idno[@type="handle"]'):
     """checks if a handle is already assigned
 
     :return: the registered handle or empty string
@@ -776,8 +758,8 @@ reference for the technical implementation of the
         return self.any_xpath(handle_xpath)[0].text
     except IndexError:
         return None</code></pre>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
 
@@ -785,8 +767,7 @@ reference for the technical implementation of the
 
   </div>
 
-  </div>
-
+    </div>
 
 </div>
 
@@ -795,22 +776,22 @@ reference for the technical implementation of the
 
 
 <h2 id="acdh_tei_pyutils.tei.TeiReader" class="doc doc-heading">
-          <code>TeiReader</code>
+            <code>TeiReader</code>
 
 
 </h2>
 
 
-  <div class="doc doc-contents ">
-          <p class="doc doc-class-bases">
-            Bases: <code><span title="acdh_xml_pyutils.xml.XMLReader">XMLReader</span></code></p>
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="acdh_xml_pyutils.xml.XMLReader">XMLReader</span></code></p>
 
-  
+
       <p>a class to read an process tei-documents</p>
 
-            <details class="quote">
-              <summary>Source code in <code>acdh_tei_pyutils/tei.py</code></summary>
-              <pre class="highlight"><code class="language-python">class TeiReader(XMLReader):
+              <details class="quote">
+                <summary>Source code in <code>acdh_tei_pyutils/tei.py</code></summary>
+                <pre class="highlight"><code class="language-python">class TeiReader(XMLReader):
 
     """a class to read an process tei-documents"""
 
@@ -942,9 +923,9 @@ reference for the technical implementation of the
             train_data = (plain_text, {"entities": ents})
             result.append(train_data)
         return result</code></pre>
-            </details>
+              </details>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -956,57 +937,53 @@ reference for the technical implementation of the
 
 
 
-
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="acdh_tei_pyutils.tei.TeiReader.any_xpath" class="doc doc-heading">
-          <code class="highlight language-python">any_xpath(any_xpath='//tei:rs')</code>
+            <code class="highlight language-python">any_xpath(any_xpath='//tei:rs')</code>
 
 </h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Runs any xpath expressions against the parsed document
 :param any_xpath: Any XPath expression.
 :return: The result of the xpath</p>
 
-          <details class="quote">
-            <summary>Source code in <code>acdh_tei_pyutils/tei.py</code></summary>
-            <pre class="highlight"><code class="language-python">def any_xpath(self, any_xpath="//tei:rs"):
+            <details class="quote">
+              <summary>Source code in <code>acdh_tei_pyutils/tei.py</code></summary>
+              <pre class="highlight"><code class="language-python">def any_xpath(self, any_xpath="//tei:rs"):
 
     """Runs any xpath expressions against the parsed document
     :param any_xpath: Any XPath expression.
     :return: The result of the xpath
     """
     return self.tree.xpath(any_xpath, namespaces=self.ns_tei)</code></pre>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="acdh_tei_pyutils.tei.TeiReader.create_plain_text" class="doc doc-heading">
-          <code class="highlight language-python">create_plain_text(node)</code>
+            <code class="highlight language-python">create_plain_text(node)</code>
 
 </h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>extracts all text nodes from given element
 :param start_node: An XPath expressione pointing to        an element which text nodes should be extracted
 :return: A normalized, cleaned plain text</p>
 
-          <details class="quote">
-            <summary>Source code in <code>acdh_tei_pyutils/tei.py</code></summary>
-            <pre class="highlight"><code class="language-python">def create_plain_text(self, node):
+            <details class="quote">
+              <summary>Source code in <code>acdh_tei_pyutils/tei.py</code></summary>
+              <pre class="highlight"><code class="language-python">def create_plain_text(self, node):
 
     """ extracts all text nodes from given element
     :param start_node: An XPath expressione pointing to\
@@ -1016,32 +993,30 @@ reference for the technical implementation of the
     result = re.sub(r"\s+", " ", "".join(node.xpath(".//text()"))).strip()
 
     return result</code></pre>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="acdh_tei_pyutils.tei.TeiReader.extract_ne_dicts" class="doc doc-heading">
-          <code class="highlight language-python">extract_ne_dicts(parent_node, ne_xpath='//tei:rs', NER_TAG_MAP=NER_TAG_MAP)</code>
+            <code class="highlight language-python">extract_ne_dicts(parent_node, ne_xpath='//tei:rs', NER_TAG_MAP=NER_TAG_MAP)</code>
 
 </h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>extract strings tagged as named entities
 :param ne_xpath: An XPath expression pointing to elements used to tagged NEs.
 :param NER_TAG_MAP: A dictionary providing mapping from TEI tags used to tag NEs to        spacy-tags
 :return: A list of NE-dicts containing the 'text' and the 'ne_type'</p>
 
-          <details class="quote">
-            <summary>Source code in <code>acdh_tei_pyutils/tei.py</code></summary>
-            <pre class="highlight"><code class="language-python">def extract_ne_dicts(
+            <details class="quote">
+              <summary>Source code in <code>acdh_tei_pyutils/tei.py</code></summary>
+              <pre class="highlight"><code class="language-python">def extract_ne_dicts(
     self, parent_node, ne_xpath="//tei:rs", NER_TAG_MAP=NER_TAG_MAP
 ):
 
@@ -1066,31 +1041,29 @@ reference for the technical implementation of the
         ne_dicts.append(item)
 
     return ne_dicts</code></pre>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="acdh_tei_pyutils.tei.TeiReader.extract_ne_elements" class="doc doc-heading">
-          <code class="highlight language-python">extract_ne_elements(parent_node, ne_xpath='//tei:rs')</code>
+            <code class="highlight language-python">extract_ne_elements(parent_node, ne_xpath='//tei:rs')</code>
 
 </h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>extract elements tagged as named entities
 :param ne_xpath: An XPath expression pointing to elements used to tagged NEs.
 :return: A list of elements</p>
 
-          <details class="quote">
-            <summary>Source code in <code>acdh_tei_pyutils/tei.py</code></summary>
-            <pre class="highlight"><code class="language-python">def extract_ne_elements(self, parent_node, ne_xpath="//tei:rs"):
+            <details class="quote">
+              <summary>Source code in <code>acdh_tei_pyutils/tei.py</code></summary>
+              <pre class="highlight"><code class="language-python">def extract_ne_elements(self, parent_node, ne_xpath="//tei:rs"):
 
     """extract elements tagged as named entities
     :param ne_xpath: An XPath expression pointing to elements used to tagged NEs.
@@ -1099,33 +1072,31 @@ reference for the technical implementation of the
 
     ne_elements = parent_node.xpath(ne_xpath, namespaces=self.ns_tei)
     return ne_elements</code></pre>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="acdh_tei_pyutils.tei.TeiReader.extract_ne_offsets" class="doc doc-heading">
-          <code class="highlight language-python">extract_ne_offsets(parent_nodes='.//tei:body//tei:p', ne_xpath='.//tei:rs', NER_TAG_MAP=NER_TAG_MAP)</code>
+            <code class="highlight language-python">extract_ne_offsets(parent_nodes='.//tei:body//tei:p', ne_xpath='.//tei:rs', NER_TAG_MAP=NER_TAG_MAP)</code>
 
 </h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>extracts offsets of NEs and the NE-type
 :param parent_nodes: An XPath expressione pointing to        those element which text nodes should be extracted
 :param ne_xpath: An XPath expression pointing to elements used to tagged NEs.        Takes the parent node(s) as context
 :param NER_TAG_MAP: A dictionary providing mapping from TEI tags used to tag NEs to        spacy-tags
 :return: A list of spacy-like NER Tuples [('some text'), {'entities': [(15, 19, 'place')]}]</p>
 
-          <details class="quote">
-            <summary>Source code in <code>acdh_tei_pyutils/tei.py</code></summary>
-            <pre class="highlight"><code class="language-python">def extract_ne_offsets(
+            <details class="quote">
+              <summary>Source code in <code>acdh_tei_pyutils/tei.py</code></summary>
+              <pre class="highlight"><code class="language-python">def extract_ne_offsets(
     self,
     parent_nodes=".//tei:body//tei:p",
     ne_xpath=".//tei:rs",
@@ -1172,33 +1143,31 @@ reference for the technical implementation of the
         train_data = (plain_text, {"entities": ents})
         result.append(train_data)
     return result</code></pre>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="acdh_tei_pyutils.tei.TeiReader.get_text_nes_list" class="doc doc-heading">
-          <code class="highlight language-python">get_text_nes_list(parent_nodes='.//tei:body//tei:p', ne_xpath='.//tei:rs', NER_TAG_MAP=NER_TAG_MAP)</code>
+            <code class="highlight language-python">get_text_nes_list(parent_nodes='.//tei:body//tei:p', ne_xpath='.//tei:rs', NER_TAG_MAP=NER_TAG_MAP)</code>
 
 </h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>extracts all text nodes from given elements and their NE
 :param parent_nodes: An XPath expressione pointing to        those elements which text nodes should be extracted
 :param ne_xpath:  An XPath expression pointing to elements used to tagged NEs.        Takes the parent node(s) as context
 :param NER_TAG_MAP: A dictionary providing mapping from TEI tags used to tag NEs to        spacy-tags
 :return: A list of dicts like [{"text": "Wien ist schön", "ner_dicts": [{"text": "Wien",        "ne_type": "LOC"}]}]</p>
 
-          <details class="quote">
-            <summary>Source code in <code>acdh_tei_pyutils/tei.py</code></summary>
-            <pre class="highlight"><code class="language-python">def get_text_nes_list(
+            <details class="quote">
+              <summary>Source code in <code>acdh_tei_pyutils/tei.py</code></summary>
+              <pre class="highlight"><code class="language-python">def get_text_nes_list(
     self,
     parent_nodes=".//tei:body//tei:p",
     ne_xpath=".//tei:rs",
@@ -1223,8 +1192,8 @@ reference for the technical implementation of the
         ner_dicts = self.extract_ne_dicts(node, ne_xpath, NER_TAG_MAP)
         result.append({"text": text, "ner_dicts": ner_dicts})
     return result</code></pre>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
 
@@ -1232,8 +1201,7 @@ reference for the technical implementation of the
 
   </div>
 
-  </div>
-
+    </div>
 
 </div>
 
@@ -1242,7 +1210,7 @@ reference for the technical implementation of the
 
   </div>
 
-  </div>
+    </div>
 
 </div><h1 id="command-line-interface">command line interface</h1>
 
@@ -1252,14 +1220,13 @@ reference for the technical implementation of the
 
 
 <a id="acdh_tei_pyutils.cli"></a>
-  <div class="doc doc-contents first">
-  
+    <div class="doc doc-contents first">
+
       <p>Console script for acdh_collatex_utils.</p>
 
-  
+
 
   <div class="doc doc-children">
-
 
 
 
@@ -1272,20 +1239,19 @@ reference for the technical implementation of the
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="acdh_tei_pyutils.cli.add_base_id_next_prev" class="doc doc-heading">
-          <code class="highlight language-python">add_base_id_next_prev(glob_pattern, base_value)</code>
+            <code class="highlight language-python">add_base_id_next_prev(glob_pattern, base_value)</code>
 
 </h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Console script add @xml:base, @xml:id and @prev @next attributes to root element</p>
 
-          <details class="quote">
-            <summary>Source code in <code>acdh_tei_pyutils/cli.py</code></summary>
-            <pre class="highlight"><code class="language-python">@click.command()  # pragma: no cover
+            <details class="quote">
+              <summary>Source code in <code>acdh_tei_pyutils/cli.py</code></summary>
+              <pre class="highlight"><code class="language-python">@click.command()  # pragma: no cover
 @click.option(
     "-g", "--glob-pattern", default="./editions/*.xml", show_default=True
 )  # pragma: no cover
@@ -1309,29 +1275,27 @@ def add_base_id_next_prev(glob_pattern, base_value):  # pragma: no cover
             next_id = None
         doc.add_base_and_id(base_value, id_value, prev_id, next_id)
         doc.tree_to_file(file=current)</code></pre>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="acdh_tei_pyutils.cli.add_handles" class="doc doc-heading">
-          <code class="highlight language-python">add_handles(glob_pattern, hdl_user, hdl_pw, hdl_provider, hdl_prefix, hdl_resolver, hdl_xpath, hdlinsert_xpath)</code>
+            <code class="highlight language-python">add_handles(glob_pattern, hdl_user, hdl_pw, hdl_provider, hdl_prefix, hdl_resolver, hdl_xpath, hdlinsert_xpath)</code>
 
 </h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Console script to register handels base on the values of @xml:id and @xml:base</p>
 
-          <details class="quote">
-            <summary>Source code in <code>acdh_tei_pyutils/cli.py</code></summary>
-            <pre class="highlight"><code class="language-python">@click.command()  # pragma: no cover
+            <details class="quote">
+              <summary>Source code in <code>acdh_tei_pyutils/cli.py</code></summary>
+              <pre class="highlight"><code class="language-python">@click.command()  # pragma: no cover
 @click.option(
     "-g", "--glob-pattern", default="./editions/*.xml", show_default=True
 )  # pragma: no cover
@@ -1388,29 +1352,27 @@ def add_handles(
         print(hdl)
         doc.add_handle(hdl, handle_xpath=hdl_xpath, insert_xpath=hdlinsert_xpath)
         doc.tree_to_file(x)</code></pre>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="acdh_tei_pyutils.cli.denormalize_indices" class="doc doc-heading">
-          <code class="highlight language-python">denormalize_indices(files, indices, mention_xpath, title_xpath, title_sec_xpath, date_xpath, blacklist_ids=[])</code>
+            <code class="highlight language-python">denormalize_indices(files, indices, mention_xpath, title_xpath, title_sec_xpath, date_xpath, blacklist_ids=[])</code>
 
 </h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Write pointers to mentions in index-docs and copy index entries into docs</p>
 
-          <details class="quote">
-            <summary>Source code in <code>acdh_tei_pyutils/cli.py</code></summary>
-            <pre class="highlight"><code class="language-python">@click.command()  # pragma: no cover
+            <details class="quote">
+              <summary>Source code in <code>acdh_tei_pyutils/cli.py</code></summary>
+              <pre class="highlight"><code class="language-python">@click.command()  # pragma: no cover
 @click.option(
     "-f", "--files", default="./editions/*.xml", show_default=True
 )  # pragma: no cover
@@ -1457,12 +1419,12 @@ def denormalize_indices(
             doc_title = doc.any_xpath(title_xpath)[0]
         except IndexError:
             doc_title = f"ERROR in title xpath of file: {doc_id}"
-            print(f"ERROR in title xpath of file: {doc_id}")
+            print(f"ERROR in -x title xpath of file: {doc_id}")
         if title_sec_xpath:
             try:
                 doc_title_sec = doc.any_xpath(title_sec_xpath)[0]
             except IndexError:
-                doc_title_sec = f"ERROR in secondary title xpath of file: {doc_id}"
+                doc_title_sec = f"ERROR in -xs secondary title xpath of file: {doc_id}"
                 print(f"ERROR in secondary title xpath of file: {doc_id}")
         else:
             doc_title_sec = None
@@ -1471,7 +1433,7 @@ def denormalize_indices(
                 doc_date = doc.any_xpath(date_xpath)[0]
             except IndexError:
                 doc_date = f"ERROR in date xpath of file: {doc_id}"
-                print(f"ERROR in date xpath of file: {doc_id}")
+                print(f"ERROR in -d date xpath of file: {doc_id}")
         else:
             doc_date = None
         refs = doc.any_xpath(mention_xpath)
@@ -1606,29 +1568,27 @@ def denormalize_indices(
         except Exception as e:
             print(f"failed to process {x} due to {e}")
     click.echo(click.style("DONE", fg="green"))</code></pre>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="acdh_tei_pyutils.cli.mentions_to_indices" class="doc doc-heading">
-          <code class="highlight language-python">mentions_to_indices(files, indices, mention_xpath, event_title, title_xpath)</code>
+            <code class="highlight language-python">mentions_to_indices(files, indices, mention_xpath, event_title, title_xpath)</code>
 
 </h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Console script write pointers to mentions in index-docs</p>
 
-          <details class="quote">
-            <summary>Source code in <code>acdh_tei_pyutils/cli.py</code></summary>
-            <pre class="highlight"><code class="language-python">@click.command()  # pragma: no cover
+            <details class="quote">
+              <summary>Source code in <code>acdh_tei_pyutils/cli.py</code></summary>
+              <pre class="highlight"><code class="language-python">@click.command()  # pragma: no cover
 @click.option(
     "-f", "--files", default="./editions/*.xml", show_default=True
 )  # pragma: no cover
@@ -1700,29 +1660,27 @@ def mentions_to_indices(
         for ent in ent_nodes:
             all_ent_nodes[ent.xpath("@xml:id")[0]] = ent
     click.echo(click.style("DONE", fg="green"))</code></pre>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="acdh_tei_pyutils.cli.schnitzler" class="doc doc-heading">
-          <code class="highlight language-python">schnitzler(files, indices, doc_person, doc_work)</code>
+            <code class="highlight language-python">schnitzler(files, indices, doc_person, doc_work)</code>
 
 </h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Console script write pointers to mentions in index-docs</p>
 
-          <details class="quote">
-            <summary>Source code in <code>acdh_tei_pyutils/cli.py</code></summary>
-            <pre class="highlight"><code class="language-python">@click.command()  # pragma: no cover
+            <details class="quote">
+              <summary>Source code in <code>acdh_tei_pyutils/cli.py</code></summary>
+              <pre class="highlight"><code class="language-python">@click.command()  # pragma: no cover
 @click.option(
     "-f", "--files", default="./data/editions/*.xml", show_default=True
 )  # pragma: no cover
@@ -1803,8 +1761,8 @@ def schnitzler(files, indices, doc_person, doc_work):  # pragma: no cover
             doc.tree_to_file(file=x)
     distinct_no_match = set(no_matches)
     print(distinct_no_match)</code></pre>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
 
@@ -1812,7 +1770,7 @@ def schnitzler(files, indices, doc_person, doc_work):  # pragma: no cover
 
   </div>
 
-  </div>
+    </div>
 
 </div>
               
