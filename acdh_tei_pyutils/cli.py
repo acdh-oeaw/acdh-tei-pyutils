@@ -143,7 +143,14 @@ def mentions_to_indices(
             if ref.startswith("#"):
                 ref = ref[1:]
             ref_doc_dict[ref].append(
-                {"doc_uri": doc_uri, "doc_path": x, "doc_title": doc_title}
+                {
+                    "doc_uri": doc_uri,
+                    "doc_path": x,
+                    "doc_title": doc_title,
+                    "doc_id": doc_id,
+                    "doc_date": None,
+                    "doc_title_sec": None
+                }
             )
             doc_ref_dict[filename].append(ref)
     click.echo(
@@ -156,9 +163,9 @@ def mentions_to_indices(
         doc = TeiEnricher(x)
         ent_nodes = doc.any_xpath(".//tei:body//*[@xml:id]")
         for ent in ent_nodes:
-            ent_id = ent.xpath("@xml:id")[0]
-            mention = ref_doc_dict[ent_id]
-            event_list = doc.create_mention_list(mention, event_title=event_title)
+            ent_id = ent.xpath("@xml:id", namespaces=doc.nsmap)[0]
+            mentions = ref_doc_dict[ent_id]
+            event_list = doc.create_mention_list(mentions, event_title)
             try:
                 list(event_list[0])
                 ent.append(event_list)
