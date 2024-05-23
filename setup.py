@@ -70,6 +70,6 @@ setup(
     test_suite="tests",
     tests_require=dev_requirements,
     url="https://github.com/acdh-oeaw/acdh-tei-pyutils",
-    version="v1.1",
+    version="v1.3",
     zip_safe=False,
 )
