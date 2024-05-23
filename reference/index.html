@@ -500,7 +500,7 @@ reference for the technical implementation of the
             insert_node.append(idno_node)
             return idno_node
 
-    def create_mention_list(self, mentions):
+    def create_mention_list(self, mentions, event_title=""):
         """creates a tei element with notes of mentions
 
         :param mentions: a list of dicts with keys `doc_id` and `doc_title`
@@ -521,7 +521,7 @@ reference for the technical implementation of the
                 if x['doc_date'] is not None:
                     note.attrib['corresp'] = x['doc_date']
                 if x['doc_title_sec'] is not None:
-                    note.text = f"{x['doc_title']} {x['doc_title_sec']}"
+                    note.text = event_title + f"{x['doc_title']} {x['doc_title_sec']}"
                 else:
                     note.text = x['doc_title']
                 node_root.append(note)
@@ -643,7 +643,7 @@ reference for the technical implementation of the
 
 
 <h3 id="acdh_tei_pyutils.tei.TeiEnricher.create_mention_list" class="doc doc-heading">
-            <code class="highlight language-python">create_mention_list(mentions)</code>
+            <code class="highlight language-python">create_mention_list(mentions, event_title='')</code>
 
 </h3>
 
@@ -657,7 +657,7 @@ reference for the technical implementation of the
 
             <details class="quote">
               <summary>Source code in <code>acdh_tei_pyutils/tei.py</code></summary>
-              <pre class="highlight"><code class="language-python">def create_mention_list(self, mentions):
+              <pre class="highlight"><code class="language-python">def create_mention_list(self, mentions, event_title=""):
     """creates a tei element with notes of mentions
 
     :param mentions: a list of dicts with keys `doc_id` and `doc_title`
@@ -678,7 +678,7 @@ reference for the technical implementation of the
             if x['doc_date'] is not None:
                 note.attrib['corresp'] = x['doc_date']
             if x['doc_title_sec'] is not None:
-                note.text = f"{x['doc_title']} {x['doc_title_sec']}"
+                note.text = event_title + f"{x['doc_title']} {x['doc_title_sec']}"
             else:
                 note.text = x['doc_title']
             node_root.append(note)
@@ -1630,7 +1630,14 @@ def mentions_to_indices(
             if ref.startswith("#"):
                 ref = ref[1:]
             ref_doc_dict[ref].append(
-                {"doc_uri": doc_uri, "doc_path": x, "doc_title": doc_title}
+                {
+                    "doc_uri": doc_uri,
+                    "doc_path": x,
+                    "doc_title": doc_title,
+                    "doc_id": doc_id,
+                    "doc_date": None,
+                    "doc_title_sec": None
+                }
             )
             doc_ref_dict[filename].append(ref)
     click.echo(
@@ -1643,9 +1650,9 @@ def mentions_to_indices(
         doc = TeiEnricher(x)
         ent_nodes = doc.any_xpath(".//tei:body//*[@xml:id]")
         for ent in ent_nodes:
-            ent_id = ent.xpath("@xml:id")[0]
-            mention = ref_doc_dict[ent_id]
-            event_list = doc.create_mention_list(mention, event_title=event_title)
+            ent_id = ent.xpath("@xml:id", namespaces=doc.nsmap)[0]
+            mentions = ref_doc_dict[ent_id]
+            event_list = doc.create_mention_list(mentions, event_title)
             try:
                 list(event_list[0])
                 ent.append(event_list)
