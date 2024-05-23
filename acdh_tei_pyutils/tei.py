@@ -245,7 +245,7 @@ class TeiEnricher(TeiReader):
             insert_node.append(idno_node)
             return idno_node
 
-    def create_mention_list(self, mentions):
+    def create_mention_list(self, mentions, event_title=""):
         """creates a tei element with notes of mentions
 
         :param mentions: a list of dicts with keys `doc_id` and `doc_title`
@@ -266,7 +266,7 @@ class TeiEnricher(TeiReader):
                 if x['doc_date'] is not None:
                     note.attrib['corresp'] = x['doc_date']
                 if x['doc_title_sec'] is not None:
-                    note.text = f"{x['doc_title']} {x['doc_title_sec']}"
+                    note.text = event_title + f"{x['doc_title']} {x['doc_title_sec']}"
                 else:
                     note.text = x['doc_title']
                 node_root.append(note)
