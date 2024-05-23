@@ -143,7 +143,14 @@ def mentions_to_indices(
             if ref.startswith("#"):
                 ref = ref[1:]
             ref_doc_dict[ref].append(
-                {"doc_uri": doc_uri, "doc_path": x, "doc_title": doc_title, "doc_id": doc_id, "doc_date": None, "doc_title_sec": None}
+                {
+                    "doc_uri": doc_uri,
+                    "doc_path": x,
+                    "doc_title": doc_title,
+                    "doc_id": doc_id,
+                    "doc_date": None,
+                    "doc_title_sec": None
+                }
             )
             doc_ref_dict[filename].append(ref)
     click.echo(

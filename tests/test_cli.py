@@ -3,6 +3,7 @@ import unittest
 from acdh_tei_pyutils.tei import TeiReader
 from acdh_tei_pyutils.cli import mentions_to_indices
 
+
 class MentionsToIndex(unittest.TestCase):
     """Tests for `acdh_tei_pyutils.mentions_to_index` function."""
 
@@ -58,17 +59,18 @@ class MentionsToIndex(unittest.TestCase):
         print("removing files")
         shutil.rmtree(self.test_path)
 
-
     def test_001_mentions_to_index(self):
         import click.testing
         runner = click.testing.CliRunner()
+        args = f'-f "{self.edition_doc_path}" -i "{self.person_index_doc}"'
+        args += f' -m "{self.mention_xpath}" -t "{self.ref_event_text}" -x "{self.title_xpath}"'
         result = runner.invoke(
             mentions_to_indices,
-            f'-f "{self.edition_doc_path}" -i "{self.person_index_doc}" -m "{self.mention_xpath}" -t "{self.ref_event_text}" -x "{self.title_xpath}"',
+            args,
             catch_exceptions=False
         )
         print(result.output)
         print(result.exc_info)
         print(result.exception)
-        assert result.exception == None
+        assert result.exception is None
         assert result.exit_code == 0
