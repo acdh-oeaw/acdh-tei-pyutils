@@ -165,10 +165,15 @@ def mentions_to_indices(
         for ent in ent_nodes:
             ent_id = ent.xpath("@xml:id", namespaces=doc.nsmap)[0]
             mentions = ref_doc_dict[ent_id]
-            event_list = doc.create_mention_list(mentions, event_title)
+            ent_name = ent.tag
+            note_grp = doc.create_mention_list(mentions, event_title)
             try:
-                list(event_list[0])
-                ent.append(event_list)
+                list(note_grp[0])
+                # TEI schema does not allow noteGrp in event after e.g. listPerson, ... so we need to insert it before
+                if ent_name == "{http://www.tei-c.org/ns/1.0}event":
+                    ent.insert(1, note_grp)
+                else:
+                    ent.append(note_grp)
             except IndexError:
                 pass
         doc.tree_to_file(file=x)
@@ -290,10 +295,15 @@ def denormalize_indices(
             mention = ref_doc_dict[ent_id]
             if ent_id in blacklist_ids:
                 continue
-            event_list = doc.create_mention_list(mention)
+            ent_name = ent.tag
+            note_grp = doc.create_mention_list(mention)
             try:
-                list(event_list[0])
-                ent.append(event_list)
+                list(note_grp[0])
+                # TEI schema does not allow noteGrp in event after e.g. listPerson, ... so we need to insert it before
+                if ent_name == "{http://www.tei-c.org/ns/1.0}event":
+                    ent.insert(1, note_grp)
+                else:
+                    ent.append(note_grp)
             except IndexError:
                 pass
         doc.tree_to_file(file=x)
