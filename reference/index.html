@@ -91,6 +91,11 @@ reference for the technical implementation of the
 
 
 
+
+
+
+
+
   <div class="doc doc-children">
 
 
@@ -112,7 +117,7 @@ reference for the technical implementation of the
 
     <div class="doc doc-contents ">
 
-      <p>writes url attributes into tei:pb elements fetched from matching tei:surface//tei:graphic[1] elements</p>
+        <p>writes url attributes into tei:pb elements fetched from matching tei:surface//tei:graphic[1] elements</p>
 
             <details class="quote">
               <summary>Source code in <code>acdh_tei_pyutils/utils.py</code></summary>
@@ -143,7 +148,7 @@ reference for the technical implementation of the
 
     <div class="doc doc-contents ">
 
-      <p>checks if value starts with '#' and if so removes the '#' from the returned value</p>
+        <p>checks if value starts with '#' and if so removes the '#' from the returned value</p>
 
             <details class="quote">
               <summary>Source code in <code>acdh_tei_pyutils/utils.py</code></summary>
@@ -169,7 +174,7 @@ reference for the technical implementation of the
 
     <div class="doc doc-contents ">
 
-      <p>lists all unique elements from a given node and returns only those not in the given blacklist</p>
+        <p>lists all unique elements from a given node and returns only those not in the given blacklist</p>
 
             <details class="quote">
               <summary>Source code in <code>acdh_tei_pyutils/utils.py</code></summary>
@@ -195,7 +200,7 @@ reference for the technical implementation of the
 
     <div class="doc doc-contents ">
 
-      <p>extracts all fulltext from given element and its children, except from blacklisted elements</p>
+        <p>extracts all fulltext from given element and its children, except from blacklisted elements</p>
 
             <details class="quote">
               <summary>Source code in <code>acdh_tei_pyutils/utils.py</code></summary>
@@ -220,7 +225,7 @@ reference for the technical implementation of the
 
     <div class="doc doc-contents ">
 
-      <p>tries to extract birth and death years from person nodes and returns either None or the year as Integer</p>
+        <p>tries to extract birth and death years from person nodes and returns either None or the year as Integer</p>
 
             <details class="quote">
               <summary>Source code in <code>acdh_tei_pyutils/utils.py</code></summary>
@@ -259,13 +264,164 @@ reference for the technical implementation of the
 
     <div class="doc doc-contents ">
 
-      <p>returns an @xml:id of the given node</p>
+        <p>returns an @xml:id of the given node</p>
 
             <details class="quote">
               <summary>Source code in <code>acdh_tei_pyutils/utils.py</code></summary>
               <pre class="highlight"><code class="language-python">def get_xmlid(element: ET.Element) -&gt; str:
     """returns an @xml:id of the given node"""
     return element.attrib["{http://www.w3.org/XML/1998/namespace}id"]</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="acdh_tei_pyutils.utils.make_bibl_label" class="doc doc-heading">
+            <code class="highlight language-python">make_bibl_label(node, no_author='o.A', year='o.J', editor_abbr='(Hg.)', max_title_length=75)</code>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>creates a nice, bibliograhpically useful label from the passed in tei:biblStruct element</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>node</code></b>
+                  (<code><span title="lxml.etree.Element">Element</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>a tei:biblStruct element</p>
+              </div>
+            </li>
+            <li>
+              <b><code>no_author</code></b>
+                  (<code>str</code>, default:
+                      <code>&#39;o.A&#39;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Used if no author name can be extracted. Defaults to "o.A".</p>
+              </div>
+            </li>
+            <li>
+              <b><code>year</code></b>
+                  (<code>str</code>, default:
+                      <code>&#39;o.J&#39;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Used if no year can be extracted. Defaults to "o.J".</p>
+              </div>
+            </li>
+            <li>
+              <b><code>editor_abbr(str,</code></b>
+                  (<code>optional</code>)
+              –
+              <div class="doc-md-description">
+                <p>how to mark the 'author' beeing an editor. Defaults to "(Hg.)".</p>
+              </div>
+            </li>
+            <li>
+              <b><code>max_title_length(int,</code></b>
+                  (<code>optional</code>)
+              –
+              <div class="doc-md-description">
+                <p>max lenght for the title before it gets truncated. Defaults to</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>str</code></b>(                  <code>str</code>
+)              –
+              <div class="doc-md-description">
+                <p><em>description</em></p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+            <details class="quote">
+              <summary>Source code in <code>acdh_tei_pyutils/utils.py</code></summary>
+              <pre class="highlight"><code class="language-python">def make_bibl_label(
+    node: ET.Element,
+    no_author="o.A",
+    year="o.J",
+    editor_abbr="(Hg.)",
+    max_title_length=75,
+) -&gt; str:
+    """creates a nice, bibliograhpically useful label from the passed in tei:biblStruct element
+
+    Args:
+        node (ET.Element): a tei:biblStruct element
+        no_author (str, optional): Used if no author name can be extracted. Defaults to "o.A".
+        year (str, optional): Used if no year can be extracted. Defaults to "o.J".
+        editor_abbr(str, optional): how to mark the 'author' beeing an editor. Defaults to "(Hg.)".
+        max_title_length(int, optional): max lenght for the title before it gets truncated. Defaults to
+
+    Returns:
+        str: _description_
+    """
+    try:
+        author = node.xpath(".//tei:author[1]/tei:surname[1]", namespaces=nsmap)[0].text
+    except IndexError:
+        try:
+            author = node.xpath(".//tei:author[1]/tei:name[1]", namespaces=nsmap)[
+                0
+            ].text
+        except IndexError:
+            try:
+                author = node.xpath(
+                    ".//tei:editor[1]/tei:surname[1]", namespaces=nsmap
+                )[0].text
+                author = f"{author} {editor_abbr}"
+            except IndexError:
+                try:
+                    author = node.xpath(
+                        ".//tei:editor[1]/tei:name[1]", namespaces=nsmap
+                    )[0].text
+                    author = f"{author} {editor_abbr}"
+                except IndexError:
+                    author = no_author
+    try:
+        year = node.xpath(".//tei:date[1]", namespaces=nsmap)[0].text
+    except IndexError:
+        year = year
+    title = node.xpath(".//tei:title[1]", namespaces=nsmap)[0].text
+    if len(title) &gt; max_title_length:
+        title = f"{title[:max_title_length]}..."
+    return f"{author}, {title}, {year}"</code></pre>
             </details>
     </div>
 
@@ -282,14 +438,91 @@ reference for the technical implementation of the
 
     <div class="doc doc-contents ">
 
-      <p>extracts labels from tei:persName|placeName|orgName</p>
+        <p>Extracts a label and a lang tag from the past in name-node</p>
 
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>name_node</code></b>
+                  (<code><span title="lxml.etree.Element">Element</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>A tei:persName|placeName|orgName element</p>
+              </div>
+            </li>
+            <li>
+              <b><code>default_msg</code></b>
+                  (<code>str</code>, default:
+                      <code>&#39;no label provided&#39;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>some default vaule for the label. Defaults to "no label provided".</p>
+              </div>
+            </li>
+            <li>
+              <b><code>default_lang</code></b>
+                  (<code>str</code>, default:
+                      <code>&#39;en&#39;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>some default lang tag if the node does not provide and xml:lang attribute.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code>tuple[str, str]</code>
+              –
+              <div class="doc-md-description">
+                <p>tuple[str, str]: returns the extracted label and a lang tag</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
             <details class="quote">
               <summary>Source code in <code>acdh_tei_pyutils/utils.py</code></summary>
               <pre class="highlight"><code class="language-python">def make_entity_label(
     name_node: ET.Element, default_msg="no label provided", default_lang="en"
 ) -&gt; tuple[str, str]:
-    """extracts labels from tei:persName|placeName|orgName"""
+    """Extracts a label and a lang tag from the past in name-node
+
+    Args:
+        name_node (ET.Element): A tei:persName|placeName|orgName element
+        default_msg (str, optional): some default vaule for the label. Defaults to "no label provided".
+        default_lang (str, optional): some default lang tag if the node does not provide and xml:lang attribute.
+        Defaults to "en".
+
+    Returns:
+        tuple[str, str]: returns the extracted label and a lang tag
+    """
 
     lang_tag = name_node.get("{http://www.w3.org/XML/1998/namespace}lang", default_lang)
     fornames = [
@@ -328,12 +561,12 @@ reference for the technical implementation of the
 
     <div class="doc doc-contents ">
 
-      <p>removese any superfluos whitespace from a given string</p>
+        <p>removese any superfluos whitespace from a given string</p>
 
             <details class="quote">
               <summary>Source code in <code>acdh_tei_pyutils/utils.py</code></summary>
               <pre class="highlight"><code class="language-python">def normalize_string(string: str) -&gt; str:
-    """ removese any superfluos whitespace from a given string"""
+    """removese any superfluos whitespace from a given string"""
     return " ".join(" ".join(string.split()).split())</code></pre>
             </details>
     </div>
@@ -351,7 +584,7 @@ reference for the technical implementation of the
 
     <div class="doc doc-contents ">
 
-      <p>taken from https://stackoverflow.com/a/1012089</p>
+        <p>taken from https://stackoverflow.com/a/1012089</p>
 
             <details class="quote">
               <summary>Source code in <code>acdh_tei_pyutils/utils.py</code></summary>
@@ -384,6 +617,11 @@ reference for the technical implementation of the
 
 
 
+
+
+
+
+
   <div class="doc doc-children">
 
 
@@ -409,12 +647,16 @@ reference for the technical implementation of the
               Bases: <code><a class="autorefs autorefs-internal" title="acdh_tei_pyutils.tei.TeiReader" href="#acdh_tei_pyutils.tei.TeiReader">TeiReader</a></code></p>
 
 
-      <p>a class to enrich tei-documents</p>
+        <p>a class to enrich tei-documents</p>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>acdh_tei_pyutils/tei.py</code></summary>
                 <pre class="highlight"><code class="language-python">class TeiEnricher(TeiReader):
-
     """a class to enrich tei-documents"""
 
     def add_base_and_id(self, base_value, id_value, prev_value, next_value):
@@ -513,19 +755,19 @@ reference for the technical implementation of the
         mentions_added = {}
         for x in mentions:
             try:
-                mentions_added[slugify(x['doc_id'])]
+                mentions_added[slugify(x["doc_id"])]
             except KeyError:
                 note = ET.Element(f"{{{tei_ns}}}note")
-                note.attrib['target'] = x['doc_id']
-                note.attrib['type'] = "mentions"
-                if x['doc_date'] is not None:
-                    note.attrib['corresp'] = x['doc_date']
-                if x['doc_title_sec'] is not None:
+                note.attrib["target"] = x["doc_id"]
+                note.attrib["type"] = "mentions"
+                if x["doc_date"] is not None:
+                    note.attrib["corresp"] = x["doc_date"]
+                if x["doc_title_sec"] is not None:
                     note.text = event_title + f"{x['doc_title']} {x['doc_title_sec']}"
                 else:
-                    note.text = x['doc_title']
+                    note.text = x["doc_title"]
                 node_root.append(note)
-                mentions_added[slugify(x['doc_id'])] = True
+                mentions_added[slugify(x["doc_id"])] = True
         return node_root</code></pre>
               </details>
 
@@ -552,7 +794,7 @@ reference for the technical implementation of the
 
     <div class="doc doc-contents ">
 
-      <p>adds @xml:base and @xml:id and next and prev to root element</p>
+        <p>adds @xml:base and @xml:id and next and prev to root element</p>
 <p>:param base_value: The value of the @xml:base
 :type base_value: str</p>
 <p>:return: the updated tree</p>
@@ -594,7 +836,7 @@ reference for the technical implementation of the
 
     <div class="doc doc-contents ">
 
-      <p>adds an idno @type=handle element into tei:publicationStmt</p>
+        <p>adds an idno @type=handle element into tei:publicationStmt</p>
 <p>:param handle: the handle
 :type handle: str</p>
 <p>:param handle_xpath: an xpath expression where to look for an handle
@@ -650,7 +892,7 @@ reference for the technical implementation of the
 
     <div class="doc doc-contents ">
 
-      <p>creates a tei element with notes of mentions</p>
+        <p>creates a tei element with notes of mentions</p>
 <p>:param mentions: a list of dicts with keys <code>doc_id</code> and <code>doc_title</code>
 :type mentions: noteGrp</p>
 <p>:return: a etree.element</p>
@@ -670,19 +912,19 @@ reference for the technical implementation of the
     mentions_added = {}
     for x in mentions:
         try:
-            mentions_added[slugify(x['doc_id'])]
+            mentions_added[slugify(x["doc_id"])]
         except KeyError:
             note = ET.Element(f"{{{tei_ns}}}note")
-            note.attrib['target'] = x['doc_id']
-            note.attrib['type'] = "mentions"
-            if x['doc_date'] is not None:
-                note.attrib['corresp'] = x['doc_date']
-            if x['doc_title_sec'] is not None:
+            note.attrib["target"] = x["doc_id"]
+            note.attrib["type"] = "mentions"
+            if x["doc_date"] is not None:
+                note.attrib["corresp"] = x["doc_date"]
+            if x["doc_title_sec"] is not None:
                 note.text = event_title + f"{x['doc_title']} {x['doc_title_sec']}"
             else:
-                note.text = x['doc_title']
+                note.text = x["doc_title"]
             node_root.append(note)
-            mentions_added[slugify(x['doc_id'])] = True
+            mentions_added[slugify(x["doc_id"])] = True
     return node_root</code></pre>
             </details>
     </div>
@@ -700,7 +942,7 @@ reference for the technical implementation of the
 
     <div class="doc doc-contents ">
 
-      <p>returns the combination of @xml:base and @xml:id</p>
+        <p>returns the combination of @xml:base and @xml:id</p>
 <p>:return: combination of @xml:base and @xml:id
 :rtype: str</p>
 
@@ -742,7 +984,7 @@ reference for the technical implementation of the
 
     <div class="doc doc-contents ">
 
-      <p>checks if a handle is already assigned</p>
+        <p>checks if a handle is already assigned</p>
 <p>:return: the registered handle or empty string
 :rtype: str, None</p>
 
@@ -787,16 +1029,19 @@ reference for the technical implementation of the
               Bases: <code><span title="acdh_xml_pyutils.xml.XMLReader">XMLReader</span></code></p>
 
 
-      <p>a class to read an process tei-documents</p>
+        <p>a class to read an process tei-documents</p>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>acdh_tei_pyutils/tei.py</code></summary>
                 <pre class="highlight"><code class="language-python">class TeiReader(XMLReader):
-
     """a class to read an process tei-documents"""
 
     def any_xpath(self, any_xpath="//tei:rs"):
-
         """Runs any xpath expressions against the parsed document
         :param any_xpath: Any XPath expression.
         :return: The result of the xpath
@@ -804,7 +1049,6 @@ reference for the technical implementation of the
         return self.tree.xpath(any_xpath, namespaces=self.ns_tei)
 
     def extract_ne_elements(self, parent_node, ne_xpath="//tei:rs"):
-
         """extract elements tagged as named entities
         :param ne_xpath: An XPath expression pointing to elements used to tagged NEs.
         :return: A list of elements
@@ -816,7 +1060,6 @@ reference for the technical implementation of the
     def extract_ne_dicts(
         self, parent_node, ne_xpath="//tei:rs", NER_TAG_MAP=NER_TAG_MAP
     ):
-
         """ extract strings tagged as named entities
         :param ne_xpath: An XPath expression pointing to elements used to tagged NEs.
         :param NER_TAG_MAP: A dictionary providing mapping from TEI tags used to tag NEs to\
@@ -840,7 +1083,6 @@ reference for the technical implementation of the
         return ne_dicts
 
     def create_plain_text(self, node):
-
         """ extracts all text nodes from given element
         :param start_node: An XPath expressione pointing to\
         an element which text nodes should be extracted
@@ -856,7 +1098,6 @@ reference for the technical implementation of the
         ne_xpath=".//tei:rs",
         NER_TAG_MAP=NER_TAG_MAP,
     ):
-
         """ extracts all text nodes from given elements and their NE
         :param parent_nodes: An XPath expressione pointing to\
         those elements which text nodes should be extracted
@@ -882,7 +1123,6 @@ reference for the technical implementation of the
         ne_xpath=".//tei:rs",
         NER_TAG_MAP=NER_TAG_MAP,
     ):
-
         """ extracts offsets of NEs and the NE-type
         :param parent_nodes: An XPath expressione pointing to\
         those element which text nodes should be extracted
@@ -948,14 +1188,13 @@ reference for the technical implementation of the
 
     <div class="doc doc-contents ">
 
-      <p>Runs any xpath expressions against the parsed document
+        <p>Runs any xpath expressions against the parsed document
 :param any_xpath: Any XPath expression.
 :return: The result of the xpath</p>
 
             <details class="quote">
               <summary>Source code in <code>acdh_tei_pyutils/tei.py</code></summary>
               <pre class="highlight"><code class="language-python">def any_xpath(self, any_xpath="//tei:rs"):
-
     """Runs any xpath expressions against the parsed document
     :param any_xpath: Any XPath expression.
     :return: The result of the xpath
@@ -977,14 +1216,13 @@ reference for the technical implementation of the
 
     <div class="doc doc-contents ">
 
-      <p>extracts all text nodes from given element
+        <p>extracts all text nodes from given element
 :param start_node: An XPath expressione pointing to        an element which text nodes should be extracted
 :return: A normalized, cleaned plain text</p>
 
             <details class="quote">
               <summary>Source code in <code>acdh_tei_pyutils/tei.py</code></summary>
               <pre class="highlight"><code class="language-python">def create_plain_text(self, node):
-
     """ extracts all text nodes from given element
     :param start_node: An XPath expressione pointing to\
     an element which text nodes should be extracted
@@ -1009,7 +1247,7 @@ reference for the technical implementation of the
 
     <div class="doc doc-contents ">
 
-      <p>extract strings tagged as named entities
+        <p>extract strings tagged as named entities
 :param ne_xpath: An XPath expression pointing to elements used to tagged NEs.
 :param NER_TAG_MAP: A dictionary providing mapping from TEI tags used to tag NEs to        spacy-tags
 :return: A list of NE-dicts containing the 'text' and the 'ne_type'</p>
@@ -1019,7 +1257,6 @@ reference for the technical implementation of the
               <pre class="highlight"><code class="language-python">def extract_ne_dicts(
     self, parent_node, ne_xpath="//tei:rs", NER_TAG_MAP=NER_TAG_MAP
 ):
-
     """ extract strings tagged as named entities
     :param ne_xpath: An XPath expression pointing to elements used to tagged NEs.
     :param NER_TAG_MAP: A dictionary providing mapping from TEI tags used to tag NEs to\
@@ -1057,14 +1294,13 @@ reference for the technical implementation of the
 
     <div class="doc doc-contents ">
 
-      <p>extract elements tagged as named entities
+        <p>extract elements tagged as named entities
 :param ne_xpath: An XPath expression pointing to elements used to tagged NEs.
 :return: A list of elements</p>
 
             <details class="quote">
               <summary>Source code in <code>acdh_tei_pyutils/tei.py</code></summary>
               <pre class="highlight"><code class="language-python">def extract_ne_elements(self, parent_node, ne_xpath="//tei:rs"):
-
     """extract elements tagged as named entities
     :param ne_xpath: An XPath expression pointing to elements used to tagged NEs.
     :return: A list of elements
@@ -1088,7 +1324,7 @@ reference for the technical implementation of the
 
     <div class="doc doc-contents ">
 
-      <p>extracts offsets of NEs and the NE-type
+        <p>extracts offsets of NEs and the NE-type
 :param parent_nodes: An XPath expressione pointing to        those element which text nodes should be extracted
 :param ne_xpath: An XPath expression pointing to elements used to tagged NEs.        Takes the parent node(s) as context
 :param NER_TAG_MAP: A dictionary providing mapping from TEI tags used to tag NEs to        spacy-tags
@@ -1102,7 +1338,6 @@ reference for the technical implementation of the
     ne_xpath=".//tei:rs",
     NER_TAG_MAP=NER_TAG_MAP,
 ):
-
     """ extracts offsets of NEs and the NE-type
     :param parent_nodes: An XPath expressione pointing to\
     those element which text nodes should be extracted
@@ -1159,7 +1394,7 @@ reference for the technical implementation of the
 
     <div class="doc doc-contents ">
 
-      <p>extracts all text nodes from given elements and their NE
+        <p>extracts all text nodes from given elements and their NE
 :param parent_nodes: An XPath expressione pointing to        those elements which text nodes should be extracted
 :param ne_xpath:  An XPath expression pointing to elements used to tagged NEs.        Takes the parent node(s) as context
 :param NER_TAG_MAP: A dictionary providing mapping from TEI tags used to tag NEs to        spacy-tags
@@ -1173,7 +1408,6 @@ reference for the technical implementation of the
     ne_xpath=".//tei:rs",
     NER_TAG_MAP=NER_TAG_MAP,
 ):
-
     """ extracts all text nodes from given elements and their NE
     :param parent_nodes: An XPath expressione pointing to\
     those elements which text nodes should be extracted
@@ -1222,7 +1456,12 @@ reference for the technical implementation of the
 <a id="acdh_tei_pyutils.cli"></a>
     <div class="doc doc-contents first">
 
-      <p>Console script for acdh_collatex_utils.</p>
+        <p>Console script for acdh_collatex_utils.</p>
+
+
+
+
+
 
 
 
@@ -1247,7 +1486,7 @@ reference for the technical implementation of the
 
     <div class="doc doc-contents ">
 
-      <p>Console script add @xml:base, @xml:id and @prev @next attributes to root element</p>
+        <p>Console script add @xml:base, @xml:id and @prev @next attributes to root element</p>
 
             <details class="quote">
               <summary>Source code in <code>acdh_tei_pyutils/cli.py</code></summary>
@@ -1291,7 +1530,7 @@ def add_base_id_next_prev(glob_pattern, base_value):  # pragma: no cover
 
     <div class="doc doc-contents ">
 
-      <p>Console script to register handels base on the values of @xml:id and @xml:base</p>
+        <p>Console script to register handels base on the values of @xml:id and @xml:base</p>
 
             <details class="quote">
               <summary>Source code in <code>acdh_tei_pyutils/cli.py</code></summary>
@@ -1368,7 +1607,7 @@ def add_handles(
 
     <div class="doc doc-contents ">
 
-      <p>Write pointers to mentions in index-docs and copy index entries into docs</p>
+        <p>Write pointers to mentions in index-docs and copy index entries into docs</p>
 
             <details class="quote">
               <summary>Source code in <code>acdh_tei_pyutils/cli.py</code></summary>
@@ -1589,7 +1828,7 @@ def denormalize_indices(
 
     <div class="doc doc-contents ">
 
-      <p>Console script write pointers to mentions in index-docs</p>
+        <p>Console script write pointers to mentions in index-docs</p>
 
             <details class="quote">
               <summary>Source code in <code>acdh_tei_pyutils/cli.py</code></summary>
@@ -1641,7 +1880,7 @@ def mentions_to_indices(
                     "doc_title": doc_title,
                     "doc_id": doc_id,
                     "doc_date": None,
-                    "doc_title_sec": None
+                    "doc_title_sec": None,
                 }
             )
             doc_ref_dict[filename].append(ref)
@@ -1693,7 +1932,7 @@ def mentions_to_indices(
 
     <div class="doc doc-contents ">
 
-      <p>Console script write pointers to mentions in index-docs</p>
+        <p>Console script write pointers to mentions in index-docs</p>
 
             <details class="quote">
               <summary>Source code in <code>acdh_tei_pyutils/cli.py</code></summary>
