@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0">
+  <teiHeader>
+    <fileDesc>
+      <titleStmt>
+        <title>Tillich Literaturverzeichnis</title>
+      </titleStmt>
+      <publicationStmt>
+        <p>Publication Information</p>
+      </publicationStmt>
+      <sourceDesc>
+        <p>Datendump aus Zotero-Collection</p>
+      </sourceDesc>
+    </fileDesc>
+  </teiHeader>
+  <text>
+    <body>
+      <listBibl>
+        <biblStruct type="bookSection" xml:id="tillich__ZWJLQALJ" corresp="http://zotero.org/groups/5701116/items/ZWJLQALJ" n="Tillich, Sozialismus: II. Religiöser Sozialismus, 1931">
+          <analytic>
+            <title level="a">Sozialismus: II. Religiöser Sozialismus</title>
+            <author>
+              <forename>Paul</forename>
+              <surname>Tillich</surname>
+            </author>
+          </analytic>
+          <monogr>
+            <title level="m">Religion in Geschichte und Gegenwart (RGG)</title>
+            <editor>
+              <forename>Friedrich Michael</forename>
+              <surname>Schiele</surname>
+            </editor>
+            <editor>
+              <forename>Leopold</forename>
+              <surname>Zscharnack</surname>
+            </editor>
+            <edition>2</edition>
+            <imprint>
+              <pubPlace>Tübingen</pubPlace>
+              <biblScope unit="volume">5</biblScope>
+              <biblScope unit="page">637–648</biblScope>
+              <publisher>J.C.B. Mohr (Paul Siebeck)</publisher>
+              <date>1931</date>
+            </imprint>
+          </monogr>
+        </biblStruct>
+        <biblStruct xml:id="tillich__XXM9AV77" corresp="http://zotero.org/groups/5701116/items/XXM9AV77" n="o.A, Zeitwende. Kultur, Kirche, Zeitgeschehen, o.J">
+          <monogr>
+            <title level="m">Zeitwende. Kultur, Kirche, Zeitgeschehen</title>
+            <imprint>
+              <publisher>n.p.</publisher>
+            </imprint>
+          </monogr>
+        </biblStruct>
+        <biblStruct type="book" xml:id="tillich__DHNGIEA7" corresp="http://zotero.org/groups/5701116/items/DHNGIEA7" n="Muth (Hg.), Hochland. Monatsschrift für alle Gebiete des Wisse..., 1903">
+          <monogr>
+            <title level="m">Hochland. Monatsschrift für alle Gebiete des Wissens, der Literatur und Kunst</title>
+            <editor>
+              <forename>Carl</forename>
+              <surname>Muth</surname>
+            </editor>
+            <imprint>
+              <publisher>n.p.</publisher>
+              <date>1903</date>
+            </imprint>
+          </monogr>
+        </biblStruct>
+        <biblStruct type="journalArticle" xml:id="tillich__F4PUEV6D" corresp="http://zotero.org/groups/5701116/items/F4PUEV6D" n="Stepun (Hg.), Die Mission der Demokratie in Rußland, o.J">
+          <analytic>
+            <title level="a">Die Mission der Demokratie in Rußland</title>
+            <editor>
+              <name>Stepun</name>
+            </editor>
+          </analytic>
+        </biblStruct>
+        <biblStruct type="book" xml:id="tillich__BLJ262YC" corresp="http://zotero.org/groups/5701116/items/BLJ262YC" n="o.A, Die Weltbühne: Wochenschrift für Politik, Kunst, W..., 1918">
+          <monogr>
+            <title level="m">Die Weltbühne: Wochenschrift für Politik, Kunst, Wirtschaft</title>
+            <imprint>
+              <publisher>n.p.</publisher>
+              <date>1918</date>
+            </imprint>
+          </monogr>
+        </biblStruct>
+      </listBibl>
+    </body>
+  </text>
+</TEI>

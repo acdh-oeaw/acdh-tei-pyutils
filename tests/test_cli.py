@@ -56,19 +56,17 @@ class MentionsToIndex(unittest.TestCase):
     def tearDown(self):
         """Tear down test fixtures, if any."""
         import shutil
+
         print("removing files")
         shutil.rmtree(self.test_path)
 
     def test_001_mentions_to_index(self):
         import click.testing
+
         runner = click.testing.CliRunner()
         args = f'-f "{self.edition_doc_path}" -i "{self.person_index_doc}"'
         args += f' -m "{self.mention_xpath}" -t "{self.ref_event_text}" -x "{self.title_xpath}"'
-        result = runner.invoke(
-            mentions_to_indices,
-            args,
-            catch_exceptions=False
-        )
+        result = runner.invoke(mentions_to_indices, args, catch_exceptions=False)
         print(result.output)
         print(result.exc_info)
         print(result.exception)

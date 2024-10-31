@@ -25,11 +25,9 @@ NER_TAG_MAP = {
 
 
 class TeiReader(XMLReader):
-
     """a class to read an process tei-documents"""
 
     def any_xpath(self, any_xpath="//tei:rs"):
-
         """Runs any xpath expressions against the parsed document
         :param any_xpath: Any XPath expression.
         :return: The result of the xpath
@@ -37,7 +35,6 @@ class TeiReader(XMLReader):
         return self.tree.xpath(any_xpath, namespaces=self.ns_tei)
 
     def extract_ne_elements(self, parent_node, ne_xpath="//tei:rs"):
-
         """extract elements tagged as named entities
         :param ne_xpath: An XPath expression pointing to elements used to tagged NEs.
         :return: A list of elements
@@ -49,7 +46,6 @@ class TeiReader(XMLReader):
     def extract_ne_dicts(
         self, parent_node, ne_xpath="//tei:rs", NER_TAG_MAP=NER_TAG_MAP
     ):
-
         """ extract strings tagged as named entities
         :param ne_xpath: An XPath expression pointing to elements used to tagged NEs.
         :param NER_TAG_MAP: A dictionary providing mapping from TEI tags used to tag NEs to\
@@ -73,7 +69,6 @@ class TeiReader(XMLReader):
         return ne_dicts
 
     def create_plain_text(self, node):
-
         """ extracts all text nodes from given element
         :param start_node: An XPath expressione pointing to\
         an element which text nodes should be extracted
@@ -89,7 +84,6 @@ class TeiReader(XMLReader):
         ne_xpath=".//tei:rs",
         NER_TAG_MAP=NER_TAG_MAP,
     ):
-
         """ extracts all text nodes from given elements and their NE
         :param parent_nodes: An XPath expressione pointing to\
         those elements which text nodes should be extracted
@@ -115,7 +109,6 @@ class TeiReader(XMLReader):
         ne_xpath=".//tei:rs",
         NER_TAG_MAP=NER_TAG_MAP,
     ):
-
         """ extracts offsets of NEs and the NE-type
         :param parent_nodes: An XPath expressione pointing to\
         those element which text nodes should be extracted
@@ -159,7 +152,6 @@ class TeiReader(XMLReader):
 
 
 class TeiEnricher(TeiReader):
-
     """a class to enrich tei-documents"""
 
     def add_base_and_id(self, base_value, id_value, prev_value, next_value):
@@ -258,17 +250,17 @@ class TeiEnricher(TeiReader):
         mentions_added = {}
         for x in mentions:
             try:
-                mentions_added[slugify(x['doc_id'])]
+                mentions_added[slugify(x["doc_id"])]
             except KeyError:
                 note = ET.Element(f"{{{tei_ns}}}note")
-                note.attrib['target'] = x['doc_id']
-                note.attrib['type'] = "mentions"
-                if x['doc_date'] is not None:
-                    note.attrib['corresp'] = x['doc_date']
-                if x['doc_title_sec'] is not None:
+                note.attrib["target"] = x["doc_id"]
+                note.attrib["type"] = "mentions"
+                if x["doc_date"] is not None:
+                    note.attrib["corresp"] = x["doc_date"]
+                if x["doc_title_sec"] is not None:
                     note.text = event_title + f"{x['doc_title']} {x['doc_title_sec']}"
                 else:
-                    note.text = x['doc_title']
+                    note.text = x["doc_title"]
                 node_root.append(note)
-                mentions_added[slugify(x['doc_id'])] = True
+                mentions_added[slugify(x["doc_id"])] = True
         return node_root

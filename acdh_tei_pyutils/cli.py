@@ -1,4 +1,5 @@
 """Console script for acdh_collatex_utils."""
+
 import click
 import glob
 import os
@@ -149,7 +150,7 @@ def mentions_to_indices(
                     "doc_title": doc_title,
                     "doc_id": doc_id,
                     "doc_date": None,
-                    "doc_title_sec": None
+                    "doc_title_sec": None,
                 }
             )
             doc_ref_dict[filename].append(ref)

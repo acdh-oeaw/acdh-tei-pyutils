@@ -8,3 +8,4 @@ exclude =
     build
     dist
     env
+    venv
