@@ -81,14 +81,24 @@ def previous_and_next(some_iterable):  # pragma: no cover
 
 
 def normalize_string(string: str) -> str:
-    """ removese any superfluos whitespace from a given string"""
+    """removese any superfluos whitespace from a given string"""
     return " ".join(" ".join(string.split()).split())
 
 
 def make_entity_label(
     name_node: ET.Element, default_msg="no label provided", default_lang="en"
 ) -> tuple[str, str]:
-    """extracts labels from tei:persName|placeName|orgName"""
+    """Extracts a label and a lang tag from the past in name-node
+
+    Args:
+        name_node (ET.Element): A tei:persName|placeName|orgName element
+        default_msg (str, optional): some default vaule for the label. Defaults to "no label provided".
+        default_lang (str, optional): some default lang tag if the node does not provide and xml:lang attribute.
+        Defaults to "en".
+
+    Returns:
+        tuple[str, str]: returns the extracted label and a lang tag
+    """
 
     lang_tag = name_node.get("{http://www.w3.org/XML/1998/namespace}lang", default_lang)
     fornames = [
@@ -111,3 +121,53 @@ def make_entity_label(
     if label is None or label == "":
         label = default_msg
     return label, lang_tag
+
+
+def make_bibl_label(
+    node: ET.Element,
+    no_author="o.A",
+    year="o.J",
+    editor_abbr="(Hg.)",
+    max_title_length=75,
+) -> str:
+    """creates a nice, bibliograhpically useful label from the passed in tei:biblStruct element
+
+    Args:
+        node (ET.Element): a tei:biblStruct element
+        no_author (str, optional): Used if no author name can be extracted. Defaults to "o.A".
+        year (str, optional): Used if no year can be extracted. Defaults to "o.J".
+        editor_abbr(str, optional): how to mark the 'author' beeing an editor. Defaults to "(Hg.)".
+        max_title_length(int, optional): max lenght for the title before it gets truncated. Defaults to
+
+    Returns:
+        str: _description_
+    """
+    try:
+        author = node.xpath(".//tei:author[1]/tei:surname[1]", namespaces=nsmap)[0].text
+    except IndexError:
+        try:
+            author = node.xpath(".//tei:author[1]/tei:name[1]", namespaces=nsmap)[
+                0
+            ].text
+        except IndexError:
+            try:
+                author = node.xpath(
+                    ".//tei:editor[1]/tei:surname[1]", namespaces=nsmap
+                )[0].text
+                author = f"{author} {editor_abbr}"
+            except IndexError:
+                try:
+                    author = node.xpath(
+                        ".//tei:editor[1]/tei:name[1]", namespaces=nsmap
+                    )[0].text
+                    author = f"{author} {editor_abbr}"
+                except IndexError:
+                    author = no_author
+    try:
+        year = node.xpath(".//tei:date[1]", namespaces=nsmap)[0].text
+    except IndexError:
+        year = year
+    title = node.xpath(".//tei:title[1]", namespaces=nsmap)[0].text
+    if len(title) > max_title_length:
+        title = f"{title[:max_title_length]}..."
+    return f"{author}, {title}, {year}"
