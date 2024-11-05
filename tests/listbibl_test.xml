@@ -44,7 +44,7 @@
             </imprint>
           </monogr>
         </biblStruct>
-        <biblStruct xml:id="tillich__XXM9AV77" corresp="http://zotero.org/groups/5701116/items/XXM9AV77" n="o.A, Zeitwende. Kultur, Kirche, Zeitgeschehen, o.J">
+        <biblStruct xml:id="tillich__XXM9AV77" corresp="http://zotero.org/groups/5701116/items/XXM9AV77" n="o.A., Zeitwende. Kultur, Kirche, Zeitgeschehen, o.J.">
           <monogr>
             <title level="m">Zeitwende. Kultur, Kirche, Zeitgeschehen</title>
             <imprint>
@@ -65,7 +65,7 @@
             </imprint>
           </monogr>
         </biblStruct>
-        <biblStruct type="journalArticle" xml:id="tillich__F4PUEV6D" corresp="http://zotero.org/groups/5701116/items/F4PUEV6D" n="Stepun (Hg.), Die Mission der Demokratie in Rußland, o.J">
+        <biblStruct type="journalArticle" xml:id="tillich__F4PUEV6D" corresp="http://zotero.org/groups/5701116/items/F4PUEV6D" n="Stepun (Hg.), Die Mission der Demokratie in Rußland, o.J.">
           <analytic>
             <title level="a">Die Mission der Demokratie in Rußland</title>
             <editor>
@@ -73,7 +73,7 @@
             </editor>
           </analytic>
         </biblStruct>
-        <biblStruct type="book" xml:id="tillich__BLJ262YC" corresp="http://zotero.org/groups/5701116/items/BLJ262YC" n="o.A, Die Weltbühne: Wochenschrift für Politik, Kunst, W..., 1918">
+        <biblStruct type="book" xml:id="tillich__BLJ262YC" corresp="http://zotero.org/groups/5701116/items/BLJ262YC" n="o.A., Die Weltbühne: Wochenschrift für Politik, Kunst, W..., 1918">
           <monogr>
             <title level="m">Die Weltbühne: Wochenschrift für Politik, Kunst, Wirtschaft</title>
             <imprint>
@@ -81,6 +81,12 @@
               <date>1918</date>
             </imprint>
           </monogr>
+        </biblStruct>
+        <biblStruct type="bookSection" xml:id="nonothing" corresp="http://zotero.org/groups/5701116/items/ZWJsdfLQALJ" n="o.A., o.T., o.J.">
+          <analytic>
+            <title/>
+            <author/>
+          </analytic>
         </biblStruct>
       </listBibl>
     </body>
