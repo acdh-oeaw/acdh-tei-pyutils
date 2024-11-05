@@ -125,8 +125,9 @@ def make_entity_label(
 
 def make_bibl_label(
     node: ET.Element,
-    no_author="o.A",
-    year="o.J",
+    no_author="o.A.",
+    no_title="o.T.",
+    year="o.J.",
     editor_abbr="(Hg.)",
     max_title_length=75,
 ) -> str:
@@ -135,6 +136,7 @@ def make_bibl_label(
     Args:
         node (ET.Element): a tei:biblStruct element
         no_author (str, optional): Used if no author name can be extracted. Defaults to "o.A".
+        no_title (str, optional): Used if no title can be extracted. Defaults to "o.T".
         year (str, optional): Used if no year can be extracted. Defaults to "o.J".
         editor_abbr(str, optional): how to mark the 'author' beeing an editor. Defaults to "(Hg.)".
         max_title_length(int, optional): max lenght for the title before it gets truncated. Defaults to
@@ -168,6 +170,9 @@ def make_bibl_label(
     except IndexError:
         year = year
     title = node.xpath(".//tei:title[1]", namespaces=nsmap)[0].text
-    if len(title) > max_title_length:
-        title = f"{title[:max_title_length]}..."
+    if title:
+        if len(title) > max_title_length:
+            title = f"{title[:max_title_length]}..."
+    else:
+        title = no_title
     return f"{author}, {title}, {year}"
