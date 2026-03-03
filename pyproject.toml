@@ -1,0 +1,39 @@
+[project]
+name = "acdh-tei-pyutils"
+version = "2.0.0"
+description = "Utilty functions to work with TEI/XML-Documents"
+readme = "README.md"
+authors = [
+    { name = "Peter Andorfer", email = "peter.andorfer@oeaw.ac.at" },
+    { name = "Daniel Elsner", email = "daniel.elsner@oeaw.ac.at" }
+]
+license = "MIT"
+requires-python = ">=3.11"
+dependencies = [
+    "acdh-xml-pyutils>=1.1.1",
+    "click>=8.3.1",
+    "python-slugify>=8.0.4",
+    "tqdm>=4.67.3",
+]
+[project.urls]
+Documentation = "https://acdh-oeaw.github.io/acdh-tei-pyutils/"
+Repository = "https://github.com/acdh-oeaw/acdh-tei-pyutils.git"
+
+
+[project.scripts]
+add-attributes = "acdh_tei_pyutils.cli:add_base_id_next_prev"
+mentions-to-indices = "acdh_tei_pyutils.cli:mentions_to_indices"
+denormalize-indices = "acdh_tei_pyutils.cli:denormalize_indices"
+schnitzler = "acdh_tei_pyutils.cli:schnitzler"
+
+[build-system]
+requires = ["uv_build>=0.10.7,<0.11.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "coverage>=7.13.4",
+    "pytest>=9.0.2",
+    "ruff>=0.15.4",
+]
+

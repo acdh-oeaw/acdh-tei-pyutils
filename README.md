@@ -58,13 +58,6 @@ denormalize-indices -f "../../xml/schnitzler/schnitzler-tagebuch-data-public/edi
 denormalize-indices -f "./data/*/*.xml" -i "./data/indices/*.xml" -m ".//*[@key]/@key" -x ".//tei:title[@level='a']/text()"
 denormalize-indices -f "./data/*/*.xml" -i "./data/indices/*.xml" -m ".//*[@key]/@key" -x ".//tei:title[@level='a']/text()" -b pmb2121 -b pmb10815 -b pmb50
 ```
-
-Register handle-ids and add them as tei:idno elements:
-
-```bash
-add-handles -g "../../xml/grundbuecher/gb-data/data/editions/*.xml" -user "user12.3456-01" -pw "verysecret" -hixpath ".//tei:publicationStmt"
-```
-
 ## develop
 
 * install dev-dependencies: `pip install -r requirements_dev.txt`

@@ -1,3 +1,4 @@
+
 name: Test
 on:
   push:
@@ -8,27 +9,27 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.9", "3.11", "3.12"]
+        python-version:
+          - "3.11"
+          - "3.12"
+          - "3.13"
+          - "3.14"
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up Python Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v5
-      with:
-        python-version:  ${{ matrix.python-version }}
-    - name: Install dependencies
-      run: |
-        pip install --upgrade --upgrade-strategy eager -r requirements_dev.txt
-    - name: Install actual package
-      run: |
-        pip install -e .
-    - name: Run tests
-      run: coverage run -m pytest -v
-    - name: Create Coverage Report
-      run: coverage xml
-    - name: "Upload coverage to Codecov"
-      uses: codecov/codecov-action@v4
-      with:
-        file: ./coverage.xml
-        token: ${{ secrets.CODECOV_TOKEN }}
-        fail_ci_if_error: false
-        verbose: true
+      - uses: actions/checkout@v6
+      - name: Install uv and set the Python version
+        uses: astral-sh/setup-uv@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install the project
+        run: uv sync --dev
+      - name: Run tests
+        run: uv run coverage run -m pytest -v
+      - name: Create Coverage Report
+        run: uv run coverage xml
+      - name: "Upload coverage to Codecov"
+        uses: codecov/codecov-action@v4
+        with:
+          file: ./coverage.xml
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: false
+          verbose: true
