@@ -17,9 +17,9 @@ from acdh_tei_pyutils.utils import (
 )
 
 
-FILES = sorted(glob.glob("./acdh_tei_pyutils/files/*.xml", recursive=False))
+FILES = sorted(glob.glob("./src/acdh_tei_pyutils/files/*.xml", recursive=False))
 
-XSL = glob.glob("./acdh_tei_pyutils/files/*.xsl", recursive=False)[0]
+XSL = glob.glob("./src/acdh_tei_pyutils/files/*.xsl", recursive=False)[0]
 
 IDS_AND_SO = [
     ["base_value", "id_value", "prev_value", "next_value"],
@@ -53,15 +53,15 @@ class TestTeiEnricher(unittest.TestCase):
             self.assertEqual(full_id, x[2])
 
     def test_003_handle_exist(self):
-        hdl_doc = TeiEnricher(xml="./acdh_tei_pyutils/files/tei.xml")
+        hdl_doc = TeiEnricher(xml="./src/acdh_tei_pyutils/files/tei.xml")
         self.assertIn("http", hdl_doc.handle_exist())
-        hdl_no = TeiEnricher(xml="./acdh_tei_pyutils/files/tei_no_id.xml")
+        hdl_no = TeiEnricher(xml="./src/acdh_tei_pyutils/files/tei_no_id.xml")
         self.assertIsNone(hdl_no.handle_exist())
 
     def test_004_add_handle(self):
-        hdl_doc = TeiEnricher(xml="./acdh_tei_pyutils/files/tei.xml")
+        hdl_doc = TeiEnricher(xml="./src/acdh_tei_pyutils/files/tei.xml")
         self.assertRaises(HandleAlreadyExist, lambda: hdl_doc.add_handle("1234/5432"))
-        hdl_no = TeiEnricher(xml="./acdh_tei_pyutils/files/tei_no_id.xml")
+        hdl_no = TeiEnricher(xml="./src/acdh_tei_pyutils/files/tei_no_id.xml")
         handle_node = hdl_no.add_handle("1234/5432")
         self.assertEqual(handle_node.text, "1234/5432")
         self.assertEqual(hdl_no.handle_exist(), "1234/5432")
