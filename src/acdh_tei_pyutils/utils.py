@@ -92,9 +92,8 @@ def make_entity_label(
 
     Args:
         name_node (ET.Element): A tei:persName|placeName|orgName element
-        default_msg (str, optional): some default vaule for the label. Defaults to "no label provided".
-        default_lang (str, optional): some default lang tag if the node does not provide and xml:lang attribute.
-        Defaults to "en".
+        default_msg (str, optional): some default vaule for the label.
+        default_lang (str, optional): some default lang tag if the node does not provide and xml:lang attribute".
 
     Returns:
         tuple[str, str]: returns the extracted label and a lang tag
