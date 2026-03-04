@@ -1,6 +1,8 @@
-import lxml.etree as ET
-from itertools import tee, islice, chain
+import re
+from itertools import chain, islice, tee
 from typing import Union
+
+import lxml.etree as ET
 
 from acdh_tei_pyutils.tei import TeiReader
 
@@ -175,3 +177,110 @@ def make_bibl_label(
     else:
         title = no_title
     return f"{author}, {title}, {year}"
+
+
+def extract_fulltext_with_spacing(
+    root_node,
+    tag_blacklist=None,
+    block_elements=[
+        "p",
+        "salute",
+        "dateline",
+        "closer",
+        "seg",
+        "opener",
+        "div",
+        "head",
+    ],
+):
+    """
+    Extract full text content from an XML element tree with proper spacing.
+    This function recursively traverses an XML element tree and extracts all text
+    content while preserving logical spacing around block-level elements. It handles
+    XML namespaces and respects a blacklist of elements to exclude from extraction.
+    Taken from https://github.com/arthur-schnitzler/schnitzler-briefe-static/blob/main/python/make_typesense_index.py
+    Args:
+        root_node: The root XML element from which to extract text.
+        tag_blacklist (list, optional): A list of element tag names to exclude from
+            text extraction. Elements with tags in this list will be skipped entirely.
+            Defaults to None (empty list).
+        block_elements (tuple, optional): A tuple of tag names that should have spaces
+            added around them. Defaults to ('p', 'salute', 'dateline', 'closer', 'seg',
+            'opener', 'div', 'head').
+    Returns:
+        str: The extracted text with normalized spacing. Multiple consecutive
+            whitespace characters are collapsed into a single space, and the
+            result is stripped of leading/trailing whitespace.
+    Notes:
+        - Handles XML namespaced tags by extracting the local name (part after '}').
+        - Special handling for 'space' elements with unit='chars' attribute.
+        - Preserves tail text from child elements.
+        - Automatically collapses multiple spaces into single spaces using regex.
+    """
+
+    if tag_blacklist is None:
+        tag_blacklist = []
+
+    def extract_text_recursive(element):
+        try:
+            if hasattr(element.tag, "split"):
+                element_tag_name = element.tag.split("}")[-1]
+            else:
+                element_tag_name = str(element.tag).split("}")[-1]
+        except (AttributeError, TypeError):
+            element_tag_name = ""
+
+        if element_tag_name in tag_blacklist:
+            return ""
+
+        text_parts = []
+
+        if element.text:
+            text_parts.append(element.text)
+
+        # Process children
+        for child in element:
+            try:
+                if hasattr(child.tag, "split"):
+                    tag_name = child.tag.split("}")[-1]  # Remove namespace
+                else:
+                    tag_name = str(child.tag).split("}")[-1]
+            except (AttributeError, TypeError):
+                # Skip if we can't determine the tag name
+                if hasattr(child, "tail") and child.tail:
+                    text_parts.append(child.tail)
+                continue
+
+            # Handle space elements
+            if tag_name == "space":
+                unit = child.get("unit", "")
+                if unit == "chars":
+                    # Add space for char-based spacing elements
+                    text_parts.append(" ")
+                # Add tail text before continuing
+                if child.tail:
+                    text_parts.append(child.tail)
+                continue
+
+            # Add space before block elements
+            if tag_name in block_elements:
+                text_parts.append(" ")
+
+            # Process child recursively
+            child_text = extract_text_recursive(child)
+            if child_text:
+                text_parts.append(child_text)
+
+            # Add space after block elements
+            if tag_name in block_elements:
+                text_parts.append(" ")
+
+            # Add tail text
+            if child.tail:
+                text_parts.append(child.tail)
+
+        return "".join(text_parts)
+
+    result = extract_text_recursive(root_node)
+    result = re.sub(r"\s+", " ", result).strip()
+    return result
