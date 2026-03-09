@@ -4,18 +4,19 @@
 
 import glob
 import unittest
-import lxml.etree as ET
-from acdh_tei_pyutils.tei import NER_TAG_MAP, TeiReader, TeiEnricher, HandleAlreadyExist
-from acdh_tei_pyutils.utils import (
-    normalize_string,
-    make_entity_label,
-    get_birth_death_year,
-    check_for_hash,
-    add_graphic_url_to_pb,
-    extract_fulltext,
-    get_xmlid,
-)
 
+import lxml.etree as ET
+
+from acdh_tei_pyutils.tei import NER_TAG_MAP, HandleAlreadyExist, TeiEnricher, TeiReader
+from acdh_tei_pyutils.utils import (
+    add_graphic_url_to_pb,
+    check_for_hash,
+    extract_fulltext,
+    get_birth_death_year,
+    get_xmlid,
+    make_entity_label,
+    normalize_string,
+)
 
 FILES = sorted(glob.glob("./src/acdh_tei_pyutils/files/*.xml", recursive=False))
 
