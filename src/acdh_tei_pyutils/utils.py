@@ -3,13 +3,20 @@ from itertools import chain, islice, tee
 from typing import Union
 
 import lxml.etree as ET
+from acdh_xml_pyutils.xml import NSMAP
+from lxml.etree import Element
 
 from acdh_tei_pyutils.tei import TeiReader
 
-nsmap = {
-    "tei": "http://www.tei-c.org/ns/1.0",
-    "xml": "http://www.w3.org/XML/1998/namespace",
-}
+
+def any_xpath(node: Element, any_xpath: str) -> list:
+    """Runs any XPath expressions against the passed in node and provides\
+        common namespace prefixes like `tei:`, `xml:` or `skos
+    :param node: An lxml.etree Element
+    :param any_xpath: Any XPath expression, e.g. .//tei:rs
+    :return: The result of the xpath
+    """
+    return node.xpath(any_xpath, namespaces=NSMAP)
 
 
 def get_xmlid(element: ET.Element) -> str:
@@ -62,9 +69,7 @@ def get_birth_death_year(
     else:
         year_xpath = f"./tei:death/{xpath_part}"
     try:
-        date_str = person_node.xpath(
-            year_xpath, namespaces={"tei": "http://www.tei-c.org/ns/1.0"}
-        )[0]
+        date_str = any_xpath(person_node, year_xpath)[0]
     except IndexError:
         return None
     year_str = date_str[:4]
@@ -103,12 +108,10 @@ def make_entity_label(
 
     lang_tag = name_node.get("{http://www.w3.org/XML/1998/namespace}lang", default_lang)
     fornames = [
-        normalize_string(x)
-        for x in name_node.xpath(".//tei:forename//text()", namespaces=nsmap)
+        normalize_string(x) for x in any_xpath(name_node, ".//tei:forename//text()")
     ]
     surnames = [
-        normalize_string(x)
-        for x in name_node.xpath(".//tei:surname//text()", namespaces=nsmap)
+        normalize_string(x) for x in any_xpath(name_node, ".//tei:surname//text()")
     ]
     if len(surnames) > 0 and len(fornames) > 0:
         label = f"{surnames[0]}, {' '.join(fornames)}"
@@ -117,7 +120,7 @@ def make_entity_label(
     elif len(surnames) > 0 and len(fornames) == 0:
         label = f"{surnames[0]}"
     else:
-        name_node_text = " ".join(name_node.xpath(".//text()", namespaces=nsmap))
+        name_node_text = " ".join(any_xpath(name_node, ".//text()"))
         label = normalize_string(name_node_text)
     if label is None or label == "":
         label = default_msg
@@ -146,31 +149,25 @@ def make_bibl_label(
         str: _description_
     """
     try:
-        author = node.xpath(".//tei:author[1]/tei:surname[1]", namespaces=nsmap)[0].text
+        author = any_xpath(node, ".//tei:author[1]/tei:surname[1]")[0].text
     except IndexError:
         try:
-            author = node.xpath(".//tei:author[1]/tei:name[1]", namespaces=nsmap)[
-                0
-            ].text
+            author = any_xpath(node, ".//tei:author[1]/tei:name[1]")[0].text
         except IndexError:
             try:
-                author = node.xpath(
-                    ".//tei:editor[1]/tei:surname[1]", namespaces=nsmap
-                )[0].text
+                author = any_xpath(node, ".//tei:editor[1]/tei:surname[1]")[0].text
                 author = f"{author} {editor_abbr}"
             except IndexError:
                 try:
-                    author = node.xpath(
-                        ".//tei:editor[1]/tei:name[1]", namespaces=nsmap
-                    )[0].text
+                    author = any_xpath(node, ".//tei:editor[1]/tei:name[1]")[0].text
                     author = f"{author} {editor_abbr}"
                 except IndexError:
                     author = no_author
     try:
-        year = node.xpath(".//tei:date[1]", namespaces=nsmap)[0].text
+        year = any_xpath(node, ".//tei:date[1]")[0].text
     except IndexError:
         year = year
-    title = node.xpath(".//tei:title[1]", namespaces=nsmap)[0].text
+    title = any_xpath(node, ".//tei:title[1]")[0].text
     if title:
         if len(title) > max_title_length:
             title = f"{title[:max_title_length]}..."

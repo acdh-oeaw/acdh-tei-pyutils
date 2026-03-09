@@ -5,10 +5,14 @@ import unittest
 import lxml.etree as ET
 
 from acdh_tei_pyutils.tei import TeiReader
-from acdh_tei_pyutils.utils import extract_fulltext_with_spacing, make_bibl_label
+from acdh_tei_pyutils.utils import (
+    any_xpath,
+    extract_fulltext_with_spacing,
+    make_bibl_label,
+)
 
 
-class TestTeiEnricher(unittest.TestCase):
+class TestTeiUtils(unittest.TestCase):
     def test_001(self):
         doc = TeiReader("tests/listbibl_test.xml")
         for x in doc.any_xpath(".//tei:biblStruct[@xml:id]"):
@@ -16,7 +20,7 @@ class TestTeiEnricher(unittest.TestCase):
             n = x.attrib["n"]
             self.assertEqual(label, n)
 
-    def test_extract_fulltext_with_spacing(self):
+    def test_01_extract_fulltext_with_spacing(self):
         """Test extract_fulltext_with_spacing with TEI namespace XML"""
         # Create a sample TEI XML document
         tei_ns = "http://www.tei-c.org/ns/1.0"
@@ -50,7 +54,7 @@ class TestTeiEnricher(unittest.TestCase):
         self.assertNotIn("The Author", result_blacklist)
         self.assertIn("Test Header", result_blacklist)
 
-    def test_extract_fulltext_with_spacing_space_elements(self):
+    def test_02_extract_fulltext_with_spacing_space_elements(self):
         """Test extract_fulltext_with_spacing with space elements"""
         tei_ns = "http://www.tei-c.org/ns/1.0"
         xml_str = f"""
@@ -72,3 +76,23 @@ class TestTeiEnricher(unittest.TestCase):
         self.assertTrue(
             "Word1 Word2" in result or "Word1  Word2" in result.replace("  ", " ")
         )
+
+    def test_03_any_xpath(self):
+        test_str = """
+    <TEI xmlns="http://www.tei-c.org/ns/1.0" >
+        <back>
+            <persName>
+                <forename>Johann</forename>
+                <surname>Thayer</surname>
+            </persName>
+            <persName xml:lang="de">
+                <surname>NurNachname</surname>
+                <forename></forename>
+            </persName>
+        </back>
+    </TEI>
+    """
+        doc = TeiReader(test_str)
+        node = doc.any_xpath(".//tei:back")[0]
+        name = any_xpath(node, ".//tei:forename/text()")[0]
+        self.assertCountEqual(name, "Johann")
