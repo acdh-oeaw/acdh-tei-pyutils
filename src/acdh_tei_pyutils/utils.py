@@ -69,9 +69,7 @@ def get_birth_death_year(
     else:
         year_xpath = f"./tei:death/{xpath_part}"
     try:
-        date_str = person_node.xpath(
-            year_xpath, namespaces={"tei": "http://www.tei-c.org/ns/1.0"}
-        )[0]
+        date_str = any_xpath(person_node, year_xpath)[0]
     except IndexError:
         return None
     year_str = date_str[:4]
@@ -110,12 +108,10 @@ def make_entity_label(
 
     lang_tag = name_node.get("{http://www.w3.org/XML/1998/namespace}lang", default_lang)
     fornames = [
-        normalize_string(x)
-        for x in name_node.xpath(".//tei:forename//text()", namespaces=NSMAP)
+        normalize_string(x) for x in any_xpath(name_node, ".//tei:forename//text()")
     ]
     surnames = [
-        normalize_string(x)
-        for x in name_node.xpath(".//tei:surname//text()", namespaces=NSMAP)
+        normalize_string(x) for x in any_xpath(name_node, ".//tei:surname//text()")
     ]
     if len(surnames) > 0 and len(fornames) > 0:
         label = f"{surnames[0]}, {' '.join(fornames)}"
@@ -124,7 +120,7 @@ def make_entity_label(
     elif len(surnames) > 0 and len(fornames) == 0:
         label = f"{surnames[0]}"
     else:
-        name_node_text = " ".join(name_node.xpath(".//text()", namespaces=NSMAP))
+        name_node_text = " ".join(any_xpath(name_node, ".//text()"))
         label = normalize_string(name_node_text)
     if label is None or label == "":
         label = default_msg
@@ -153,31 +149,25 @@ def make_bibl_label(
         str: _description_
     """
     try:
-        author = node.xpath(".//tei:author[1]/tei:surname[1]", namespaces=NSMAP)[0].text
+        author = any_xpath(node, ".//tei:author[1]/tei:surname[1]")[0].text
     except IndexError:
         try:
-            author = node.xpath(".//tei:author[1]/tei:name[1]", namespaces=NSMAP)[
-                0
-            ].text
+            author = any_xpath(node, ".//tei:author[1]/tei:name[1]")[0].text
         except IndexError:
             try:
-                author = node.xpath(
-                    ".//tei:editor[1]/tei:surname[1]", namespaces=NSMAP
-                )[0].text
+                author = any_xpath(node, ".//tei:editor[1]/tei:surname[1]")[0].text
                 author = f"{author} {editor_abbr}"
             except IndexError:
                 try:
-                    author = node.xpath(
-                        ".//tei:editor[1]/tei:name[1]", namespaces=NSMAP
-                    )[0].text
+                    author = any_xpath(node, ".//tei:editor[1]/tei:name[1]")[0].text
                     author = f"{author} {editor_abbr}"
                 except IndexError:
                     author = no_author
     try:
-        year = node.xpath(".//tei:date[1]", namespaces=NSMAP)[0].text
+        year = any_xpath(node, ".//tei:date[1]")[0].text
     except IndexError:
         year = year
-    title = node.xpath(".//tei:title[1]", namespaces=NSMAP)[0].text
+    title = any_xpath(node, ".//tei:title[1]")[0].text
     if title:
         if len(title) > max_title_length:
             title = f"{title[:max_title_length]}..."
