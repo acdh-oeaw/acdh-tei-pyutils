@@ -164,16 +164,23 @@ def make_bibl_label(
                 except IndexError:
                     author = no_author
     try:
-        year = any_xpath(node, ".//tei:date[1]")[0].text
+        source_year = any_xpath(node, ".//tei:date[1]")[0].text
+        if source_year is not None:
+            pass
+        else:
+            source_year = year
     except IndexError:
-        year = year
-    title = any_xpath(node, ".//tei:title[1]")[0].text
+        source_year = year
+    try:
+        title = any_xpath(node, ".//tei:title[1]")[0].text
+    except IndexError:
+        title = no_title
     if title:
         if len(title) > max_title_length:
             title = f"{title[:max_title_length]}..."
     else:
         title = no_title
-    return f"{author}, {title}, {year}"
+    return f"{author}, {title}, {source_year}"
 
 
 def extract_fulltext_with_spacing(
