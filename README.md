@@ -60,6 +60,6 @@ denormalize-indices -f "./data/*/*.xml" -i "./data/indices/*.xml" -m ".//*[@key]
 ```
 ## develop
 
-* install dev-dependencies: `pip install -r requirements_dev.txt`
-* install local package `pip install -e .`
-* before commiting run `flake8` to check linting and `coverage run -m pytest -v` to run the tests
+* project uses [uv](https://docs.astral.sh/uv/)
+* linting/formatting `uv run ruff check .` `uv run ruff format .`
+* before commiting run `flake8` to check linting and `uv run coverage run -m pytest -v` to run the tests
