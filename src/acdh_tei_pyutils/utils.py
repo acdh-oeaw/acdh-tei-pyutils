@@ -146,7 +146,7 @@ def make_bibl_label(
         max_title_length(int, optional): max lenght for the title before it gets truncated. Defaults to
 
     Returns:
-        str: _description_
+        str: A nice, bibliograhpically useful label
     """
     try:
         author = any_xpath(node, ".//tei:author[1]/tei:surname[1]")[0].text
