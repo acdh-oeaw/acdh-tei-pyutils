@@ -1,6 +1,6 @@
 [project]
 name = "acdh-tei-pyutils"
-version = "2.1.1"
+version = "2.2.0"
 description = "Utilty functions to work with TEI/XML-Documents"
 readme = "README.md"
 authors = [

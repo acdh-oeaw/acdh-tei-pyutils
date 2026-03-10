@@ -1,14 +1,15 @@
 """Console script for acdh_collatex_utils."""
 
-import click
 import glob
 import os
-import tqdm
 from collections import defaultdict
+
+import click
+import tqdm
 from lxml import etree as ET
+
 from acdh_tei_pyutils.tei import TeiEnricher
 from acdh_tei_pyutils.utils import previous_and_next
-
 
 NS = {
     "tei": "http://www.tei-c.org/ns/1.0",
@@ -146,6 +147,9 @@ def mentions_to_indices(
 @click.option(
     "-b", "--blacklist-ids", default=[], multiple=True, show_default=True
 )  # pragma: no cover
+@click.option(
+    "--standoff", is_flag=True, help="write entity-lists into tei:standoff element"
+)
 def denormalize_indices(
     files,
     indices,
@@ -153,6 +157,7 @@ def denormalize_indices(
     title_xpath,
     title_sec_xpath,
     date_xpath,
+    standoff,
     blacklist_ids=[],
 ):  # pragma: no cover
     """Write pointers to mentions in index-docs and copy index entries into docs"""
@@ -266,9 +271,13 @@ def denormalize_indices(
         try:
             filename = os.path.split(x)[1]
             doc = TeiEnricher(x)
-            root_node = doc.any_xpath(".//tei:text")[0]
-            for bad in doc.any_xpath(".//tei:back"):
-                bad.getparent().remove(bad)
+
+            if standoff:
+                root_node = doc.any_xpath("//tei:TEI")[0]
+            else:
+                root_node = doc.any_xpath(".//tei:text")[0]
+                for bad in doc.any_xpath(".//tei:back"):
+                    bad.getparent().remove(bad)
             refs = doc.any_xpath(mention_xpath)
             ent_dict = defaultdict(list)
             for ref in set(refs):
@@ -292,7 +301,10 @@ def denormalize_indices(
                     ent_dict[index_ent.tag].append(index_ent)
                 except KeyError:
                     continue
-            back_node = ET.Element("{http://www.tei-c.org/ns/1.0}back")
+            if standoff:
+                back_node = ET.Element("{http://www.tei-c.org/ns/1.0}standOff")
+            else:
+                back_node = ET.Element("{http://www.tei-c.org/ns/1.0}back")
             for key in ent_dict.keys():
                 if key.endswith("person"):
                     list_person = ET.Element("{http://www.tei-c.org/ns/1.0}listPerson")
@@ -324,7 +336,11 @@ def denormalize_indices(
                     back_node.append(list_eve)
                     for ent in ent_dict[key]:
                         list_eve.append(ent)
-            root_node.append(back_node)
+            if len(back_node) > 0:
+                if standoff:
+                    root_node.insert(1, back_node)
+                else:
+                    root_node.append(back_node)
             doc.tree_to_file(file=x)
         except Exception as e:
             print(f"failed to process {x} due to {e}")
