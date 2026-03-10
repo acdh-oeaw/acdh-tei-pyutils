@@ -271,10 +271,11 @@ def denormalize_indices(
         try:
             filename = os.path.split(x)[1]
             doc = TeiEnricher(x)
-            root_node = doc.any_xpath(".//tei:text")[0]
+
             if standoff:
-                pass
+                root_node = doc.any_xpath("//tei:TEI")[0]
             else:
+                root_node = doc.any_xpath(".//tei:text")[0]
                 for bad in doc.any_xpath(".//tei:back"):
                     bad.getparent().remove(bad)
             refs = doc.any_xpath(mention_xpath)
@@ -335,10 +336,11 @@ def denormalize_indices(
                     back_node.append(list_eve)
                     for ent in ent_dict[key]:
                         list_eve.append(ent)
-            if standoff:
-                root_node.insert(1, back_node)
-            else:
-                root_node.append(back_node)
+            if len(back_node) > 0:
+                if standoff:
+                    root_node.insert(1, back_node)
+                else:
+                    root_node.append(back_node)
             doc.tree_to_file(file=x)
         except Exception as e:
             print(f"failed to process {x} due to {e}")

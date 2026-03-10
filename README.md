@@ -54,9 +54,14 @@ mentions-to-indices -t "erwähnt in " -i "/path/to/your/xmls/indices/*.xml" -f "
 Write mentions as listEvents of index-files and copy enriched index entries into files
 
 ```bash
-denormalize-indices -f "../../xml/schnitzler/schnitzler-tagebuch-data-public/editions/*.xml" -i "../../xml/schnitzler/schnitzler-tagebuch-data-public/indices/*.xml"
-denormalize-indices -f "./data/*/*.xml" -i "./data/indices/*.xml" -m ".//*[@key]/@key" -x ".//tei:title[@level='a']/text()"
-denormalize-indices -f "./data/*/*.xml" -i "./data/indices/*.xml" -m ".//*[@key]/@key" -x ".//tei:title[@level='a']/text()" -b pmb2121 -b pmb10815 -b pmb50
+# docs
+uv run denormalize-indices --help 
+
+# examples
+uv run denormalize-indices -f "../../xml/schnitzler/schnitzler-tagebuch-data-public/editions/*.xml" -i "../../xml/schnitzler/schnitzler-tagebuch-data-public/indices/*.xml"
+uv run denormalize-indices -f "./data/*/*.xml" -i "./data/indices/*.xml" -m ".//*[@key]/@key" -x ".//tei:title[@level='a']/text()"
+uv run denormalize-indices -f "./data/*/*.xml" -i "./data/indices/*.xml" -m ".//*[@key]/@key" -x ".//tei:title[@level='a']/text()" -b pmb2121 -b pmb10815 -b pmb50
+uv run denormalize-indices -f "./data/*/*.xml" -i "./data/indices/*.xml" --standoff # writes entity-lists into a tei:standOff element and not in a back element. 
 ```
 ## develop
 
