@@ -68,3 +68,8 @@ uv run denormalize-indices -f "./data/*/*.xml" -i "./data/indices/*.xml" --stand
 * project uses [uv](https://docs.astral.sh/uv/)
 * linting/formatting `uv run ruff check .` `uv run ruff format .`
 * before commiting run `flake8` to check linting and `uv run coverage run -m pytest -v` to run the tests
+
+### bump version
+```shell
+uv version --bump minor
+```
