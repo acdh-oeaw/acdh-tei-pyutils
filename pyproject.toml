@@ -1,6 +1,6 @@
 [project]
 name = "acdh-tei-pyutils"
-version = "2.2.0"
+version = "2.3.0"
 description = "Utilty functions to work with TEI/XML-Documents"
 readme = "README.md"
 authors = [
@@ -10,7 +10,7 @@ authors = [
 license = "MIT"
 requires-python = ">=3.11"
 dependencies = [
-    "acdh-xml-pyutils>=1.1.1",
+    "acdh-xml-pyutils>=2.0.0",
     "click>=8.3.1",
     "python-slugify>=8.0.4",
     "tqdm>=4.67.3",
