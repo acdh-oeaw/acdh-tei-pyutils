@@ -10,6 +10,10 @@ Utilty functions to work with TEI Documents
 
 run `pip install acdh-tei-pyutils`
 
+```shell
+uv add acdh-tei-pyutils
+```
+
 ## usage
 
 some examples on how to use this package
@@ -42,6 +46,10 @@ see [acdh_tei_pyutils/cli.py](https://github.com/acdh-oeaw/acdh-tei-pyutils/blob
 Batch process a collection of XML/Documents by adding xml:id, xml:base next and prev attributes to the documents root element run:
 
 ```bash
+# using uv
+uv run add-attributes -g "/path/to/your/xmls/*.xml" -b "https://value/of-your/base.com"
+
+# pip installed
 add-attributes -g "/path/to/your/xmls/*.xml" -b "https://value/of-your/base.com"
 add-attributes -g "../../xml/grundbuecher/gb-data/data/editions/*.xml" -b "https://id.acdh.oeaw.ac.at/grundbuecher"
 ```
