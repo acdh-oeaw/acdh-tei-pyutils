@@ -32,11 +32,28 @@ def crate_tag_whitelist(element: ET.Element, tag_blacklist: list) -> list:
     return tags
 
 
-def extract_fulltext(root_node: ET.Element, tag_blacklist: list = []) -> str:
+def extract_fulltext(root_node: ET.Element, tag_blacklist: list = None) -> str:
     """extracts all fulltext from given element and its children, except from blacklisted elements"""
-    tags = crate_tag_whitelist(root_node, tag_blacklist)
-    full_text = " ".join("".join(root_node.itertext(*tags)).split())
-    return full_text
+    if tag_blacklist is None:
+        tag_blacklist = []
+
+    blacklisted_tags = set(tag_blacklist)
+    text_parts = []
+
+    def _collect_text(node: ET.Element) -> None:
+        if node.tag in blacklisted_tags:
+            return
+
+        if node.text:
+            text_parts.append(node.text)
+
+        for child in node:
+            _collect_text(child)
+            if child.tail:
+                text_parts.append(child.tail)
+
+    _collect_text(root_node)
+    return " ".join("".join(text_parts).split())
 
 
 def check_for_hash(value: str) -> str:
