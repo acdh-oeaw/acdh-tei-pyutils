@@ -14,7 +14,7 @@ run `pip install acdh-tei-pyutils`
 
 some examples on how to use this package
 
-### parse an XML/TEI Document from and URL, string or file:
+### parse an XML/TEI Document from and URL, string or file
 
 ```python
 from acdh_tei_pyutils.tei import TeiReader
@@ -29,6 +29,7 @@ doc.tree
 ```
 
 ### write the current XML/TEI tree object to file
+
 ```python
 doc.tree_to_file("out.xml")
 >>> 'out.xml'
@@ -63,6 +64,7 @@ uv run denormalize-indices -f "./data/*/*.xml" -i "./data/indices/*.xml" -m ".//
 uv run denormalize-indices -f "./data/*/*.xml" -i "./data/indices/*.xml" -m ".//*[@key]/@key" -x ".//tei:title[@level='a']/text()" -b pmb2121 -b pmb10815 -b pmb50
 uv run denormalize-indices -f "./data/*/*.xml" -i "./data/indices/*.xml" --standoff # writes entity-lists into a tei:standOff element and not in a back element. 
 ```
+
 ## develop
 
 * project uses [uv](https://docs.astral.sh/uv/)
@@ -70,6 +72,7 @@ uv run denormalize-indices -f "./data/*/*.xml" -i "./data/indices/*.xml" --stand
 * before commiting run `flake8` to check linting and `uv run coverage run -m pytest -v` to run the tests
 
 ### bump version
+
 ```shell
 uv version --bump minor
 ```
