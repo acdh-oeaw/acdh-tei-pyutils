@@ -238,6 +238,8 @@ mein schatz ich liebe    dich
       <lb n="N004"/>her gangen, der <choice><expan>Prinz</expan><abbr>Pz</abbr></choice>
       ist durch den hals geschoßen, <choice><expan>Prinz</expan><abbr>Pr</abbr></choice> Joseph
       <lb n="N005"/>auch durch die wang, aber bede gottlob ohn gefahr,
+      Ich <del>lalelu</del> danke <del>e</del>Euch für <del>e</del>Euer schönes Geschenk, welches ich mit einem Federkasten von <rs ref="#tillich_person_id__1929" type="person">Mama</rs> mit nach Königsberg nehmen
+               werde.
     </body>
 </TEI>
 """
@@ -247,6 +249,15 @@ mein schatz ich liebe    dich
         self.assertTrue("PrinzPz" in ft)
         ft = extract_fulltext(body, tag_blacklist=["{http://www.tei-c.org/ns/1.0}abbr"])
         self.assertFalse("PrinzPz" in ft)
+        ft = extract_fulltext(
+            body,
+            tag_blacklist=[
+                "{http://www.tei-c.org/ns/1.0}abbr",
+                "{http://www.tei-c.org/ns/1.0}del",
+            ],
+        )
+        self.assertFalse("lalelu" in ft)
+        self.assertTrue("Federkasten" in ft)
 
     def test_013_get_xmlid(self):
         node = ET.Element("{http://www.tei-c.org/ns/1.0}person")
