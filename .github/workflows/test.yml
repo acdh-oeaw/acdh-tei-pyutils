@@ -1,4 +1,3 @@
-
 name: Test
 on:
   push:
@@ -15,9 +14,9 @@ jobs:
           - "3.13"
           - "3.14"
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Install uv and set the Python version
-        uses: astral-sh/setup-uv@v7
+        uses: astral-sh/setup-uv@v8.2.0
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install the project
@@ -27,9 +26,9 @@ jobs:
       - name: Create Coverage Report
         run: uv run coverage xml
       - name: "Upload coverage to Codecov"
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v7
         with:
-          file: ./coverage.xml
+          files: ./coverage.xml
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: false
           verbose: true
