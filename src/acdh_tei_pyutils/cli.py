@@ -82,8 +82,7 @@ def mentions_to_indices(
         doc_title = doc.any_xpath(title_xpath)[0]
         refs = doc.any_xpath(mention_xpath)
         for ref in set(refs):
-            if ref.startswith("#"):
-                ref = ref[1:]
+            ref = ref.removeprefix("#")
             ref_doc_dict[ref].append(
                 {
                     "doc_uri": doc_uri,
@@ -158,9 +157,11 @@ def denormalize_indices(
     title_sec_xpath,
     date_xpath,
     standoff,
-    blacklist_ids=[],
+    blacklist_ids=None,
 ):  # pragma: no cover
     """Write pointers to mentions in index-docs and copy index entries into docs"""
+    if blacklist_ids is None:
+        blacklist_ids = []
     files = sorted(glob.glob(files))
     index_files = sorted(glob.glob(indices))
     ref_doc_dict = defaultdict(list)
@@ -305,7 +306,7 @@ def denormalize_indices(
                 back_node = ET.Element("{http://www.tei-c.org/ns/1.0}standOff")
             else:
                 back_node = ET.Element("{http://www.tei-c.org/ns/1.0}back")
-            for key in ent_dict.keys():
+            for key in ent_dict:
                 if key.endswith("person"):
                     list_person = ET.Element("{http://www.tei-c.org/ns/1.0}listPerson")
                     back_node.append(list_person)
@@ -321,7 +322,7 @@ def denormalize_indices(
                     back_node.append(list_org)
                     for ent in ent_dict[key]:
                         list_org.append(ent)
-                if key.endswith("bibl") or key.endswith("biblStruct"):
+                if key.endswith(("bibl", "biblStruct")):
                     list_bibl = ET.Element("{http://www.tei-c.org/ns/1.0}listBibl")
                     back_node.append(list_bibl)
                     for ent in ent_dict[key]:

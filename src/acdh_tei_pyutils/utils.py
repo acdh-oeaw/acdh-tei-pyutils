@@ -1,6 +1,5 @@
 import re
 from itertools import chain, islice, tee
-from typing import Union
 
 import lxml.etree as ET
 from acdh_xml_pyutils.xml import NSMAP
@@ -27,12 +26,12 @@ def get_xmlid(element: ET.Element) -> str:
 def crate_tag_whitelist(element: ET.Element, tag_blacklist: list) -> list:
     """lists all unique elements from a given node and returns only those not in the given blacklist"""
     tags = list(
-        set([x.tag for x in element.iter(tag=ET.Element) if x.tag not in tag_blacklist])
+        {x.tag for x in element.iter(tag=ET.Element) if x.tag not in tag_blacklist}
     )
     return tags
 
 
-def extract_fulltext(root_node: ET.Element, tag_blacklist: list = None) -> str:
+def extract_fulltext(root_node: ET.Element, tag_blacklist: list | None = None) -> str:
     """extracts all fulltext from given element and its children, except from blacklisted elements"""
     if tag_blacklist is None:
         tag_blacklist = []
@@ -79,7 +78,7 @@ def add_graphic_url_to_pb(doc: TeiReader) -> TeiReader:
 
 def get_birth_death_year(
     person_node: ET.Element, xpath_part: str = "@when", birth: bool = True
-) -> Union[int, bool]:
+) -> int | bool:
     """tries to extract birth and death years from person nodes and returns either None or the year as Integer"""
     if birth:
         year_xpath = f"./tei:birth/{xpath_part}"
@@ -203,16 +202,7 @@ def make_bibl_label(
 def extract_fulltext_with_spacing(
     root_node,
     tag_blacklist=None,
-    block_elements=[
-        "p",
-        "salute",
-        "dateline",
-        "closer",
-        "seg",
-        "opener",
-        "div",
-        "head",
-    ],
+    block_elements=None,
 ):
     """
     Extract full text content from an XML element tree with proper spacing.
@@ -239,6 +229,8 @@ def extract_fulltext_with_spacing(
         - Automatically collapses multiple spaces into single spaces using regex.
     """
 
+    if block_elements is None:
+        block_elements = ["p", "salute", "dateline", "closer", "seg", "opener", "div", "head"]
     if tag_blacklist is None:
         tag_blacklist = []
 

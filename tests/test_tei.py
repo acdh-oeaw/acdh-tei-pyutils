@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 """Tests for `acdh_tei_pyutils.tei` module."""
 
 import glob
@@ -48,7 +46,7 @@ class TestTeiEnricher(unittest.TestCase):
     def test_002_add_context(self):  # ToDo: check for ordering of files
         dummy_data = zip(FILES, IDS_AND_SO, FULL_IDS)
         for x in dummy_data:
-            doc = TeiEnricher((x[0]))
+            doc = TeiEnricher(x[0])
             doc.add_base_and_id(*x[1])
             full_id = doc.get_full_id()
             self.assertEqual(full_id, x[2])
