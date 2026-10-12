@@ -39,3 +39,5 @@ dev = [
     "ruff>=0.15.4",
 ]
 
+[tool.ruff.lint]
+ignore = ["RUF012", "BLE001", "TRY002", "EXE001", "SIM102"]

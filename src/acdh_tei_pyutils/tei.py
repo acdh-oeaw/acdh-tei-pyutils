@@ -1,6 +1,7 @@
-from lxml import etree as ET
 import re
+
 from acdh_xml_pyutils.xml import XMLReader
+from lxml import etree as ET
 from slugify import slugify
 
 
@@ -129,7 +130,7 @@ class TeiReader(XMLReader):
                 if x["text"] != "":
                     for m in re.finditer(re.escape(x["text"]), plain_text):
                         entities.append([m.start(), m.end(), x["ne_type"]])
-            entities = [item for item in set(tuple(row) for row in entities)]
+            entities = [item for item in {tuple(row) for row in entities}]
             entities = sorted(entities, key=lambda x: x[0])
             ents = []
             next_item_index = 1

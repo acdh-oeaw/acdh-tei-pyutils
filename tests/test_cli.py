@@ -1,7 +1,8 @@
 import os
 import unittest
-from acdh_tei_pyutils.tei import TeiReader
+
 from acdh_tei_pyutils.cli import mentions_to_indices
+from acdh_tei_pyutils.tei import TeiReader
 
 
 class MentionsToIndex(unittest.TestCase):

@@ -11,7 +11,7 @@ jobs:
       - name: Check out source repository
         uses: actions/checkout@v7
       - name: Set up Python environment
-        uses: astral-sh/ruff-action@v4.0.0
+        uses: astral-sh/ruff-action@v4.1.0
         with:
           src: "./src"
       - name: Ruff check
